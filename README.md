@@ -14,5 +14,9 @@ cd ocr-benchmarking-on-sea-languages
 > We recommend using a [virtual environment](https://docs.python.org/3/library/venv.html) to run this project.
 
 ```
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
+
+## Acknowledgements
+
+- Python libraries used: [easyocr](https://pypi.org/project/easyocr/), [pytesseract](https://pypi.org/project/pytesseract/), [wikipedia](https://pypi.org/project/wikipedia/), [torchmetrics](https://lightning.ai/docs/torchmetrics/stable/)
