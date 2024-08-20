@@ -1,4 +1,4 @@
-# OCR Benchmarking on SEA Languages
+# Benchmarking and Improving OCR System for Southeast Asian Languages
 
 ## Getting Started
 
