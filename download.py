@@ -33,9 +33,46 @@ def get_article_text(title: str) -> str:
     return wikipedia.WikipediaPage(title).content
 
 
+def get_articles_by_language(articles: List[ArticlePDF], language: str) -> List[ArticlePDF]:
+    """
+    Fetches articles' titles and URLs by language.
+
+    Args:
+        articles: List of articles with titles and URLs in English
+        language: Target language to fetch
+
+    Returns:
+        List of articles with titles in English and URLs in target language
+    """
+    API_URL = 'https://en.wikipedia.org/w/api.php'
+    query_parameters = {
+        'action': 'query',
+        'prop': 'langlinks',
+        'llprop': 'url',
+        'format': 'json'
+    }
+    query_parameters['lllang'] = language
+
+    result_articles = []
+    for article in articles:
+        title = article.title
+
+        query_parameters['titles'] = title
+        try:
+            response = requests.get(API_URL, query_parameters)
+            data = response.json()
+            url = list(data['query']['pages'].items())[
+                0][1]['langlinks'][0]['url']
+            result_articles.append(ArticlePDF(title, url))
+        except:
+            print(f'Issue fetching for {title} in {language}')
+
+    return result_articles
+
+
 def download_article_pdfs(articles: List[ArticlePDF], destination_path: str):
     """
-    Downloads and saves PDFs from given article URLs into distinct folders named after the 
+    Downloads and saves PDFs from given article URLs into distinct folders named after the
     articles' respective titles.
 
     Source: https://medium.com/@nikitatonkoshkur25/create-pdf-from-webpage-in-python-1e9603d6a430
@@ -103,7 +140,7 @@ def _send_devtools(driver, cmd: str, params={}):
     """
     Sends command to driver's dev tools.
 
-    Works only with chromedriver, since method uses cromedriver's API to pass 
+    Works only with chromedriver, since method uses cromedriver's API to pass
     various commands to it.
     """
     resource = '/session/%s/chromium/send_command_and_get_result' % driver.session_id
