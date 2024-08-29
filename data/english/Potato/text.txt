@@ -18,7 +18,7 @@ After flowering, potato plants produce small green fruits that resemble green ch
 
 
 == Phylogeny ==
-Wild and cultivated potatoes, like the tomato, belong to the genus Solanum, which is a member of the nightshade family, the Solanaceae. That is a diverse family of flowering plants, often poisonous, that includes the mandrake (Mandragora), deadly nightshade (Atropa), and tobacco (Nicotiana), as shown in the outline phylogenetic tree (many branches omitted). The most commonly cultivated potato is S. tuberosum; there are several other species.
+Like the tomato, potatoes belong to the genus Solanum, which is a member of the nightshade family, the Solanaceae. That is a diverse family of flowering plants, often poisonous, that includes the mandrake (Mandragora), deadly nightshade (Atropa), and tobacco (Nicotiana), as shown in the outline phylogenetic tree (many branches omitted). The most commonly cultivated potato is S. tuberosum; there are several other species.
 
 The major species grown worldwide is S. tuberosum (a tetraploid with 48 chromosomes), and modern varieties of this species are the most widely cultivated. There are also four diploid species (with 24 chromosomes): S. stenotomum, S. phureja, S. goniocalyx, and S. ajanhuiri. There are two triploid species (with 36 chromosomes): S. chaucha and S. juzepczukii. There is one pentaploid cultivated species (with 60 chromosomes): S. curtilobum. 
 There are two major subspecies of S. tuberosum. The Andean potato, S. tuberosum andigena, is adapted to the short-day conditions prevalent in the mountainous equatorial and tropical regions where it originated. The Chilean potato S. tuberosum tuberosum, native to the Chiloé Archipelago, is in contrast adapted to the long-day conditions prevalent in the higher latitude region of southern Chile.
@@ -158,10 +158,7 @@ The other approach is through the development of varieties or cultivars which wo
 For instance, developing cultivars with greater heat stress tolerance would be critical for maintaining yields in countries with potato production areas near current cultivars' maximum temperature limits (e.g. Sub-Saharan Africa, India). Superior drought resistance can be achieved through improved water use efficiency (amount of food produced per amount of water used) or the ability to recover from short drought periods and still produce acceptable yields. Further, selecting for deeper root systems may reduce the need for irrigation.
 
 
-== Content ==
-
-
-=== Nutrition ===
+== Nutrition ==
 
 In a reference amount of 100 grams (3.5 oz), a boiled potato with skin supplies 87 calories and is 77% water, 20% carbohydrates (including 2% dietary fiber in the skin and flesh), 2% protein, and contains negligible fat (table). The protein content is comparable to other starchy vegetable staples, as well as grains.
 Boiled potatoes are a rich source (20% or more of the Daily Value, DV) of vitamin B6 (23% DV), and contain a moderate amount of vitamin C (16% DV) and B vitamins, such as thiamine, niacin, and pantothenic acid (10% DV each). Boiled potatoes do not supply significant amounts of dietary minerals (table).
@@ -169,7 +166,7 @@ The potato is rarely eaten raw because raw potato starch is poorly digested by h
 In the UK, potatoes are not considered by the National Health Service as counting or contributing towards the recommended daily five portions of fruit and vegetables, the 5-A-Day program.
 
 
-=== Toxicity ===
+== Toxicity ==
 
 Raw potatoes contain toxic glycoalkaloids, of which the most prevalent are solanine and chaconine. Solanine is found in other plants in the same family, Solanaceae, which includes such plants as deadly nightshade (Atropa belladonna), henbane (Hyoscyamus niger) and tobacco (Nicotiana spp.), as well as food plants like tomato. These compounds, which protect the potato plant from its predators, are especially concentrated in the aerial parts of the plant. The tubers are low in these toxins, unless they are exposed to light, which makes them go green.
 Exposure to light, physical damage, and age increase glycoalkaloid content within the tuber. Different potato varieties contain different levels of glycoalkaloids. The 'Lenape' variety, released in 1967, was withdrawn in 1970 as it contained high levels of glycoalkaloids. Since then, breeders of new varieties test for this, sometimes discarding an otherwise promising cultivar. Breeders try to keep glycoalkaloid levels below 200 mg/kg (0.0032 oz/lb). However, when these commercial varieties turn green, their solanine concentrations can go well above this limit, with higher levels in the potato's skin.

@@ -13,24 +13,40 @@ from selenium import webdriver
 
 from article_pdf import ArticlePDF
 
-
-def download_article_texts(titles: List[str], destination_path: str):
-    titles_with_space = list(
-        map(lambda title: title.replace('_', ' '), titles))
-
-    for title, title_with_space in zip(titles, titles_with_space):
-        file_path = f'{destination_path}/{title}'
-        article_text = get_article_text(title_with_space)
-
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
-
-        with open(f'{file_path}/text.txt', 'wt') as outfile:
-            outfile.write(article_text)
+API_URL = 'https://en.wikipedia.org/w/api.php'
 
 
-def get_article_text(title: str) -> str:
-    return wikipedia.WikipediaPage(title).content
+def download_article_texts(articles: List[ArticlePDF], destination_path: str):
+    """
+    Downloads and saves plain text from given article titles into distinct folders named after the
+    articles' respective titles.
+
+    Args:
+        articles: List of articles to get plain text for
+        destination_path: Destination path to save plain text files
+    """
+    query_parameters = {
+        'action': 'query',
+        'prop': 'extracts',
+        'format': 'json',
+        'explaintext': 'true',
+    }
+    for article in articles:
+        title = article.title
+        try:
+            query_parameters['titles'] = title
+            response = requests.get(API_URL, query_parameters)
+            data = response.json()
+            text = list(data['query']['pages'].items())[0][1]['extract']
+
+            file_path = f'{destination_path}/{title}'
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+
+            with open(f'{file_path}/text.txt', 'wt') as outfile:
+                outfile.write(text)
+        except:
+            print(f'Issue fetching for {title}')
 
 
 def get_articles_by_language(articles: List[ArticlePDF], language: str) -> List[ArticlePDF]:
@@ -44,7 +60,6 @@ def get_articles_by_language(articles: List[ArticlePDF], language: str) -> List[
     Returns:
         List of articles with titles in English and URLs in target language
     """
-    API_URL = 'https://en.wikipedia.org/w/api.php'
     query_parameters = {
         'action': 'query',
         'prop': 'langlinks',
