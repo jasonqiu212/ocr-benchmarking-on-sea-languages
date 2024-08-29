@@ -8,18 +8,22 @@ import time
 from io import BytesIO
 from typing import List
 
-import wikipedia
 from selenium import webdriver
 
 from article_pdf import ArticlePDF
 
-API_URL = 'https://en.wikipedia.org/w/api.php'
+API_URLS = {
+    'en': 'https://en.wikipedia.org/w/api.php',
+    'th': 'https://th.wikipedia.org/w/api.php',
+    'vi': 'https://vi.wikipedia.org/w/api.php',
+    'id': 'https://id.wikipedia.org/w/api.php',
+}
 
 
 def download_article_texts(articles: List[ArticlePDF], destination_path: str):
     """
-    Downloads and saves plain text from given article titles into distinct folders named after the
-    articles' respective titles.
+    Downloads and saves plain text from given articles into distinct folders named after the
+    articles' respective English titles.
 
     Args:
         articles: List of articles to get plain text for
@@ -33,32 +37,34 @@ def download_article_texts(articles: List[ArticlePDF], destination_path: str):
     }
     for article in articles:
         title = article.title
+        english_title = article.english_title
+        language = article.language
         try:
             query_parameters['titles'] = title
-            response = requests.get(API_URL, query_parameters)
+            response = requests.get(API_URLS[language], query_parameters)
             data = response.json()
             text = list(data['query']['pages'].items())[0][1]['extract']
 
-            file_path = f'{destination_path}/{title}'
+            file_path = f'{destination_path}/{english_title}'
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
 
             with open(f'{file_path}/text.txt', 'wt') as outfile:
                 outfile.write(text)
         except:
-            print(f'Issue fetching for {title}')
+            print(f'Issue fetching for {english_title}')
 
 
 def get_articles_by_language(articles: List[ArticlePDF], language: str) -> List[ArticlePDF]:
     """
-    Fetches articles' titles and URLs by language.
+    Fetches articles by language.
 
     Args:
-        articles: List of articles with titles and URLs in English
-        language: Target language to fetch
+        articles: List of articles in English
+        language: Target language code to fetch
 
     Returns:
-        List of articles with titles in English and URLs in target language
+        List of articles in target language
     """
     query_parameters = {
         'action': 'query',
@@ -67,20 +73,24 @@ def get_articles_by_language(articles: List[ArticlePDF], language: str) -> List[
         'format': 'json'
     }
     query_parameters['lllang'] = language
+    en_api_url = API_URLS['en']
 
     result_articles = []
     for article in articles:
-        title = article.title
+        english_title = article.english_title
 
-        query_parameters['titles'] = title
+        query_parameters['titles'] = english_title
         try:
-            response = requests.get(API_URL, query_parameters)
+            response = requests.get(en_api_url, query_parameters)
             data = response.json()
             url = list(data['query']['pages'].items())[
                 0][1]['langlinks'][0]['url']
-            result_articles.append(ArticlePDF(title, url))
+            title = list(data['query']['pages'].items())[
+                0][1]['langlinks'][0]['*']
+            new_article = ArticlePDF(title, english_title, url, language)
+            result_articles.append(new_article)
         except:
-            print(f'Issue fetching for {title} in {language}')
+            print(f'Issue fetching for {english_title} in {language}')
 
     return result_articles
 

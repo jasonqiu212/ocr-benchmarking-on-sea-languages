@@ -2,7 +2,10 @@ from io import BytesIO
 
 
 class ArticlePDF:
-    def __init__(self, title: str, url: str, file: BytesIO = None):
+    file = None
+
+    def __init__(self, title: str, english_title: str, url: str, language: str):
         self.title = title
+        self.english_title = english_title
         self.url = url
-        self.file = file
+        self.language = language
