@@ -1,4 +1,4 @@
-from io import BytesIO
+"""This class encapsulates a Wikipedia article in any language."""
 
 
 class ArticlePDF:
