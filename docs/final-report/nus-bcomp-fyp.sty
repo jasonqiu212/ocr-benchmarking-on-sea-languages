@@ -9,12 +9,12 @@
 
 \RequirePackage{changepage}
 
-\newcommand{\supervisor}[1]{\gdef\@supervisor{#1}}
 \newcommand{\department}[1]{\gdef\@dept{#1}}
 \newcommand{\faculty}[1]{\gdef\@faculty{#1}}
 \newcommand{\university}[1]{\gdef\@university{#1}}
 \newcommand{\academicyear}[1]{\gdef\@academicyear{#1}}
-\newcommand{\projectno}[1]{\gdef\@projectno{#1}}
+\newcommand{\projectid}[1]{\gdef\@projectid{#1}}
+\newcommand{\supervisor}[1]{\gdef\@supervisor{#1}}
 \newcommand{\advisor}[1]{\gdef\@advisor{#1}}
 
 \newcommand{\makecover}{
@@ -54,9 +54,9 @@
     \end{center}
     \vspace*{\fill}
     \null
-    Project No: \@projectno \\
-    Advisor: \@advisor \\
-    Deliverables:
+    Project ID: \@projectid \\
+    Supervisor: \@supervisor \\
+    Advisor: \@advisor
     \null
 }
 
