@@ -13,6 +13,7 @@ def run_tesseract_on_all(source_path: str, language: str):
         source_path: Path to articles
         language: Tesseract language code to detect. List of Tesseract language codes be found at: https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html.
     """
+    print(f'Running at {source_path}')
     for f in os.listdir(source_path):
         if '.' in f:
             continue

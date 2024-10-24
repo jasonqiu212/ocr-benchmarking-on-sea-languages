@@ -11,6 +11,7 @@ def run_easy_ocr_on_all(source_path: str, reader):
         source_path: Path to articles
         reader: EasyOCR reader that specifies languages to recognize
     """
+    print(f'Running at {source_path}')
     for f in os.listdir(source_path):
         start_time = time.time()
         print(f'Running on article: {f}')
