@@ -1,4 +1,5 @@
 #!/bin/sh
+#SBATCH --time=999
 #SBATCH --job-name=run_easy_ocr
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=jason.qiu@u.nus.edu
