@@ -10,7 +10,7 @@ from typing import List
 
 from selenium import webdriver
 
-from article_pdf import ArticlePDF
+from data_collection.article_pdf import ArticlePDF
 
 API_URLS = {
     'en': 'https://en.wikipedia.org/w/api.php',
