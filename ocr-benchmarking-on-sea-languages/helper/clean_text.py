@@ -3,16 +3,16 @@ import re
 
 WIKIPEDIA_HEADERS = {
     'english': 'WIKIPEDIA The Free Encyclopedia',
-    'thai': 'test',
-    'bahasa': 'test',
-    'vietnamese': 'test',
+    'thai': 'วิกิพีเดีย  สารานุกรมเสร',
+    'bahasa': 'WIKIPEDIA Ensiklopedia Bebas',
+    'vietnamese': 'WIKIPEDIA Bách khoa toàn',
 }
 
 REFERENCES = {
     'english': 'References',
-    'thai': 'test',
-    'bahasa': 'test',
-    'vietnamese': 'test',
+    'thai': 'อ้างอิง',
+    'bahasa': 'Referensi',
+    'vietnamese': 'Tham khảo',
 }
 
 
@@ -50,8 +50,8 @@ def clean_tesseract(source_path: str, language: str):
         if not os.path.exists(dirty_file_path):
             continue
 
-        clean_file_path = f'{
-            source_path}/{article}/tesseract-results-clean.txt'
+        clean_file_path = f'{source_path}' + \
+            f'/{article}/tesseract-results-clean.txt'
         if os.path.exists(clean_file_path):
             continue
 
@@ -74,8 +74,8 @@ def clean_tesseract(source_path: str, language: str):
 
         res = res.strip()
 
-    with open(clean_file_path, 'wt') as outfile:
-        outfile.write(res)
+        with open(clean_file_path, 'wt') as outfile:
+            outfile.write(res)
 
 
 def clean_ground_truth(source_path: str):
