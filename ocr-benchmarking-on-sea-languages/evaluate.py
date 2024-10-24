@@ -15,11 +15,11 @@ def evaluate_to_csv(source_path: str, target_file_name: str, prediction_file_nam
             source_path}/{article}/{prediction_file_name}'
 
         if os.path.exists(prediction_file_path) and os.path.exists(target_file_path):
-            target_file = open(target_file_path, 'r')
-            prediction_file = open(prediction_file_path, 'r')
+            target_text = open(target_file_path, 'r').read()
+            prediction_text = open(prediction_file_path, 'r').read()
 
-            cer = jiwer.cer(target_file.read(), prediction_file.read())
-            wer = jiwer.wer(target_file.read(), prediction_file.read())
+            cer = jiwer.cer(target_text, prediction_text)
+            wer = jiwer.wer(target_text, prediction_text)
 
             formatted_cer = round(cer, 4)
             formatted_wer = round(wer, 4)
