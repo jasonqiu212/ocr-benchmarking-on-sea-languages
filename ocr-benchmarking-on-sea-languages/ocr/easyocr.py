@@ -23,6 +23,10 @@ def run_easy_ocr_on_all(source_path: str, reader):
         res = ''
         i = 0
         image_file_path = f'{source_path}/{f}/page-{i}.png'
+        if not os.path.exists(image_file_path):
+            print('Directory does not exist')
+            continue
+
         while os.path.exists(image_file_path):
             text = reader.readtext(image_file_path, detail=0)
             res += ' '.join(text)
@@ -57,6 +61,9 @@ def run_easy_ocr(articles: List[str], source_path: str, reader):
         res = ''
         i = 0
         image_file_path = f'{source_path}/{article}/page-{i}.png'
+        if not os.path.exists(image_file_path):
+            print('Directory does not exist')
+            continue
         while os.path.exists(image_file_path):
             text = reader.readtext(image_file_path, detail=0)
             res += ' '.join(text)
