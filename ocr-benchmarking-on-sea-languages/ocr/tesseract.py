@@ -15,8 +15,6 @@ def run_tesseract_on_all(source_path: str, language: str):
     """
     print(f'Running at {source_path}')
     for f in os.listdir(source_path):
-        if '.' in f:
-            continue
         start_time = time.time()
         print(f'Running on article: {f}')
 
@@ -28,6 +26,10 @@ def run_tesseract_on_all(source_path: str, language: str):
         res = ''
         i = 0
         image_file_path = f'{source_path}/{f}/page-{i}.png'
+        if not os.path.exists(image_file_path):
+            print('Directory does not exist')
+            continue
+
         while (os.path.exists(image_file_path)):
             text = pytesseract.image_to_string(image_file_path, lang=language)
             res += ' '.join(text)
