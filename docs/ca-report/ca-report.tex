@@ -29,7 +29,9 @@
 \maketitle
 
 \chapter{Abstract}
-\lipsum[1]
+While Optical Character Recognition (OCR) has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on Southeast Asian (SEA) languages remain largely unexplored.
+This study aims to bridge this gap by assessing and improving the performance of OCR technologies on SEA languages.
+To achieve this objective, we propose a reusable pipeline to gather SEA-language text from Wikipedia and benchmark popular OCR tools.
 
 \vspace{0.3in}
 Subject Descriptors:
@@ -57,26 +59,44 @@ I would like to thank my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zh
 \mainmatter
 
 \chapter{Introduction}
-Optical Character Recognition (OCR) is the process of detecting and converting text in a image into a computer-friendly text format (Santos, 2019).
+Current research in Natural Language Processing (NLP) is heavily concentrated on 20 of the 7,000 languages in the world \parencite{magueresse-etal-2020}.
+In particular, Southeast Asia (SEA) is home to over 1,000 languages, but remains as a relatively under-researched region in NLP \parencite{aji-etal-2023}.
+Similar to most low-resource languages, a major challenge in developing NLP systems for SEA languages is the limited availability of datasets for the region’s languages.
+Although many scanned documents and books in these low-resource languages are available online, the text within these files remains inaccessible due to formats like images and PDFs.
 
-This project aims to answer the following research questions (RQs):
+A solution to this problem is to use Optical Character Recognition (OCR) to extract the textual data.
+OCR is the process of identifying and converting text in an image into a computer-friendly text format.
+By extracting the text from these scanned documents, OCR can generate valuable datasets for low-resource languages.
+The created datasets can then be used for downstream NLP tasks, such as machine translation, training large language models, and POS taggers \parencite{ignat-etal-2022} \parencite{agarwal-and-anastasopoulos-2024}.
+Therefore, studying OCR performance on SEA languages is crucial to accelerating NLP research in the region.
+
+While OCR has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on SEA languages remain largely unexplored.
+To address this gap, we propose a reusable pipeline to collect textual data in low-resource SEA languages from Wikipedia and benchmark popular open-source OCR tools on the collected data.
+The primary objective is to benchmark and improve the performance of OCR technologies on SEA languages, thereby contributing to the advancement of NLP applications in this linguistically diverse region.
+Specifically, this project seeks to answer the following research questions (RQs):
 
 \begin{itemize}
-    \item \textbf{RQ1.} How do popular OCR tools perform on Southeast Asian scripts?
-    \item \textbf{RQ2.} What specific linguistic and script-related challenges affect OCR accuracy on Southeast Asian languages?
-    \item \textbf{RQ3.} How does the choice of OCR tool impact accuracy on Southeast Asian scripts?
+    \item \textbf{RQ1.} How do popular OCR tools perform on SEA scripts?
+    \item \textbf{RQ2.} What specific linguistic and script-related challenges affect OCR accuracy on SEA languages?
+    \item \textbf{RQ3.} What techniques and recommendations can enhance OCR accuracy on SEA languages?
 \end{itemize}
 
 \chapter{Related Work}
+
 \section{OCR on Low-Resource Languages}
+Similar to most low-resource languages, a major challenge in developing SEA OCR systems is the limited availability of datasets and benchmarks for the region’s languages.
+
 \parencite{ignat-etal-2022}
 \section{Benchmarking OCR}
+
+\section{Improving OCR Accuracy}
 
 \chapter{Methodology}
 
 \section{Data Collection}
 
 \section{Benchmarking OCR Tools}
+\parencite{smith-2013}
 
 \chapter{Results}
 
