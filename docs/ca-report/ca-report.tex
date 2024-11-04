@@ -4,6 +4,9 @@
 
 \usepackage{lipsum}
 
+\usepackage[style=apa, backend=biber]{biblatex}
+\addbibresource{references.bib}
+
 \title{Benchmarking and Improving OCR System for Southeast Asian Languages}
 \author{Qiu Jiasheng, Jason}
 \department{Department of Computer Science}
@@ -47,13 +50,27 @@ Implementation Software and Hardware:
 \chapter{Acknowledgement}
 I would like to thank my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zhu, for their invaluable guidance and mentorship. Their encouragement and constructive guidance have been a significant source of inspiration throughout the project.
 
+\listoftables
+
 \tableofcontents
 
 \mainmatter
 
 \chapter{Introduction}
+Optical Character Recognition (OCR) is the process of detecting and converting text in a image into a computer-friendly text format (Santos, 2019).
+
+This project aims to answer the following research questions (RQs):
+
+\begin{itemize}
+    \item \textbf{RQ1.} How do popular OCR tools perform on Southeast Asian scripts?
+    \item \textbf{RQ2.} What specific linguistic and script-related challenges affect OCR accuracy on Southeast Asian languages?
+    \item \textbf{RQ3.} How does the choice of OCR tool impact accuracy on Southeast Asian scripts?
+\end{itemize}
 
 \chapter{Related Work}
+\section{OCR on Low-Resource Languages}
+\parencite{ignat-etal-2022}
+\section{Benchmarking OCR}
 
 \chapter{Methodology}
 
@@ -61,6 +78,40 @@ I would like to thank my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zh
 
 \section{Benchmarking OCR Tools}
 
+\chapter{Results}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|}
+        \hline
+        & EasyOCR & Tesseract \\
+        \hline
+        English & 0.17 & 0.20\\
+        Indonesian & 0.20& 0.18\\
+        Vietnamese & 0.30& 0.39\\
+        Thai & 0.26 & 0.51\\
+        \hline
+    \end{tabular}
+    \caption{Character Error Rate}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|}
+        \hline
+        & EasyOCR & Tesseract \\
+        \hline
+        English & 0.25 & 0.29\\
+        Indonesian & 0.27& 0.33\\
+        Vietnamese & 0.31& 0.42\\
+        Thai & 1.68 & 1.77\\
+        \hline
+    \end{tabular}
+    \caption{Word Error Rate}
+\end{table}
+
 \chapter{Future Work}
+
+\printbibliography[title={References}]
 
 \end{document}

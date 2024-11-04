@@ -19,3 +19,7 @@
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
+*.run.xml
+*.bbl
+*.bcf
+*.blg
