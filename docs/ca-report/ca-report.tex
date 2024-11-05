@@ -6,6 +6,14 @@
 
 \addbibresource{references.bib}
 
+\definecolor{DarkBlue}{RGB}{0, 42, 97}
+\hypersetup{
+    colorlinks=true,    % Enables colored links
+    linkcolor=black,    % Color of internal links
+    citecolor=black,    % Color of citations
+    urlcolor=DarkBlue   % Color of external links
+}
+
 \title{Benchmarking and Improving OCR System for Southeast Asian Languages}
 \author{Qiu Jiasheng, Jason}
 \department{Department of Computer Science}
@@ -51,8 +59,8 @@ Implementation Software and Hardware:
 \chapter{Acknowledgement}
 I would like to thank my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zhu, for their invaluable guidance and mentorship. Their encouragement and constructive guidance have been a significant source of inspiration throughout the project.
 
+\listoffigures
 \listoftables
-
 \tableofcontents
 
 \mainmatter
@@ -113,11 +121,10 @@ For instance, Tesseract \parencite{smith-2013}, regarded as one of the most accu
 Commercial OCR systems are typically accessed through paid services via application programming interfaces (APIs).
 Notable examples of these systems include Amazon Textract, Google Document AI, and Google Vision API.
 Generally, commercial off-the-shelf OCR tools tend to perform better than their open-source counterparts \parencite{hegghammer-2022, ignat-etal-2022}.
-However, the proprietary nature of these `black box` models limits their utility for research purposes, such as fine-tuning and customization.
+However, the proprietary nature of these "black box" models limits their utility for research purposes, such as fine-tuning and customization.
 Additionally, the associated costs of these services contribute to fewer studies focused on commercial systems in comparison to the more widely researched open-source tools.
 
-\vspace{20pt}
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabular}{lllll}
         \toprule
@@ -172,57 +179,183 @@ The remaining SEA languages were chosen to capture diverse script characteristic
 Indonesian represents Latin-based scripts, Vietnamese represents Latin scripts with diacritics, and Thai represents non-Latin scripts. 
 
 \subsection{Dataset}
-We compiled a dataset of 100 Wikipedia articles, selecting the 20 most viewed English articles from each of five categories: people, present countries, cities\footnote{ Singapore was replaced because it's already listed under present countries.}, life, and buildings and structures\footnote{ Machu Picchu was replaced because it's already listed under cities.} \parencite{wikipedia-popular-pages-2024}.
+We compiled a dataset of 100 Wikipedia articles, selecting the 20 most viewed English articles 
+from each of five categories: people, present countries, cities\footnote{Singapore was replaced 
+because it's already listed under present countries.}, life, and buildings and structures\footnote{Machu 
+Picchu was replaced because it's already listed under cities.} 
+\parencite{wikipedia-popular-pages-2024}.
 These categories were chosen to create a diverse corpus in terms of content. 
 We prioritized high-view articles because they are more likely to have substantial data available across languages. 
 Table \ref{table:dataset} lists the articles included in our dataset.
 
 \section{Data Collection}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/data-collection.png}
+    \caption{Pipeline for data collection from Wikipedia}
+    \label{figure:data-collection}
+\end{figure}
+
+From the dataset of 100 Wikipedia articles, we collected article images and ground 
+truth article text in our selected languages using Python, 
+Selenium\footnote{\href{https://selenium-python.readthedocs.io}{Selenium} is a 
+framework for automating web browsers, commonly used for web scraping by programmatically 
+interacting with websites.}, and the MediaWiki Action API\footnote{The \href{https://www.mediawiki.org/wiki/API:Main_page}{MediaWiki Action API} allows 
+access to wiki page operation features such as search and retrieval.}. Figure \ref{figure:data-collection} illustrates the overall pipeline 
+for data collection. The detailed steps are as follows:
+
+\begin{enumerate}
+    \item Manually compile the dataset’s article names and URLs in English.
+    \item Fetch the article names and URLs in Thai, Vietnamese, and Indonesian from the MediaWiki Action API.
+    \item Download the articles in all languages in PDF format using Selenium.
+    \item Convert the article PDFs into PNG images. Each image represents one page in the PDF.
+    \item Download the ground truth article text into TXT files from the MediaWiki Action API.
+\end{enumerate}
+
 \section{OCR Evaluation}
+
+\subsection{OCR Systems}
+In our selection of OCR systems for benchmarking, we prioritized open-source 
+solutions that support a diverse range of SEA languages, as this approach 
+enhances accessibility and encourages collaboration within the research community. 
+Consequently, we selected to use Tesseract and EasyOCR. 
+
+Tesseract\footnote{\url{https://github.com/tesseract-ocr/tesseract}} is an established OCR engine, recognized as one of the top performers 
+in the 1995 UNLV Test \parencite{rice-etal-1995}. It utilizes an underlying Long Short-Term Memory (LSTM) 
+model. EasyOCR\footnote{\url{https://github.com/JaidedAI/EasyOCR}} is a modern OCR framework that integrates a text detection model 
+based on the Character Region Awareness for Text (CRAFT) algorithm with a 
+recognition model utilizing a Convolutional Recurrent Neural Network (CRNN). Both 
+Tesseract and EasyOCR provide robust support for English, Indonesian, Vietnamese, 
+and Thai, making them suitable candidates for our benchmarking study.
 
 \subsection{Evaluation Metrics}
 
-\subsection{Data Cleaning}
+\begin{equation}
+    CER = \frac{I + D + S}{N}
+    \label{equation:cer}
+\end{equation}
 
-\subsection{Data Validation}
+Similar to most OCR benchmark studies, we utilize Character Error Rate (CER) and 
+Word Error Rate (WER) as our evaluation metrics \parencite{hegghammer-2022, ignat-etal-2022}. CER measures the accuracy of 
+character recognition and is calculated using the Levenshtein or edit distance, 
+which represents the minimum number of single-character insertions (I), deletions (D), 
+and substitutions (S) required to transform one word into another. As shown in 
+Equation \ref{equation:cer}, CER is defined as the edit distance between the 
+OCR-predicted text and ground truth text, divided by the total number of characters 
+in the ground truth text (N). A lower CER value indicates higher accuracy, with 
+0 representing perfect recognition. Notably, CER can exceed 1, particularly when 
+there are a significant number of insertions. WER serves as the word-based counterpart to CER.
+
+\subsection{Data Validation and Cleaning}
+The raw predicted text generated by the OCR tools exhibited extremely high error 
+rates. Upon further investigation, we identified some consistent formatting issues 
+in the output:
+
+\begin{itemize}
+    \item Tesseract adds an additional space character after every predicted character, leading to CERs exceeding 1.
+    \item The article images included references and in-text citations, which are not present in the ground truth. 
+\end{itemize}
+
+To address these issues, we performed data cleaning to align the output text 
+more closely with the ground truth. This cleaning significantly reduced the error 
+rates to more acceptable levels.
+
+We then implemented a data validation step to automatically check the CERs for 
+each language. Articles were flagged as outliers if the CER between the OCR-predicted 
+text and the ground truth text exceeded two standard deviations from the mean \parencite{cousineau-and-chartier-2010}. 
+We manually reviewed these outlier articles for anomalies, resulting in the removal 
+of seven articles where the images and ground truth texts contained different content.
+
+\subsection{Summary}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/ocr-evaluation.png}
+    \caption{Pipeline for OCR evaluation}
+    \label{figure:ocr-evaluation}
+\end{figure}
+
+In summary, we evaluated the CER and WER for each article using the images and 
+ground truth text collected from our data pipeline. Figure \ref{figure:ocr-evaluation} 
+illustrates the overall pipeline for OCR evaluation. The detailed steps are as follows:
+
+\begin{enumerate}
+    \item Apply the OCR tools on the article images.
+    \item Perform data cleaning on the predicted article text and ground truth article text.
+    \item Compute the CER and WER between the predicted text and the ground truth text using JiWER\footnote{\href{https://pypi.org/project/jiwer/}{JiWER} is a Python package designed for fast calculation of CER and WER.}.
+\end{enumerate}
 
 \chapter{Results}
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
-    \begin{tabular}{lcc}
+    \begin{tabular}{lcccc}
         \toprule
-        & EasyOCR & Tesseract \\
+        & \multicolumn{2}{c}{\textbf{Character Error Rate}} & \multicolumn{2}{c}{\textbf{Word Error Rate}}\\
+        \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+        & EasyOCR & Tesseract & EasyOCR & Tesseract\\
         \midrule
-        English & 0.17 & 0.20\\
-        Indonesian & 0.20 & 0.18\\
-        Vietnamese & 0.30 & 0.39\\
-        Thai & 0.26 & 0.51\\
+        English & 0.17 & 0.20 & 0.25 & 0.29\\
+        Indonesian & 0.20 & 0.18 & 0.27 & 0.33\\
+        Vietnamese & 0.30 & 0.39 & 0.31 & 0.42\\
+        Thai & 0.26 & 0.51 & 1.68 & 1.77\\
         \bottomrule
     \end{tabular}
-    \caption{Average Character Error Rate}
+    \caption{Average Character Error Rate and Word Error Rate}
+    \label{table:results}
 \end{table}
 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{lcc}
-        \toprule
-        
-        & EasyOCR & Tesseract \\
-        \midrule
-        English & 0.25 & 0.29\\
-        Indonesian & 0.27 & 0.33\\
-        Vietnamese & 0.31 & 0.42\\
-        Thai & 1.68 & 1.77\\
-        \bottomrule
-    \end{tabular}
-    \caption{Average Word Error Rate}
-\end{table}
+Table \ref{table:results} presents the average CER and WER for each language and 
+OCR model. The results reveal several key observations on the performance of popular OCR tools on SEA languages(\textbf{RQ1}):
+
+\begin{itemize}
+    \item EasyOCR generally outperforms Tesseract, yielding lower error rates.
+    \item Both OCR tools perform best on Latin scripts (English and Indonesian), followed by Latin scripts with diacritics (Vietnamese), and then Non-Latin scripts (Thai).
+    \item The WER for Thai is notably high due to its non-segmented script structure.
+\end{itemize}
 
 \section{Discussion}
+There is no universal standard for what makes a “good” CER or WER value, as OCR 
+performance varies widely depending on factors like text complexity, layout, and 
+print quality. While many OCR systems claim accuracy rates of 99\%, \textcite{holley-2009} argues 
+that these rates typically apply to clean images or to cases with manual 
+intervention during the OCR process. Supporting this claim, \textcite{hegghammer-2022} found that his 
+WER on English articles averaged around 0.01 (nearly perfect) on clean images 
+but surged to a WER of 0.22 when noise was introduced. For comparison, our 
+average WER on English articles is 0.27. Therefore, our results align with 
+similar studies that benchmark OCR on noisy, real-world data. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/multimodal-content.png}
+    \caption{OCR systems detect extraneous elements as additional text}
+    \label{figure:multimodal-content}
+\end{figure}
+
+Manual comparison of the OCR-predicted text and the ground truth reveals that most 
+errors arise from Wikipedia’s complex layout and multimodal content, such as 
+tables and embedded text within images. As shown in Figure \ref{figure:multimodal-content}, 
+OCR tools often detect these elements as additional text, which is absent from 
+the ground truth, leading to discrepancies. This issue highlights the challenge 
+OCR systems face with multimodal formats, where extraneous elements are 
+misinterpreted as part of the textual content.
 
 \chapter{Future Work}
+In summary, this study examines the performance of OCR systems on SEA languages. 
+We developed a reusable pipeline for collecting real-world data from Wikipedia 
+to generate images and ground truth text from 100 articles in English, 
+Indonesian, Vietnamese, and Thai. Using this dataset, we benchmarked Tesseract 
+and EasyOCR, yielding results comparable to those in recent studies.
+
+For future studies, we hope to focus on the following:
+
+\begin{itemize}
+    \item Expand our text corpus to other SEA languages.
+    \item Try other more OCR tools (e.g., transformer-based)
+    \item Identify language-specific challenges faced by OCR in the results (RQ2).
+    \item Suggest techniques and recommendations to enhance OCR accuracy on SEA languages (RQ3).
+\end{itemize}
 
 \printbibliography[title={References}]
 
@@ -232,7 +365,7 @@ Table \ref{table:dataset} lists the articles included in our dataset.
 
 \chapter{Wikipedia Article Dataset}
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabular}{p{1in}p{3.8in}}
         \toprule
