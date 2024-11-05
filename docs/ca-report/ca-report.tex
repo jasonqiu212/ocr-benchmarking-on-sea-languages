@@ -4,7 +4,6 @@
 
 \usepackage{lipsum}
 
-\usepackage[style=apa, backend=biber]{biblatex}
 \addbibresource{references.bib}
 
 \title{Benchmarking and Improving OCR System for Southeast Asian Languages}
@@ -33,7 +32,7 @@ While Optical Character Recognition (OCR) has been widely studied for high-resou
 This study aims to bridge this gap by assessing and improving the performance of OCR technologies on SEA languages.
 To achieve this objective, we propose a reusable pipeline to gather SEA-language text from Wikipedia and benchmark popular OCR tools.
 
-\vspace{0.3in}
+\vspace{20pt}
 Subject Descriptors:
 \begin{adjustwidth}{0.7in}{}
     I.2.7 Natural Language Processing
@@ -60,14 +59,14 @@ I would like to thank my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zh
 
 \chapter{Introduction}
 Current research in Natural Language Processing (NLP) is heavily concentrated on 20 of the 7,000 languages in the world \parencite{magueresse-etal-2020}.
-In particular, Southeast Asia (SEA) is home to over 1,000 languages, but remains as a relatively under-researched region in NLP \parencite{aji-etal-2023}.
+In particular, Southeast Asia (SEA) is home to over 1,000 languages but remains a relatively under-researched region in NLP \parencite{aji-etal-2023}.
 Similar to most low-resource languages, a major challenge in developing NLP systems for SEA languages is the limited availability of datasets for the region’s languages.
 Although many scanned documents and books in these low-resource languages are available online, the text within these files remains inaccessible due to formats like images and PDFs.
 
 A solution to this problem is to use Optical Character Recognition (OCR) to extract the textual data.
 OCR is the process of identifying and converting text in an image into a computer-friendly text format.
 By extracting the text from these scanned documents, OCR can generate valuable datasets for low-resource languages.
-The created datasets can then be used for downstream NLP tasks, such as machine translation, training large language models, and POS taggers \parencite{ignat-etal-2022} \parencite{agarwal-and-anastasopoulos-2024}.
+The created datasets can then be used for downstream NLP tasks, such as machine translation, training large language models, and POS taggers \parencite{agarwal-and-anastasopoulos-2024, ignat-etal-2022}.
 Therefore, studying OCR performance on SEA languages is crucial to accelerating NLP research in the region.
 
 While OCR has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on SEA languages remain largely unexplored.
@@ -83,51 +82,116 @@ Specifically, this project seeks to answer the following research questions (RQs
 
 \chapter{Related Work}
 
-\section{OCR on Low-Resource Languages}
-Similar to most low-resource languages, a major challenge in developing SEA OCR systems is the limited availability of datasets and benchmarks for the region’s languages.
+Several studies have been done to benchmark OCR performance on low-resource languages.
+They follow a similar methodology of collecting data in several languages, followed by an evaluation of a chosen set of OCR tools.
 
-\parencite{ignat-etal-2022}
+\section{Collecting Low-Resource Language Data}
+To evaluate OCR performance accurately, a collection of textual data in the form of images or PDFs paired with reliable ground truth is essential.
+Similar to most NLP tasks, data scarcity poses a major obstacle to advancing OCR technology in low-resource languages, where the limited availability of annotated textual data restricts both model training and evaluation.
+Although an abundance of scanned documents in these low-resource languages exists online, they lack the ground truth required for evaluation.
+While plain text in these languages is often available separately, it typically exists in text-based formats rather than images or PDFs, limiting its direct usefulness as ground truth for OCR.
+
+To bridge this gap, many studies rely on artificial images and PDFs generated from plain text to create usable evaluation data.
+\textcite{hegghammer-2022} sourced Arabic data from the Yarmouk Arabic OCR Dataset, a collection of 4,587 Wikipedia articles printed out and scanned back to PDF, paired with ground truth in TXT files.
+\textcite{ignat-etal-2022} artificially created PDFs from the Flores 101 dataset, which consists of text data from Wikipedia in 101 languages.
+Generalizing this concept of a document creation pipeline further, \textcite{gupte-etal-2021} published an open-source Python package for generating document images from plain text, including several document styling templates.
+Using these methods, high-quality low-resource language data paired with ground truth can be generated from text-based formats on a large scale.
+
+A common trend in using artificial data is the augmentation of noise to simulate real-world conditions, which often contain complex layouts, stains, and scribbles \parencite{hegghammer-2022}.
+Directly using noise-free data, i.e., single-column text in a clear font, limits OCR processors' usefulness on real-life scanned documents.
+Thus, noise augmentation is often applied to artificial data.
+Some popular techniques include changing font style, size, color, letter spacing, and adding Gaussian blur, bleed-through, and salt-and-pepper noise \parencite{gupte-etal-2021, ignat-etal-2022}.
+
+\section{Existing OCR Systems}
+To benchmark OCR performance programmatically, there are two broad categories of OCR systems: open-source and commercial.
+
+Open-source OCR systems are characterized by their accessibility, allowing users to view, modify, and distribute the source code freely.
+This transparency enables developers to customize the tools to meet specific needs.
+Furthermore, open-source systems typically incur no licensing fees, making them cost-effective options for research purposes.
+For instance, Tesseract \parencite{smith-2013}, regarded as one of the most accurate open-source OCR engines, consistently maintains its popularity in the research community \parencite{hegghammer-2022, ignat-etal-2022}.
+
+Commercial OCR systems are typically accessed through paid services via application programming interfaces (APIs).
+Notable examples of these systems include Amazon Textract, Google Document AI, and Google Vision API.
+Generally, commercial off-the-shelf OCR tools tend to perform better than their open-source counterparts \parencite{hegghammer-2022, ignat-etal-2022}.
+However, the proprietary nature of these `black box` models limits their utility for research purposes, such as fine-tuning and customization.
+Additionally, the associated costs of these services contribute to fewer studies focused on commercial systems in comparison to the more widely researched open-source tools.
+
+\vspace{20pt}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lllll}
+        \toprule
+        & Category & Provider & Languages & Cost\\
+        \midrule
+        Tesseract & Open-source & - & 116 & Free\\
+        EasyOCR & Open-source & Jaided AI & 83 & Free\\
+        Textract & Commercial & Amazon & 6 & \$1.50 per 1000 pages \\
+        Document AI & Commercial & Google & 6 & \$1.50 per 1000 pages\\
+        Vision API & Commercial & Google & 6 & \$1.50 per 1000 pages\\
+        \bottomrule
+    \end{tabular}
+    \caption{Summary of popular open-source and commercial OCR processors}
+   \label{table:summary-of-ocr-processors}
+\end{table}
+
 \section{Benchmarking OCR}
+Applying OCR yields a plain text prediction, which is then compared with the ground truth data to assess the tool’s accuracy and performance.
+Recent studies have demonstrated that OCR systems tend to perform better on artificially generated data than on real-world data \parencite{ignat-etal-2022}.
+This observation suggests that synthetic datasets may not fully capture the complexities of authentic documents, which often feature issues like imperfect text alignment, varied fonts, and complex layouts.
+Furthermore, the addition of synthetic noise significantly raises error rates, especially for open-source systems, which appear more susceptible to noise interference than their commercial counterparts \parencite{hegghammer-2022}.
 
-\section{Improving OCR Accuracy}
+\textcite{ignat-etal-2022} also show that OCR tools generally achieve higher accuracy on scripts written in Latin alphabets.
+This disparity in performance partly stems from market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement for Latin-based scripts \parencite{hegghammer-2022}. 
+Ornate scripts, such as those with complex diacritics or unique letter shapes, present additional challenges and tend to yield lower OCR accuracy.
+Although \textcite{hegghammer-2022} focuses on English and Arabic, techniques from similar studies on non-SEA languages offer valuable insights for creating SEA-specific OCR benchmarks.
+
+In terms of benchmarking OCR on SEA languages, the most related study is the recent work by \textcite{ignat-etal-2022}.
+They grouped 60 low-resource languages by region and script, including SEA languages like Khmer, Lao, Burmese, Thai, and Vietnamese.
+Their research revealed that while OCR models perform well on artificial SEA-language data, accuracy drops significantly on real-world data.
+This discrepancy underscores the need for more real-world training data to improve OCR outcomes for SEA languages.
+
+In summary, there exists a gap in benchmarking OCR specifically for SEA languages, largely due to the lack of real-world training data.
+This project addresses this gap by proposing a reusable pipeline for benchmarking OCR performance on real-world SEA-language data sourced from Wikipedia.
 
 \chapter{Methodology}
 
 \section{Data Collection}
 
-\section{Benchmarking OCR Tools}
+\section{OCR Evaluation}
+
 \parencite{smith-2013}
 
 \chapter{Results}
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|c|c|}
-        \hline
+    \begin{tabular}{lcc}
+        \toprule
         & EasyOCR & Tesseract \\
-        \hline
+        \midrule
         English & 0.17 & 0.20\\
         Indonesian & 0.20& 0.18\\
         Vietnamese & 0.30& 0.39\\
         Thai & 0.26 & 0.51\\
-        \hline
+        \bottomrule
     \end{tabular}
-    \caption{Character Error Rate}
+    \caption{Average Character Error Rate}
 \end{table}
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|c|c|}
-        \hline
+    \begin{tabular}{lcc}
+        \toprule
+        
         & EasyOCR & Tesseract \\
-        \hline
+        \midrule
         English & 0.25 & 0.29\\
         Indonesian & 0.27& 0.33\\
         Vietnamese & 0.31& 0.42\\
         Thai & 1.68 & 1.77\\
-        \hline
+        \bottomrule
     \end{tabular}
-    \caption{Word Error Rate}
+    \caption{Average Word Error Rate}
 \end{table}
 
 \chapter{Future Work}
