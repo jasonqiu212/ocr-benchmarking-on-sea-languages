@@ -155,11 +155,37 @@ This project addresses this gap by proposing a reusable pipeline for benchmarkin
 
 \chapter{Methodology}
 
+\section{Data Selection}
+
+\subsection{Source of Data}
+We chose to use Wikipedia as our text corpus for several reasons.
+Firstly, Wikipedia articles can be easily converted into images via screenshots, making them suitable for OCR applications. 
+The platform also offers a convenient source of ground truth through its APIs that provide plain text for most articles, facilitating accurate evaluation. 
+Secondly, Wikipedia hosts a large corpus in several popular SEA languages, including Thai, Vietnamese, Indonesian, Tamil, and Burmese, supporting our language needs \parencite{list-of-wikipedias-2024}. 
+Lastly, Wikipedia articles share a consistent format and layout across languages, which is representative of real-world data. 
+This uniform structure helps to eliminate a variable in our study, allowing us to focus on assessing the performance of OCR.
+
+\subsection{Languages}
+From the languages available on Wikipedia, we selected English, Indonesian, Vietnamese, and Thai text. 
+English serves as a baseline for sanity checks and bug fixing, given our familiarity with the language. 
+The remaining SEA languages were chosen to capture diverse script characteristics. 
+Indonesian represents Latin-based scripts, Vietnamese represents Latin scripts with diacritics, and Thai represents non-Latin scripts. 
+
+\subsection{Dataset}
+We compiled a dataset of 100 Wikipedia articles, selecting the 20 most viewed English articles from each of five categories: people, present countries, cities\footnote{ Singapore was replaced because it's already listed under present countries.}, life, and buildings and structures\footnote{ Machu Picchu was replaced because it's already listed under cities.} \parencite{wikipedia-popular-pages-2024}.
+These categories were chosen to create a diverse corpus in terms of content. 
+We prioritized high-view articles because they are more likely to have substantial data available across languages. 
+Table \ref{table:dataset} lists the articles included in our dataset.
+
 \section{Data Collection}
 
 \section{OCR Evaluation}
 
-\parencite{smith-2013}
+\subsection{Evaluation Metrics}
+
+\subsection{Data Cleaning}
+
+\subsection{Data Validation}
 
 \chapter{Results}
 
@@ -170,8 +196,8 @@ This project addresses this gap by proposing a reusable pipeline for benchmarkin
         & EasyOCR & Tesseract \\
         \midrule
         English & 0.17 & 0.20\\
-        Indonesian & 0.20& 0.18\\
-        Vietnamese & 0.30& 0.39\\
+        Indonesian & 0.20 & 0.18\\
+        Vietnamese & 0.30 & 0.39\\
         Thai & 0.26 & 0.51\\
         \bottomrule
     \end{tabular}
@@ -186,16 +212,45 @@ This project addresses this gap by proposing a reusable pipeline for benchmarkin
         & EasyOCR & Tesseract \\
         \midrule
         English & 0.25 & 0.29\\
-        Indonesian & 0.27& 0.33\\
-        Vietnamese & 0.31& 0.42\\
+        Indonesian & 0.27 & 0.33\\
+        Vietnamese & 0.31 & 0.42\\
         Thai & 1.68 & 1.77\\
         \bottomrule
     \end{tabular}
     \caption{Average Word Error Rate}
 \end{table}
 
+\section{Discussion}
+
 \chapter{Future Work}
 
 \printbibliography[title={References}]
+
+\clearpage
+\appendix
+\renewcommand{\chaptername}{Appendix}
+
+\chapter{Wikipedia Article Dataset}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{p{1in}p{3.8in}}
+        \toprule
+        \textbf{Category} & \textbf{Articles} \\
+        \midrule
+        People & Donald Trump, Elizabeth II, Barack Obama, Christiano Ronaldo, Michael Jackson, Elon Musk, Lady Gaga, Adolf Hitler, Eminem, Lionel Messi, Justin Bieber, Freddie Mercury, Kim Kardashian, Johnny Depp, Steve Jobs, Dwayne Johnson, Michael Jordan, Taylor Swift, Stephen Hawking, Kanye West\\
+        \midrule
+        Present countries & United States, India, United Kingdom, Canada, Australia, China, Russia, Japan, Germany, France, Singapore, Israel, Pakistan, Philippines, Brazil, Italy, Netherlands, New Zealand, Ukraine, Spain\\
+        \midrule
+        Cities & New York City, London, Hong Kong, Los Angeles, Dubai, Washington, D.C., Paris, Chicago, Angelsberg, Mumbai, San Francisco, Rome, Monaco, Toronto, Tokyo, Philadelphia, Machu Picchu, Jerusalem, Amsterdam, Boston\\
+        \midrule
+        Life & Cat, Dog, Animal, Lion, Coronavirus, Tiger, Human, Dinosaur, Elephant, Virus, Horse, Photosynthesis, Evolution, Apple, Bird, Mammal, Potato, Polar bear, Shark, Snake\\
+        \midrule
+        Buildings and structures & Taj Mahal, Burj Khalifa, Statue of Liberty, Great Wall of China, Eiffel Tower, Berlin Wall, Stonehenge, Mount Rushmore, Colosseum, Auschwitz concentration camp, Great Pyramid of Giza, One World Trade Center, Empire State Building, White House, Petra, Large Hadron Collider, Hagia Sophia, Golden Gate Bridge, Panama Canal, Angkor Wat\\
+        \bottomrule
+    \end{tabular}
+    \caption{Dataset of 100 Wikipedia articles}
+    \label{table:dataset}
+\end{table}
 
 \end{document}
