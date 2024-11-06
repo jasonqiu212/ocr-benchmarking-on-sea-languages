@@ -74,7 +74,7 @@ Although many scanned documents and books in these low-resource languages are av
 A solution to this problem is to use Optical Character Recognition (OCR) to extract the textual data.
 OCR is the process of identifying and converting text in an image into a computer-friendly text format.
 By extracting the text from these scanned documents, OCR can generate valuable datasets for low-resource languages.
-The created datasets can then be used for downstream NLP tasks, such as machine translation, training large language models, and POS taggers \parencite{agarwal-and-anastasopoulos-2024, ignat-etal-2022}.
+The created datasets can then be used for downstream NLP tasks, such as machine translation, training large language models, and named-entity recognition \parencite{agarwal-and-anastasopoulos-2024, ignat-etal-2022}.
 Therefore, studying OCR performance on SEA languages is crucial to accelerating NLP research in the region.
 
 While OCR has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on SEA languages remain largely unexplored.
@@ -90,18 +90,14 @@ Specifically, this project seeks to answer the following research questions (RQs
 
 \chapter{Related Work}
 
-Several studies have been done to benchmark OCR performance on low-resource languages.
-They follow a similar methodology of collecting data in several languages, followed by an evaluation of a chosen set of OCR tools.
-
 \section{Collecting Low-Resource Language Data}
-To evaluate OCR performance accurately, a collection of textual data in the form of images or PDFs paired with reliable ground truth is essential.
+To evaluate OCR performance accurately, a collection of textual data in the form of images or PDFs paired with reliable ground truth is needed.
 Similar to most NLP tasks, data scarcity poses a major obstacle to advancing OCR technology in low-resource languages, where the limited availability of annotated textual data restricts both model training and evaluation.
 Although an abundance of scanned documents in these low-resource languages exists online, they lack the ground truth required for evaluation.
 While plain text in these languages is often available separately, it typically exists in text-based formats rather than images or PDFs, limiting its direct usefulness as ground truth for OCR.
 
 To bridge this gap, many studies rely on artificial images and PDFs generated from plain text to create usable evaluation data.
-\textcite{hegghammer-2022} sourced Arabic data from the Yarmouk Arabic OCR Dataset, a collection of 4,587 Wikipedia articles printed out and scanned back to PDF, paired with ground truth in TXT files.
-\textcite{ignat-etal-2022} artificially created PDFs from the Flores 101 dataset, which consists of text data from Wikipedia in 101 languages.
+For instance, \textcite{ignat-etal-2022} artificially created PDFs from the Flores 101 dataset, which consists of text data from Wikipedia in 101 languages.
 Generalizing this concept of a document creation pipeline further, \textcite{gupte-etal-2021} published an open-source Python package for generating document images from plain text, including several document styling templates.
 Using these methods, high-quality low-resource language data paired with ground truth can be generated from text-based formats on a large scale.
 
@@ -116,7 +112,7 @@ To benchmark OCR performance programmatically, there are two broad categories of
 Open-source OCR systems are characterized by their accessibility, allowing users to view, modify, and distribute the source code freely.
 This transparency enables developers to customize the tools to meet specific needs.
 Furthermore, open-source systems typically incur no licensing fees, making them cost-effective options for research purposes.
-For instance, Tesseract \parencite{smith-2013}, regarded as one of the most accurate open-source OCR engines, consistently maintains its popularity in the research community \parencite{hegghammer-2022, ignat-etal-2022}.
+For instance, Tesseract \parencite{smith-2013} is a popular open-source OCR engine mentioned consistently in related studies \parencite{hegghammer-2022, ignat-etal-2022}.
 
 Commercial OCR systems are typically accessed through paid services via application programming interfaces (APIs).
 Notable examples of these systems include Amazon Textract, Google Document AI, and Google Vision API.
@@ -124,22 +120,22 @@ Generally, commercial off-the-shelf OCR tools tend to perform better than their 
 However, the proprietary nature of these "black box" models limits their utility for research purposes, such as fine-tuning and customization.
 Additionally, the associated costs of these services contribute to fewer studies focused on commercial systems in comparison to the more widely researched open-source tools.
 
-\begin{table}[ht]
-    \centering
-    \begin{tabular}{lllll}
-        \toprule
-        & Category & Provider & Languages & Cost\\
-        \midrule
-        Tesseract & Open-source & - & 116 & Free\\
-        EasyOCR & Open-source & Jaided AI & 83 & Free\\
-        Textract & Commercial & Amazon & 6 & \$1.50 per 1000 pages \\
-        Document AI & Commercial & Google & 6 & \$1.50 per 1000 pages\\
-        Vision API & Commercial & Google & 6 & \$1.50 per 1000 pages\\
-        \bottomrule
-    \end{tabular}
-    \caption{Summary of popular open-source and commercial OCR processors}
-   \label{table:summary-of-ocr-processors}
-\end{table}
+% \begin{table}[ht]
+%     \centering
+%     \begin{tabular}{lllll}
+%         \toprule
+%         & Category & Provider & Languages & Cost\\
+%         \midrule
+%         Tesseract & Open-source & - & 116 & Free\\
+%         EasyOCR & Open-source & Jaided AI & 83 & Free\\
+%         Textract & Commercial & Amazon & 6 & \$1.50 per 1000 pages \\
+%         Document AI & Commercial & Google & 6 & \$1.50 per 1000 pages\\
+%         Vision API & Commercial & Google & 6 & \$1.50 per 1000 pages\\
+%         \bottomrule
+%     \end{tabular}
+%     \caption{Summary of popular open-source and commercial OCR processors}
+%    \label{table:summary-of-ocr-processors}
+% \end{table}
 
 \section{Benchmarking OCR}
 Applying OCR yields a plain text prediction, which is then compared with the ground truth data to assess the tool’s accuracy and performance.
@@ -147,10 +143,9 @@ Recent studies have demonstrated that OCR systems tend to perform better on arti
 This observation suggests that synthetic datasets may not fully capture the complexities of authentic documents, which often feature issues like imperfect text alignment, varied fonts, and complex layouts.
 Furthermore, the addition of synthetic noise significantly raises error rates, especially for open-source systems, which appear more susceptible to noise interference than their commercial counterparts \parencite{hegghammer-2022}.
 
-\textcite{ignat-etal-2022} also show that OCR tools generally achieve higher accuracy on scripts written in Latin alphabets.
-This disparity in performance partly stems from market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement for Latin-based scripts \parencite{hegghammer-2022}. 
+When comparing performance on different scripts, OCR tools generally achieve higher accuracy on scripts written in Latin alphabets \parencite{hegghammer-2022, ignat-etal-2022}.
+This disparity in performance partly stems from market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement for Latin-based scripts. 
 Ornate scripts, such as those with complex diacritics or unique letter shapes, present additional challenges and tend to yield lower OCR accuracy.
-Although \textcite{hegghammer-2022} focuses on English and Arabic, techniques from similar studies on non-SEA languages offer valuable insights for creating SEA-specific OCR benchmarks.
 
 In terms of benchmarking OCR on SEA languages, the most related study is the recent work by \textcite{ignat-etal-2022}.
 They grouped 60 low-resource languages by region and script, including SEA languages like Khmer, Lao, Burmese, Thai, and Vietnamese.
@@ -167,14 +162,13 @@ This project addresses this gap by proposing a reusable pipeline for benchmarkin
 \subsection{Source of Data}
 We chose to use Wikipedia as our text corpus for several reasons.
 Firstly, Wikipedia articles can be easily converted into images via screenshots, making them suitable for OCR applications. 
-The platform also offers a convenient source of ground truth through its APIs that provide plain text for most articles, facilitating accurate evaluation. 
+The platform also offers a convenient source of ground truth through its APIs that provide plain text for most articles.
 Secondly, Wikipedia hosts a large corpus in several popular SEA languages, including Thai, Vietnamese, Indonesian, Tamil, and Burmese, supporting our language needs \parencite{list-of-wikipedias-2024}. 
-Lastly, Wikipedia articles share a consistent format and layout across languages, which is representative of real-world data. 
-This uniform structure helps to eliminate a variable in our study, allowing us to focus on assessing the performance of OCR.
+Lastly, Wikipedia articles contain visual elements like images and tables that are common in modern real-world documents.
 
 \subsection{Languages}
 From the languages available on Wikipedia, we selected English, Indonesian, Vietnamese, and Thai text. 
-English serves as a baseline for sanity checks and bug fixing, given our familiarity with the language. 
+English serves as a baseline for sanity checks and bug fixing.
 The remaining SEA languages were chosen to capture diverse script characteristics. 
 Indonesian represents Latin-based scripts, Vietnamese represents Latin scripts with diacritics, and Thai represents non-Latin scripts. 
 
@@ -185,7 +179,7 @@ because it's already listed under present countries.}, life, and buildings and s
 Picchu was replaced because it's already listed under cities.} 
 \parencite{wikipedia-popular-pages-2024}.
 These categories were chosen to create a diverse corpus in terms of content. 
-We prioritized high-view articles because they are more likely to have substantial data available across languages. 
+We prioritized popular articles because they are more likely to have substantial data available across languages. 
 Table \ref{table:dataset} lists the articles included in our dataset.
 
 \section{Data Collection}
@@ -208,8 +202,8 @@ for data collection. The detailed steps are as follows:
 \begin{enumerate}
     \item Manually compile the dataset’s article names and URLs in English.
     \item Fetch the article names and URLs in Thai, Vietnamese, and Indonesian from the MediaWiki Action API.
-    \item Download the articles in all languages in PDF format using Selenium.
-    \item Convert the article PDFs into PNG images. Each image represents one page in the PDF.
+    \item Download the article PDFs in all languages using Selenium.
+    \item Convert the article PDFs into PNG images, where each image represents one page in the PDF.
     \item Download the ground truth article text into TXT files from the MediaWiki Action API.
 \end{enumerate}
 
@@ -218,7 +212,7 @@ for data collection. The detailed steps are as follows:
 \subsection{OCR Systems}
 In our selection of OCR systems for benchmarking, we prioritized open-source 
 solutions that support a diverse range of SEA languages, as this approach 
-enhances accessibility and encourages collaboration within the research community. 
+enhances accessibility and reusability for the proposed evaluation pipeline. 
 Consequently, we selected to use Tesseract and EasyOCR. 
 
 Tesseract\footnote{\url{https://github.com/tesseract-ocr/tesseract}} is an established OCR engine, recognized as one of the top performers 
@@ -277,7 +271,7 @@ of seven articles where the images and ground truth texts contained different co
 \end{figure}
 
 In summary, we evaluated the CER and WER for each article using the images and 
-ground truth text collected from our data pipeline. Figure \ref{figure:ocr-evaluation} 
+ground truth text collected from Wikipedia. Figure \ref{figure:ocr-evaluation} 
 illustrates the overall pipeline for OCR evaluation. The detailed steps are as follows:
 
 \begin{enumerate}
@@ -307,7 +301,7 @@ illustrates the overall pipeline for OCR evaluation. The detailed steps are as f
 \end{table}
 
 Table \ref{table:results} presents the average CER and WER for each language and 
-OCR model. The results reveal several key observations on the performance of popular OCR tools on SEA languages(\textbf{RQ1}):
+OCR model. The results reveal several key observations on the performance of popular OCR tools on SEA languages (\textbf{RQ1}):
 
 \begin{itemize}
     \item EasyOCR generally outperforms Tesseract, yielding lower error rates.
@@ -329,16 +323,16 @@ similar studies that benchmark OCR on noisy, real-world data.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.9\textwidth]{images/multimodal-content.png}
-    \caption{OCR systems detect extraneous elements as additional text}
+    \caption{The OCR tools detect visual elements, like the table in the left figure, as additional text highlighted in the right figure.}
     \label{figure:multimodal-content}
 \end{figure}
 
 Manual comparison of the OCR-predicted text and the ground truth reveals that most 
-errors arise from Wikipedia’s complex layout and multimodal content, such as 
+errors arise from Wikipedia’s layout and graphical content, such as 
 tables and embedded text within images. As shown in Figure \ref{figure:multimodal-content}, 
 OCR tools often detect these elements as additional text, which is absent from 
 the ground truth, leading to discrepancies. This issue highlights the challenge 
-OCR systems face with multimodal formats, where extraneous elements are 
+OCR systems face with complex layouts and visual elements that are 
 misinterpreted as part of the textual content.
 
 \chapter{Future Work}
@@ -348,13 +342,13 @@ to generate images and ground truth text from 100 articles in English,
 Indonesian, Vietnamese, and Thai. Using this dataset, we benchmarked Tesseract 
 and EasyOCR, yielding results comparable to those in recent studies.
 
-For future studies, we hope to focus on the following:
+For future studies, we hope to focus on the following areas:
 
 \begin{itemize}
     \item Expand our text corpus to other SEA languages.
     \item Try other more OCR tools (e.g., transformer-based)
-    \item Identify language-specific challenges faced by OCR in the results (RQ2).
-    \item Suggest techniques and recommendations to enhance OCR accuracy on SEA languages (RQ3).
+    \item Identify language-specific challenges faced by OCR in the results (\textbf{RQ2}).
+    \item Suggest techniques and recommendations to enhance OCR accuracy on SEA languages (\textbf{RQ3}).
 \end{itemize}
 
 \printbibliography[title={References}]
