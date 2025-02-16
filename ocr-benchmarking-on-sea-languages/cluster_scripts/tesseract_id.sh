@@ -5,6 +5,7 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=jason.qiu@u.nus.edu
 
-source sample/bin/activate
+source ~/miniconda3/bin/activate
+conda activate sample
 python3 tesseract_id.py
-deactivate
+conda deactivate
