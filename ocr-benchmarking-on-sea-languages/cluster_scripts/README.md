@@ -33,4 +33,7 @@ sbatch hello_world.sh
 
 4. You can monitor the Slurm job queue via `squeue`.
 
+> [!TIP]
+> `squeue --me` prints the job queues done by the current user.
+
 5. When your batch job completes, Slurm writes its terminal output to the `slurm-<jobid>.out` file.
