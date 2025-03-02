@@ -3,6 +3,8 @@
 # Data
 data/
 artificial_data/
+artificial_data_v2/
+artificial_data_with_noise/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
