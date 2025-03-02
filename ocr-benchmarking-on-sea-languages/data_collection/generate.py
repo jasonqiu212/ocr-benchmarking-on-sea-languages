@@ -1,6 +1,5 @@
 import os
 
-# from PIL import Image, ImageDraw, ImageFont
 from weasyprint import HTML
 
 
@@ -33,7 +32,8 @@ def generate_pdfs(source_path: str, font_path: str = None):
         text = open(text_file, 'r').read()
         html_content = f'<html>{html_head}<body><p>{text}</p></body></html>'
 
-        HTML(string=html_content).write_pdf(f'{source_path}/{f}/article.pdf')
+        HTML(string=html_content, base_url='.').write_pdf(
+            f'{source_path}/{f}/article.pdf')
 
 
 # def insert_character_at_nearest_space(text, char, n):
