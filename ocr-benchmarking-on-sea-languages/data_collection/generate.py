@@ -4,7 +4,24 @@ import os
 from weasyprint import HTML
 
 
-def generate_pdfs(source_path):
+def generate_pdfs(source_path: str, font_path: str = None):
+    if font_path:
+        html_head = f'''
+        <head>
+            <style>
+                @font-face {{
+                    font-family: 'CustomFont';
+                    src: url('{font_path}') format('truetype');
+                }}
+                body {{
+                    font-family: 'CustomFont', sans-serif;
+                }}
+            </style>
+        </head>
+        '''
+    else:
+        html_head = ''
+
     for f in os.listdir(source_path):
         print(f'Running on article: {f}')
 
@@ -14,7 +31,7 @@ def generate_pdfs(source_path):
             continue
 
         text = open(text_file, 'r').read()
-        html_content = f"<html><body><p>{text}</p></body></html>"
+        html_content = f'<html>{html_head}<body><p>{text}</p></body></html>'
 
         HTML(string=html_content).write_pdf(f'{source_path}/{f}/article.pdf')
 
