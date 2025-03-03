@@ -4,13 +4,14 @@ import csv
 import os
 
 import jiwer
+from tqdm import tqdm
 
 
 def evaluate_to_csv(source_path: str, target_file_name: str, prediction_file_name: str, output_file_name: str):
     data = [['Article Name', 'CER', 'WER']]
     sorted_articles = sorted(os.listdir(source_path))
 
-    for article in sorted_articles:
+    for article in tqdm(sorted_articles):
         target_file_path = f'{source_path}/{article}/{target_file_name}'
         prediction_file_path = f'{source_path}/{article}/{prediction_file_name}'
 
