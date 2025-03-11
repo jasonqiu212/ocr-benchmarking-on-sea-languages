@@ -67,6 +67,9 @@ def generate_pdfs(source_path: str, font_path: str = None,
                 case _:
                     pass
 
+            with open(f'{source_path}/{f}/html-body.txt', 'w') as file:
+                file.write(text)
+
         html_content = f'<html>{html_head}<body><p>{text}</p></body></html>'
 
         HTML(string=html_content, base_url='.').write_pdf(
