@@ -95,4 +95,3 @@ def generate_pdfs(source_path: str, font_path: str = None,
 
         HTML(string=html_content, base_url='.').write_pdf(
             f'{source_path}/{f}/article.pdf')
-        break
