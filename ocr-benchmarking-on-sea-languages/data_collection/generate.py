@@ -29,6 +29,8 @@ def generate_pdfs(source_path: str, font_path: str = None,
             </style>
         </head>
         '''
+    else:
+        html_head = ''
 
     for f in os.listdir(source_path):
         print(f'Running on article: {f}')
