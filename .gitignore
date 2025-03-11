@@ -4,7 +4,7 @@
 data/
 artificial_data/
 artificial_data_v2/
-artificial_data_with_noise/
+artificial_data_with_*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
