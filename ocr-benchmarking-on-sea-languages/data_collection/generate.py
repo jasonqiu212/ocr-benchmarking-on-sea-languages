@@ -3,6 +3,7 @@ from enum import Enum
 import os
 import random
 
+from tqdm import tqdm
 from weasyprint import HTML
 
 
@@ -32,9 +33,7 @@ def generate_pdfs(source_path: str, font_path: str = None,
     else:
         html_head = ''
 
-    for f in os.listdir(source_path):
-        print(f'Running on article: {f}')
-
+    for f in tqdm(os.listdir(source_path)):
         text_file = f'{source_path}/{f}/text.txt'
         if not os.path.exists(text_file):
             print(f'{f}: text.txt does not exist')
