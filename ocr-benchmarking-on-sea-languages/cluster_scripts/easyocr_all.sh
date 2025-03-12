@@ -6,5 +6,5 @@
 #SBATCH --mail-user=jason.qiu@u.nus.edu
 
 source sample/bin/activate
-python3 easyocr.py
+python3 easyocr_all.py
 deactivate
