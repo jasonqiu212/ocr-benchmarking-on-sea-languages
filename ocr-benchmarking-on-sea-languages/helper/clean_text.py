@@ -1,6 +1,8 @@
 import os
 import re
 
+from tqdm import tqdm
+
 WIKIPEDIA_HEADERS = {
     'english': 'WIKIPEDIA The Free Encyclopedia',
     'thai': 'วิกิพีเดีย  สารานุกรมเสร',
@@ -17,7 +19,7 @@ REFERENCES = {
 
 
 def clean_easy_ocr(source_path: str, language: str):
-    for article in os.listdir(source_path):
+    for article in tqdm(os.listdir(source_path)):
         dirty_file_path = f'{source_path}/{article}/easy-ocr-results.txt'
         if not os.path.exists(dirty_file_path):
             continue
@@ -45,7 +47,7 @@ def clean_easy_ocr(source_path: str, language: str):
 
 
 def clean_tesseract(source_path: str, language: str):
-    for article in os.listdir(source_path):
+    for article in tqdm(os.listdir(source_path)):
         dirty_file_path = f'{source_path}/{article}/tesseract-results.txt'
         if not os.path.exists(dirty_file_path):
             continue
@@ -83,7 +85,7 @@ def clean_ground_truth(source_path: str):
 
 
 def clean_tesseract_v2(source_path: str):
-    for article in os.listdir(source_path):
+    for article in tqdm(os.listdir(source_path)):
         dirty_file_path = f'{source_path}/{article}/tesseract-results.txt'
         if not os.path.exists(dirty_file_path):
             continue
