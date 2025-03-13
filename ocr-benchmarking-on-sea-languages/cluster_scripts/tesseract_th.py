@@ -3,7 +3,7 @@ import time
 
 import pytesseract
 
-source_path = '../../artificial_data_with_italic/thai'
+source_path = '../../artificial_data_with_heading/thai'
 language = 'tha'
 
 for f in os.listdir(source_path):

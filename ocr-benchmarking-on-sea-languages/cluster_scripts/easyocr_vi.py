@@ -4,7 +4,7 @@ import os
 import time
 
 vi_reader = easyocr.Reader(['vi'])
-source_path = '../../artificial_data_with_italic/vietnamese'
+source_path = '../../artificial_data_with_heading/vietnamese'
 
 for f in os.listdir(source_path):
     start_time = time.time()

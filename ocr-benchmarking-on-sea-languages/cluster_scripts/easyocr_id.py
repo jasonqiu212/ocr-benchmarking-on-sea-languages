@@ -4,7 +4,7 @@ import os
 import time
 
 id_reader = easyocr.Reader(['id'])
-source_path = '../../artificial_data_with_italic/indonesian'
+source_path = '../../artificial_data_with_heading/indonesian'
 
 for f in os.listdir(source_path):
     start_time = time.time()
