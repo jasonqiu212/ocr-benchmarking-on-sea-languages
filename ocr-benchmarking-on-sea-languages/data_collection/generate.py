@@ -3,6 +3,7 @@ from enum import Enum
 import os
 import random
 
+import pymupdf
 from tqdm import tqdm
 from weasyprint import HTML
 
@@ -96,40 +97,18 @@ def generate_pdfs(source_path: str, font_path: str = None,
             f'{source_path}/{f}/article.pdf')
 
 
-def get_page_text(source_path: str, font_path: str = None):
-    if font_path:
-        html_head = f'''
-        <head>
-            <style>
-                @font-face {{
-                    font-family: 'CustomFont';
-                    src: url('{font_path}') format('truetype');
-                }}
-                body {{
-                    font-family: 'CustomFont', sans-serif;
-                }}
-            </style>
-        </head>
-        '''
-    else:
-        html_head = ''
-
+def get_page_text(source_path: str):
     for f in tqdm(os.listdir(source_path)):
         print(f)
-        text_file = f'{source_path}/{f}/text.txt'
-        if not os.path.exists(text_file):
-            print(f'{f}: text.txt does not exist')
+        pdf_file = f'{source_path}/{f}/article.pdf'
+        if not os.path.exists(pdf_file):
+            print(f'{f}: article.pdf does not exist')
             continue
 
-        text = open(text_file, 'r').read()
+        pdf_document = pymupdf.open(pdf_file)
 
-        html_content = f'<html>{html_head}<body><p>{text}</p></body></html>'
-
-        document = HTML(string=html_content, base_url='.').render()
-        page_texts = [page.extract_text() for page in document.pages]
-
-        for i, text in enumerate(page_texts):
-            print(f"Page {i}:\n{text}\n")
+        for i, page in enumerate(pdf_document):
+            text = page.get_text("text")
             with open(f'{source_path}/{f}/page-{i}-text.txt', "w") as f:
                 f.write(text)
         break
