@@ -27,8 +27,7 @@ for f in os.listdir(source_path):
         continue
 
     while (os.path.exists(image_file_path)):
-        text = model.chat(tokenizer, image_file_path, ocr_type='ocr')
-        res += ' '.join(text)
+        res += model.chat(tokenizer, image_file_path, ocr_type='ocr')
         i += 1
         image_file_path = f'{source_path}/{f}/page-{i}.png'
     with open(result_file_path, 'wt') as outfile:
