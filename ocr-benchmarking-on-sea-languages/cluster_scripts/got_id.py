@@ -2,7 +2,7 @@ import time
 import os
 from transformers import AutoModel, AutoTokenizer
 
-source_path = '../../artificial_data_v2/english'
+source_path = '../../artificial_data_v2/indonesian'
 
 tokenizer = AutoTokenizer.from_pretrained(
     'ucaslcl/GOT-OCR2_0', trust_remote_code=True)
