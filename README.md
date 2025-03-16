@@ -28,7 +28,3 @@ source .venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-
-## Acknowledgements
-
-- Python libraries used: [easyocr](https://pypi.org/project/easyocr/), [pytesseract](https://pypi.org/project/pytesseract/), [torchmetrics](https://lightning.ai/docs/torchmetrics/stable/), [selenium](https://selenium-python.readthedocs.io/), [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/index.html), [weasyprint](https://pypi.org/project/weasyprint/)
