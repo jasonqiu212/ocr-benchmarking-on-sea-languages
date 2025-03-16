@@ -108,7 +108,7 @@ def get_page_text(source_path: str):
         pdf_document = pymupdf.open(pdf_file)
 
         for i, page in enumerate(pdf_document):
-            text = page.get_text('text')
+            text = " ".join(page.get_text('text').splitlines())
             with open(f'{source_path}/{f}/page-{i}-text.txt', 'w') as output_file:
                 output_file.write(text)
         break
