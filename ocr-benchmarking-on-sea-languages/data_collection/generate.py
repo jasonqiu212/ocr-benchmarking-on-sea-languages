@@ -99,7 +99,6 @@ def generate_pdfs(source_path: str, font_path: str = None,
 
 def get_page_text(source_path: str):
     for f in tqdm(os.listdir(source_path)):
-        print(f)
         pdf_file = f'{source_path}/{f}/article.pdf'
         if not os.path.exists(pdf_file):
             print(f'{f}: article.pdf does not exist')
