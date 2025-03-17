@@ -51,6 +51,7 @@ isoduration==20.11.0
 jedi==0.19.1
 Jinja2==3.1.4
 jiwer==3.0.4
+joblib==1.4.2
 json5==0.9.25
 jsonpointer==3.0.0
 jsonschema==4.23.0
@@ -132,6 +133,7 @@ rich==13.9.4
 rpds-py==0.19.0
 safetensors==0.4.5
 scikit-image==0.24.0
+scikit-learn==1.6.1
 scipy==1.14.0
 selenium==4.23.1
 Send2Trash==1.8.3
@@ -147,6 +149,7 @@ tensorboard==2.18.0
 tensorboard-data-server==0.7.2
 termcolor==2.5.0
 terminado==0.18.1
+threadpoolctl==3.6.0
 tifffile==2024.7.2
 tiktoken==0.6.0
 tinycss2==1.4.0
