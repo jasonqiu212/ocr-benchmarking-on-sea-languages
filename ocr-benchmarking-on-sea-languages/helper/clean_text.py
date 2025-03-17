@@ -106,3 +106,26 @@ def clean_tesseract_v2(source_path: str):
 
         with open(clean_file_path, 'wt') as outfile:
             outfile.write(res)
+
+
+def clean_got(source_path: str):
+    for article in tqdm(os.listdir(source_path)):
+        dirty_file_path = f'{source_path}/{article}/got-results.txt'
+        if not os.path.exists(dirty_file_path):
+            continue
+
+        clean_file_path = source_path + \
+            f'/{article}/got-results-clean.txt'
+        if os.path.exists(clean_file_path):
+            continue
+
+        dirty_lines = open(dirty_file_path, 'r').readlines()
+        res = ''
+
+        for dirty_line in dirty_lines:
+            res += dirty_line.strip() + ' '
+
+        res = res.strip()
+
+        with open(clean_file_path, 'wt') as outfile:
+            outfile.write(res)
