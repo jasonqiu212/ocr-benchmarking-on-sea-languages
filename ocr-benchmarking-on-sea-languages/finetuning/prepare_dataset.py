@@ -23,4 +23,4 @@ def prepare_dataset(source_path: str, output_file_name: str):
             i += 1
 
     with open(f'{output_file_name}.json', 'w') as output_file:
-        json.dump(dataset, output_file)
+        json.dump(dataset, output_file, ensure_ascii=False)
