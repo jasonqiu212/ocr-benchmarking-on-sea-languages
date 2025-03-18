@@ -1,3 +1,4 @@
+import csv
 import os
 from typing import List, Tuple
 
@@ -39,3 +40,9 @@ def count_article_pages(source_path: str):
 
         res.append((article, i))
     return sorted(res)
+
+
+def write_to_csv(data: List, output_file_name: str):
+    with open(f'./{output_file_name}.csv', 'w', newline='') as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerows(data)
