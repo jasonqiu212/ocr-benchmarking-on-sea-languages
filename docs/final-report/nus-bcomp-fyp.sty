@@ -6,8 +6,11 @@
 \geometry{a4paper}
 
 \RequirePackage{graphicx}
-
 \RequirePackage{changepage}
+\RequirePackage{booktabs}
+\RequirePackage{hyperref}
+\RequirePackage{xcolor}
+\RequirePackage[style=apa, backend=biber]{biblatex}
 
 \newcommand{\department}[1]{\gdef\@dept{#1}}
 \newcommand{\faculty}[1]{\gdef\@faculty{#1}}
@@ -68,9 +71,9 @@
 \renewcommand{\insertchapterspace}{}
 \setlength{\afterchapskip}{1.5\onelineskip}
 \renewcommand{\chapterheadstart}{\clearforchapter}
-\renewcommand{\chaptitlefont}{\SingleSpacing\centering\normalfont\Large\bfseries}
 \renewcommand{\printchaptername}{}
 \renewcommand{\printchapternum}{}
+\renewcommand{\chaptitlefont}{\centering\normalfont\LARGE\bfseries}
 \renewcommand{\printchaptertitle}[1]{\chaptitlefont{#1}}
 
 % Rename Contents
