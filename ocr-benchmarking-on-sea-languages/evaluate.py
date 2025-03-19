@@ -1,13 +1,14 @@
 """This file provides operations to evaluate OCR performance."""
 
 import csv
+import json
 import os
 
 import jiwer
 from tqdm import tqdm
 
 
-def evaluate_to_csv(source_path: str, target_file_name: str, prediction_file_name: str, output_file_name: str):
+def evaluate(source_path: str, target_file_name: str, prediction_file_name: str, output_file_name: str):
     data = [['Article Name', 'CER', 'WER']]
     sorted_articles = sorted(os.listdir(source_path))
 
@@ -31,3 +32,30 @@ def evaluate_to_csv(source_path: str, target_file_name: str, prediction_file_nam
     with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(data)
+
+
+def evaluate_finetuned(results_file_path: str, output_file_name: str):
+    data = [['File Name', 'CER', 'WER']]
+    with open(results_file_path, "r") as results_file:
+        for line in results_file:
+            results = json.loads(line)
+
+            prediction_text = results['response']
+            target_text = results['labels']
+            file_name = '/'.join(results['images'][0]['path'].split('/')[-2:])
+
+            cer = jiwer.cer(target_text, prediction_text)
+            wer = jiwer.wer(target_text, prediction_text)
+
+            formatted_cer = round(cer, 4)
+            formatted_wer = round(wer, 4)
+            data.append([file_name, formatted_cer, formatted_wer])
+
+    with open(f'{output_file_name}.csv', 'w', newline='') as output_file:
+        writer = csv.writer(output_file)
+        writer.writerows(data)
+
+
+# def evaluate(source_path: str, target_file_name: str, prediction_file_name: str, output_file_name: str):
+    #
+    # pass
