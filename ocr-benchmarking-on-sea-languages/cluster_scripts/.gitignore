@@ -1,2 +1,8 @@
+# ms swift fine-tuning output
 output/
+
+# slurm output files
 slurm-*.out
+
+# environments
+sample/
