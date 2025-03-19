@@ -8,7 +8,7 @@
 source sample/bin/activate
 
 CUDA_VISIBLE_DEVICES=0 swift infer \
-    --ckpt_dir output/got-ocr2/v1-20250318-235123/checkpoint-1071 \
+    --ckpt_dir output/GOT-OCR2_0/v1-20250318-235123/checkpoint-1071 \
     --load_dataset_config true \
 
 deactivate
