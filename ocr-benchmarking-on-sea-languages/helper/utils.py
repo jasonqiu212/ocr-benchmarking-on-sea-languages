@@ -2,6 +2,8 @@ import csv
 import os
 from typing import List, Tuple
 
+import pymupdf
+
 
 def get_articles_sorted_by_length(source_path: str) -> List[Tuple[str, int]]:
     """
@@ -26,7 +28,7 @@ def get_articles_sorted_by_length(source_path: str) -> List[Tuple[str, int]]:
     return sorted(res, key=lambda x: x[1])
 
 
-def count_article_pages(source_path: str):
+def count_article_pages_from_images(source_path: str):
     res = []
     for article in os.listdir(source_path):
         i = 0
@@ -39,6 +41,21 @@ def count_article_pages(source_path: str):
             image_file_path = f'{source_path}/{article}/page-{i}.png'
 
         res.append((article, i))
+    return sorted(res)
+
+
+def count_article_pages_from_pdf(source_path: str):
+    res = []
+    for article in os.listdir(source_path):
+        pdf_file_path = f'{source_path}/{article}/article.pdf'
+        if not os.path.exists(pdf_file_path):
+            print(f'{article}: article.pdf does not exist')
+            continue
+
+        article_pdf = pymupdf.open(pdf_file_path)
+        res.append((article, article_pdf.page_count))
+        article_pdf.close()
+
     return sorted(res)
 
 
