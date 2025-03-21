@@ -9,7 +9,7 @@ source sample/bin/activate
 
 CUDA_VISIBLE_DEVICES=0 swift sft \
     --model stepfun-ai/GOT-OCR2_0 \
-    --dataset ../finetuning/vietnamese-dataset.json \
-    --split_dataset_ratio 0.2
+    --dataset ../finetuning/datasets/vietnamese-dataset-500.json \
+    --split_dataset_ratio 0
 
 deactivate
