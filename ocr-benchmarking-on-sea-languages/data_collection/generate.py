@@ -111,3 +111,5 @@ def get_page_text(source_path: str):
             text = " ".join(page.get_text('text').splitlines())
             with open(f'{source_path}/{f}/page-{i}-text.txt', 'w') as output_file:
                 output_file.write(text)
+
+        pdf_document.close()
