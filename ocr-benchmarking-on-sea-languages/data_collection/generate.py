@@ -27,6 +27,7 @@ def generate_pdfs(source_path: str, font_path: str = None,
                 }}
                 body {{
                     font-family: 'CustomFont', sans-serif;
+                    line-height: 1.5;
                 }}
             </style>
         </head>
@@ -91,7 +92,7 @@ def generate_pdfs(source_path: str, font_path: str = None,
             with open(f'{source_path}/{f}/html-body.txt', 'w') as file:
                 file.write(text)
 
-        html_content = f'<html>{html_head}<body><p>{text}</p></body></html>'
+        html_content = f'<html>{html_head}<body><p style="line-height: 2;">{text}</p></body></html>'
 
         HTML(string=html_content, base_url='.').write_pdf(
             f'{source_path}/{f}/article.pdf')
