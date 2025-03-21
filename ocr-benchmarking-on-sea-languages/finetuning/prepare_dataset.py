@@ -13,7 +13,7 @@ def prepare_dataset(source_path: str, output_file_name: str):
 
             image_path = f'{source_path}/{article}/page-{i}.png'
             data_entry = {
-                'query': 'OCR',
+                'query': 'OCR <image>',
                 'response': text,
                 'images': [
                     image_path
