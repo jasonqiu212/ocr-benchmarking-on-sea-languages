@@ -8,6 +8,7 @@ import time
 from io import BytesIO
 from typing import List
 
+from tqdm import tqdm
 from selenium import webdriver
 
 from data_collection.article_pdf import ArticlePDF
@@ -35,7 +36,7 @@ def download_article_texts(articles: List[ArticlePDF], destination_path: str):
         'format': 'json',
         'explaintext': 'true',
     }
-    for article in articles:
+    for article in tqdm(articles):
         title = article.title
         english_title = article.english_title
         language = article.language
@@ -46,6 +47,9 @@ def download_article_texts(articles: List[ArticlePDF], destination_path: str):
             text = list(data['query']['pages'].items())[0][1]['extract']
 
             file_path = f'{destination_path}/{english_title}'
+            if os.path.exists(f'{file_path}/text.txt'):
+                print(f'{english_title}: Article text exists')
+
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
 
