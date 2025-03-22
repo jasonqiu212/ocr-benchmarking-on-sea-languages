@@ -12,7 +12,7 @@
     urlcolor=DarkBlue   % Color of external links
 }
 
-\title{Benchmarking and Improving OCR System for Southeast Asian Languages}
+\title{Benchmarking and Improving OCR Systems for Southeast Asian Languages}
 \author{Qiu Jiasheng, Jason}
 \department{Department of Computer Science}
 \faculty{School of Computing}
@@ -33,7 +33,9 @@
 
 \maketitle
 
-\chapter{Abstract}
+\chapter*{\centering\large Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
 While Optical Character Recognition (OCR) has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on Southeast Asian (SEA) languages remain largely unexplored.
 This study aims to bridge this gap by assessing and improving the performance of OCR technologies on SEA languages.
 To achieve this objective, we propose a reusable pipeline to gather SEA-language text from Wikipedia and benchmark popular OCR tools.
@@ -41,7 +43,11 @@ To achieve this objective, we propose a reusable pipeline to gather SEA-language
 \vspace{20pt}
 Subject Descriptors:
 
+\hspace*{0.3in} H.3.3 Information Search and Retrieval
+
 \hspace*{0.3in} I.2.7 Natural Language Processing
+
+\hspace*{0.3in} I.2.10 Vision and Scene Understanding
 
 Keywords:
 
@@ -51,7 +57,9 @@ Implementation Software and Hardware:
 
 \hspace*{0.3in} Python, Tesseract, EasyOCR
 
-\chapter{Acknowledgements}
+\chapter*{\centering\large Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
 I would like to thank my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zhu, for their invaluable guidance and mentorship. Their encouragement and constructive guidance have been a significant source of inspiration throughout the project.
 
 \listoffigures
@@ -83,6 +91,49 @@ Specifically, this project seeks to answer the following research questions (RQs
     \item \textbf{RQ3.} What techniques and recommendations can enhance OCR accuracy on SEA languages?
 \end{itemize}
 
+\chapter{Related Work}
+
+\chapter{Methodology}
+
+\section{Experiment Setup}
+
+\subsection{Source of Data}
+
+\section{Experiment 1: }
+\section{Experiment 2: }
+\section{Experiment 3: }
+
+\chapter{Discussion}
+
 \chapter{Conclusion}
+
+\printbibliography[title={References}]
+
+\clearpage
+\appendix
+\renewcommand{\chaptername}{Appendix}
+
+\chapter{Wikipedia Article Dataset}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{p{1in}p{3.8in}}
+        \toprule
+        \textbf{Category} & \textbf{Articles} \\
+        \midrule
+        People & Elizabeth II, Barack Obama, Michael Jackson, Elon Musk, Lady Gaga, Adolf Hitler, Eminem, Lionel Messi, Justin Bieber, Freddie Mercury, Kim Kardashian, Johnny Depp, Steve Jobs, Dwayne Johnson, Michael Jordan, Taylor Swift, Stephen Hawking, Kanye West, Donald Trump\\
+        \midrule
+        Present countries & United States, India, United Kingdom, Canada, Australia, China, Russia, Japan, Germany, France, Singapore, Israel, Pakistan, Philippines, Brazil, Italy, Netherlands, New Zealand, Ukraine, Spain\\
+        \midrule
+        Cities & New York City, London, Hong Kong, Los Angeles, Dubai, Washington, D.C., Paris, Chicago, Mumbai, San Francisco, Rome, Monaco, Toronto, Tokyo, Philadelphia, Machu Picchu, Jerusalem, Amsterdam, Boston\\
+        \midrule
+        Life & Cat, Dog, Animal, Lion, Coronavirus, Tiger, Human, Dinosaur, Elephant, Virus, Horse, Photosynthesis, Evolution, Apple, Bird, Mammal, Potato, Polar bear, Shark, Snake\\
+        \midrule
+        Buildings and structures & Taj Mahal, Burj Khalifa, Statue of Liberty, Great Wall of China, Eiffel Tower, Berlin Wall, Stonehenge, Mount Rushmore, Colosseum, Auschwitz concentration camp, Great Pyramid of Giza, One World Trade Center, Empire State Building, White House, Petra, Large Hadron Collider, Hagia Sophia, Golden Gate Bridge, Panama Canal, Angkor Wat\\
+        \bottomrule
+    \end{tabular}
+    \caption{Dataset of 98 Wikipedia articles}
+    \label{table:dataset}
+\end{table}
 
 \end{document}
