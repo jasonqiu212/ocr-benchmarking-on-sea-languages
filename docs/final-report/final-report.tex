@@ -32,6 +32,7 @@
 \setcounter{page}{1}
 
 \maketitle
+\addcontentsline{toc}{chapter}{Title}
 
 \chapter*{\centering\large Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
@@ -97,10 +98,80 @@ Specifically, this project seeks to answer the following research questions (RQs
 
 \section{Experiment Setup}
 
+\subsection{OCR Systems}
+
+In our selection of OCR systems for benchmarking, we prioritized open-source 
+solutions that support a diverse range of SEA languages, as this approach 
+enhances accessibility and reusability for the proposed evaluation pipeline. 
+Consequently, we selected to use Tesseract and EasyOCR. 
+
+Tesseract\footnote{\url{https://github.com/tesseract-ocr/tesseract}} is an established OCR engine, recognized as one of the top performers 
+in the 1995 UNLV Test \parencite{rice-etal-1995}. It utilizes an underlying Long Short-Term Memory (LSTM) 
+model. EasyOCR\footnote{\url{https://github.com/JaidedAI/EasyOCR}} is a modern OCR framework that integrates a text detection model 
+based on the Character Region Awareness for Text (CRAFT) algorithm with a 
+recognition model utilizing a Convolutional Recurrent Neural Network (CRNN). Both 
+Tesseract and EasyOCR provide robust support for English, Indonesian, Vietnamese, 
+and Thai, making them suitable candidates for our benchmarking study.
+
+\subsection{Evaluation Metrics}
+
+\begin{equation}
+    CER = \frac{I + D + S}{N}
+    \label{equation:cer}
+\end{equation}
+
+Similar to most OCR benchmark studies, we utilize Character Error Rate (CER) and 
+Word Error Rate (WER) as our evaluation metrics \parencite{hegghammer-2022, ignat-etal-2022}. CER measures the accuracy of 
+character recognition and is calculated using the Levenshtein or edit distance, 
+which represents the minimum number of single-character insertions (I), deletions (D), 
+and substitutions (S) required to transform one word into another. As shown in 
+Equation \ref{equation:cer}, CER is defined as the edit distance between the 
+OCR-predicted text and ground truth text, divided by the total number of characters 
+in the ground truth text (N). A lower CER value indicates higher accuracy, with 
+0 representing perfect recognition. Notably, CER can exceed 1, particularly when 
+there are a significant number of insertions. WER serves as the word-based counterpart to CER.
+
+
 \subsection{Source of Data}
 
-\section{Experiment 1: }
-\section{Experiment 2: }
+We chose to use Wikipedia as our text corpus for several reasons.
+Firstly, Wikipedia articles can be easily converted into images via screenshots, making them suitable for OCR applications. 
+The platform also offers a convenient source of ground truth through its APIs that provide plain text for most articles.
+Secondly, Wikipedia hosts a large corpus in several popular SEA languages, including Thai, Vietnamese, Indonesian, Tamil, and Burmese, supporting our language needs \parencite{list-of-wikipedias-2024}. 
+Lastly, Wikipedia articles contain visual elements like images and tables that are common in modern real-world documents.
+
+\subsection{Languages}
+From the languages available on Wikipedia, we selected English, Indonesian, Vietnamese, and Thai text. 
+English serves as a baseline for sanity checks and bug fixing.
+The remaining SEA languages were chosen to capture diverse script characteristics. 
+Indonesian represents Latin-based scripts, Vietnamese represents Latin scripts with diacritics, and Thai represents non-Latin scripts. 
+
+\section{Experiment 1: Benchmarking on Real Data}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/data-collection.png}
+    \caption{Pipeline for data collection from Wikipedia}
+    \label{figure:data-collection}
+\end{figure}
+
+From the dataset of 100 Wikipedia articles, we collected article images and ground 
+truth article text in our selected languages using Python, 
+Selenium\footnote{\href{https://selenium-python.readthedocs.io}{Selenium} is a 
+framework for automating web browsers, commonly used for web scraping by programmatically 
+interacting with websites.}, and the MediaWiki Action API\footnote{The \href{https://www.mediawiki.org/wiki/API:Main_page}{MediaWiki Action API} allows 
+access to wiki page operation features such as search and retrieval.}. Figure \ref{figure:data-collection} illustrates the overall pipeline 
+for data collection. The detailed steps are as follows:
+
+\begin{enumerate}
+    \item Manually compile the dataset’s article names and URLs in English.
+    \item Fetch the article names and URLs in Thai, Vietnamese, and Indonesian from the MediaWiki Action API.
+    \item Download the article PDFs in all languages using Selenium.
+    \item Convert the article PDFs into PNG images, where each image represents one page in the PDF.
+    \item Download the ground truth article text into TXT files from the MediaWiki Action API.
+\end{enumerate}
+
+\section{Experiment 2: Benchmarking on Synthetic Data}
 \section{Experiment 3: }
 
 \chapter{Discussion}
