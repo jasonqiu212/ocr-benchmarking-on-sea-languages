@@ -60,8 +60,8 @@ def evaluate_finetuned(results_file_path: str, output_file_name: str):
 
 
 def evaluate_error_by_character_class(source_path: str, correct_file_name: str, predicted_file_name: str, output_file_name: str):
-    data = ['Article Name', 'arabic_digit', 'thai_digit', 'latin_letter', 'thai_letter', 'vietnamese_letter_with_diacritic',
-            'thai_diacritic', 'punctuation', 'thai_punctuation', 'vietnamese_punctuation', 'whitespace', 'other']
+    data = [['Article Name', 'arabic_digit', 'thai_digit', 'latin_letter', 'thai_letter', 'vietnamese_letter_with_diacritic',
+            'thai_diacritic', 'punctuation', 'thai_punctuation', 'vietnamese_punctuation', 'whitespace', 'other']]
     sorted_articles = sorted(os.listdir(source_path))
 
     for article in tqdm(sorted_articles):
