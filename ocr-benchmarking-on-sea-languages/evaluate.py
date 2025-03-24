@@ -99,9 +99,9 @@ def evaluate_error_by_character_class(source_path: str, correct_file_name: str, 
                     error_counts['thai_punctuation'], error_counts['vietnamese_punctuation'],
                     error_counts['whitespace'], error_counts['other']])
 
-        with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
-            writer = csv.writer(output_file)
-        writer.writerows(data)
+    with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
+        writer = csv.writer(output_file)
+    writer.writerows(data)
 
 
 def _classify_char(char: str):
