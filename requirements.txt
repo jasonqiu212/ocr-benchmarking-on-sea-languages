@@ -96,6 +96,7 @@ jupyterlab_server==2.27.3
 keras==3.8.0
 kiwisolver==1.4.8
 lazy_loader==0.4
+Levenshtein==0.27.1
 libclang==18.1.1
 lightning-utilities==0.11.6
 Markdown==3.7
@@ -164,6 +165,7 @@ pytesseract==0.3.10
 python-bidi==0.4.2
 python-dateutil==2.9.0.post0
 python-json-logger==2.0.7
+python-Levenshtein==0.27.1
 python-multipart==0.0.20
 pytz==2024.2
 PyYAML==6.0.1
