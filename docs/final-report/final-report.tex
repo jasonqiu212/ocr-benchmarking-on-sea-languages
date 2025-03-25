@@ -177,15 +177,32 @@ for data collection. The detailed steps are as follows:
 
 \subsection{Synthetic Data Generation}
 
-\section{Experiment 3: Fine-tuning}
+\section{Experiment 3: Fine-tuning for Vietnamese and Thai}
 
 \chapter{Results}
 
 \section{RQ1}
+
+
+\begin{table}[ht]
+    \caption{Average OCR Runtime Per Page (Seconds)}
+    \label{table:runtime}
+    \centering
+    \begin{tabular}{lccc}
+        \toprule
+        & EasyOCR & Tesseract & GOT\\ 
+        \midrule
+        English & 3.23 & 11.68 & 24.35\\
+        Indonesian & 2.92 & 13.19 & 31.44\\
+        Vietnamese & 3.91 & 11.80 & -\\
+        Thai & 2.32 & 16.76 & -\\
+        \bottomrule
+    \end{tabular}
+\end{table}
 \section{RQ2}
 
 \begin{table}[ht]
-    \caption{English Error Classification}
+    \caption{Error Classification by Character Type for English Articles}
     \label{table:english-error-classification}
     \centering
     \begin{tabular}{lrrrr}
@@ -204,7 +221,7 @@ for data collection. The detailed steps are as follows:
 \end{table}
 
 \begin{table}[ht]
-    \caption{Indonesian Error Classification}
+    \caption{Error Classification by Character Type for Indonesian Articles}
     \label{table:indonesian-error-classification}
     \centering
     \begin{tabular}{lrrrr}
@@ -223,7 +240,7 @@ for data collection. The detailed steps are as follows:
 \end{table}
 
 \begin{table}[ht]
-    \caption{Vietnamese Error Classification}
+    \caption{Error Classification by Character Type for Vietnamese Articles}
     \label{table:vietnamese-error-classification}
     \centering
     \begin{tabular}{lrrr}
@@ -242,7 +259,7 @@ for data collection. The detailed steps are as follows:
 \end{table}
 
 \begin{table}[ht]
-    \caption{Thai Error Classification}
+    \caption{Error Classification by Character Type for Thai Articles}
     \label{table:thai-error-classification}
     \centering
     \begin{tabular}{lrrr}
