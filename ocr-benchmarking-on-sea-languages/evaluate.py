@@ -104,6 +104,37 @@ def evaluate_error_by_character_class(source_path: str, correct_file_name: str, 
         writer.writerows(data)
 
 
+def classify_by_character_class(source_path: str, input_file_name: str, output_file_name: str):
+    data = [['Article Name', 'arabic_digit', 'thai_digit', 'latin_letter', 'thai_letter', 'vietnamese_letter_with_diacritic',
+            'thai_diacritic', 'punctuation', 'thai_punctuation', 'vietnamese_punctuation', 'whitespace', 'other']]
+    sorted_articles = sorted(os.listdir(source_path))
+
+    for article in tqdm(sorted_articles):
+        input_file_path = f'{source_path}/{article}/{input_file_name}'
+        if not os.path.exists(input_file_path):
+            print(f'{article}: {input_file_path} does not exist.')
+            continue
+
+        counts = Counter()
+
+        input = open(input_file_path, 'r').read()
+
+        for c in input:
+            char_class = _classify_char(c)
+            counts[char_class] += 1
+
+        data.append([article, counts['arabic_digit'], counts['thai_digit'],
+                     counts['latin_letter'], counts['thai_letter'],
+                     counts['vietnamese_letter_with_diacritic'],
+                    counts['thai_diacritic'], counts['punctuation'],
+                    counts['thai_punctuation'], counts['vietnamese_punctuation'],
+                    counts['whitespace'], counts['other']])
+
+    with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
+        writer = csv.writer(output_file)
+        writer.writerows(data)
+
+
 def _classify_char(char: str):
     if char.isdigit():
         return "arabic_digit"
