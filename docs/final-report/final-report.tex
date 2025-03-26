@@ -37,7 +37,7 @@
 \chapter*{\centering\large Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-While Optical Character Recognition (OCR) has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on Southeast Asian (SEA) languages remain largely unexplored. This study aims to bridge this gap by evaluating OCR technologies for SEA languages and exploring script-specific challenges. We propose a pipeline to collect textual data from Wikipedia and benchmark open-source OCR tools. Additionally, we demonstrate the potential of fine-tuning existing models on SEA languages, aiming to expand OCR capabilities for these languages. 
+While Optical Character Recognition (OCR) has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on Southeast Asian (SEA) languages remain largely unexplored. This study aims to bridge this gap by evaluating OCR technologies for SEA languages and exploring script-specific challenges. We propose a pipeline to collect textual data from Wikipedia and benchmark open-source OCR tools. Additionally, we demonstrate the potential of fine-tuning existing models on SEA languages, aiming to expand OCR capabilities for these languages.
 
 \vspace{20pt}
 Subject Descriptors:
@@ -70,7 +70,7 @@ I would like to thank my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zh
 \chapter{Introduction}
 Current research in Natural Language Processing (NLP) is heavily concentrated on only 20 of the 7,000 languages in the world \parencite{magueresse-etal-2020}.
 In particular, Southeast Asia (SEA) is home to over 1,000 languages but remains a relatively under-researched region in NLP \parencite{aji-etal-2023}.
-A similar trend can be observed in Optical Character Recognition (OCR) research, where the focus is predominantly on high-resource languages \parencite{aji-etal-2023,bustamante-etal-2020}, leaving many SEA languages underserved. 
+A similar trend can be observed in Optical Character Recognition (OCR) research, where the focus is predominantly on high-resource languages \parencite{salehudin-etal-2023, smith-2007}, leaving many SEA languages underserved.
 
 OCR, the process of converting textual images into machine-readable formats, offers significant potential for languages with limited datasets. While many scanned documents and books in these low-resource languages are available online, the text within them often remains inaccessible due to formats like images and PDFs. By extracting the text from these documents, OCR can generate valuable datasets for low-resource languages, which can then be used for downstream NLP tasks, such as machine translation and named-entity recognition \parencite{agarwal-and-anastasopoulos-2024, ignat-etal-2022}.
 Therefore, studying OCR performance on SEA languages is crucial to accelerating NLP research and technology development in the region.
@@ -94,20 +94,40 @@ To answer the research questions, this study conducts three experiments to bench
 
 \section{Experiment Setup}
 
+\subsection{Languages}
+
+We selected English, Indonesian, Vietnamese, and Thai text. 
+English serves as a baseline for sanity checks and bug fixing.
+The remaining SEA languages were chosen to capture diverse script characteristics. 
+Indonesian represents Latin-based scripts, Vietnamese represents Latin scripts with diacritics, and Thai represents non-Latin scripts. 
+
+% How can i better justify my choice of languages?
+
+\subsection{Data Source}
+
+This study collects textual data from Wikipedia for several reasons.
+Firstly, Wikipedia articles can be easily converted into images via screenshots, making them suitable for OCR applications. 
+The platform also offers a convenient source of ground truth through its APIs that provide plain text for most articles.
+Secondly, Wikipedia hosts a large corpus in several popular SEA languages, including Thai, Vietnamese, Indonesian, Tamil, and Burmese, supporting our language needs \parencite{list-of-wikipedias-2024}. 
+
+% better justify my choice for wikipedia
+
 \subsection{OCR Systems}
 
-In our selection of OCR systems for benchmarking, we prioritized open-source 
-solutions that support a diverse range of SEA languages, as this approach 
-enhances accessibility and reusability for the proposed evaluation pipeline. 
-Consequently, we selected to use Tesseract and EasyOCR. 
+In our selection of OCR systems for benchmarking, we prioritize open-source 
+solutions that support a diverse range of SEA languages, promoting accessibility and reusability for the proposed evaluation pipeline. 
+Additionally, we aim to include models with different underlying architectures, enabling a more comprehensive assessment of their performance across different languages.
+Consequently, we selected EasyOCR, Tesseract, and GOT, each representing distinct modeling approaches to OCR.
 
-Tesseract\footnote{\url{https://github.com/tesseract-ocr/tesseract}} is an established OCR engine, recognized as one of the top performers 
-in the 1995 UNLV Test \parencite{rice-etal-1995}. It utilizes an underlying Long Short-Term Memory (LSTM) 
-model. EasyOCR\footnote{\url{https://github.com/JaidedAI/EasyOCR}} is a modern OCR framework that integrates a text detection model 
+EasyOCR\footnote{\url{https://github.com/JaidedAI/EasyOCR}} is a modern OCR framework that integrates a text detection model 
 based on the Character Region Awareness for Text (CRAFT) algorithm with a 
-recognition model utilizing a Convolutional Recurrent Neural Network (CRNN). Both 
-Tesseract and EasyOCR provide robust support for English, Indonesian, Vietnamese, 
-and Thai, making them suitable candidates for our benchmarking study.
+recognition model utilizing a Convolutional Recurrent Neural Network (CRNN).
+
+Tesseract\footnote{\url{https://github.com/tesseract-ocr/tesseract}} is an established OCR engine, recognized as one of the top performers in the 1995 UNLV Test \parencite{rice-etal-1995}. It utilizes an underlying Long Short-Term Memory (LSTM) model. 
+
+Both EasyOCR and Tesseract provide robust support for English, Indonesian, Vietnamese, and Thai, making them suitable candidates for our benchmarking study.
+
+% Add introduction to GOT
 
 \subsection{Evaluation Metrics}
 
@@ -126,21 +146,6 @@ OCR-predicted text and ground truth text, divided by the total number of charact
 in the ground truth text (N). A lower CER value indicates higher accuracy, with 
 0 representing perfect recognition. Notably, CER can exceed 1, particularly when 
 there are a significant number of insertions. WER serves as the word-based counterpart to CER.
-
-
-\subsection{Source of Data}
-
-We chose to use Wikipedia as our text corpus for several reasons.
-Firstly, Wikipedia articles can be easily converted into images via screenshots, making them suitable for OCR applications. 
-The platform also offers a convenient source of ground truth through its APIs that provide plain text for most articles.
-Secondly, Wikipedia hosts a large corpus in several popular SEA languages, including Thai, Vietnamese, Indonesian, Tamil, and Burmese, supporting our language needs \parencite{list-of-wikipedias-2024}. 
-Lastly, Wikipedia articles contain visual elements like images and tables that are common in modern real-world documents.
-
-\subsection{Languages}
-From the languages available on Wikipedia, we selected English, Indonesian, Vietnamese, and Thai text. 
-English serves as a baseline for sanity checks and bug fixing.
-The remaining SEA languages were chosen to capture diverse script characteristics. 
-Indonesian represents Latin-based scripts, Vietnamese represents Latin scripts with diacritics, and Thai represents non-Latin scripts. 
 
 \section{Experiment 1: Benchmarking on Real Data}
 
