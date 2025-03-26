@@ -96,12 +96,32 @@ To answer the research questions, this study conducts three experiments to bench
 
 \subsection{Languages}
 
-We selected English, Indonesian, Vietnamese, and Thai text. 
-English serves as a baseline for sanity checks and bug fixing.
-The remaining SEA languages were chosen to capture diverse script characteristics. 
-Indonesian represents Latin-based scripts, Vietnamese represents Latin scripts with diacritics, and Thai represents non-Latin scripts. 
+In this study, we chose to benchmark on English, Indonesian, Vietnamese, and Thai. English serves as a baseline comparison due to its extensive OCR research and established tool support. Meanwhile, Indonesian, Vietnamese, and Thai were selected as a representative subset of SEA languages for several reasons.
 
-% How can i better justify my choice of languages?
+Firstly, these three languages encompass a range of script types: Latin scripts for Indonesian, Latin scripts with diacritics for Vietnamese, and Brahmic scripts for Thai. 
+By covering these scripts, we capture a broad spectrum of orthographic features, from diacritics to tone marks and from Latin-based scripts to complex character shapes. This allows us to examine how these unique linguistic features impact OCR performance. 
+Furthermore, many other SEA languages, including Malay, Filipino, and Cebuano, use modified Latin scripts, while languages like Khmer, Burmese, and Javanese use Brahmic scripts. Thus, findings from this study can be applied to other languages with similar script types, accelerating OCR research in the region.
+
+\begin{table}[ht]
+    \centering
+    \caption{Benchmarked Languages}
+    \label{table:languages}
+    \begin{tabular}{llll}
+        \toprule
+        & Speaker Population & Script Type & Example\\ 
+        \midrule
+        English & 1.5 billion & Latin & Good morning\\
+        Indonesian & 252 million & Latin & Selamat pagi\\
+        Vietnamese & 97 million & Latin with diacritics & Chào buổi sáng\\
+        Thai & 71 million & Brahmic & {\fontspec{Tahoma} สวัสดีตอนเช้า}\\
+        \bottomrule
+        \multicolumn{4}{c}{\footnotesize Note: Speaker population data from Wikipedia (\citeyear{list-of-languages-by-total-number-of-speakers-2025}).}
+    \end{tabular}
+\end{table}
+
+Secondly, the wide usage of these languages makes it feasible to obtain textual data. The high number of speakers, active online communities, and abundant digital content ensure sufficient resources for OCR benchmarking. Their prominence in SEA further highlights their relevance, as improving OCR for these languages benefits a large portion of the region's population.
+
+While this study covers only a small fraction of the languages spoken in SEA, the selection of these languages provides a strong starting point, as they cover popular script types and offer abundant online data for benchmarking.
 
 \subsection{Data Source}
 
@@ -191,7 +211,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 \subsection{Runtime}
 
 \begin{table}[ht]
-    \caption{Average OCR Runtime Per Page (Seconds)}
+    \caption{Average OCR runtime per page (seconds)}
     \label{table:runtime}
     \centering
     \begin{tabular}{lccc}
@@ -209,7 +229,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 \section{RQ2: What script-related challenges affect OCR accuracy on SEA languages?}
 
 \begin{table}[ht]
-    \caption{Error Classification by Character Type for English Articles}
+    \caption{Error classification by character type for English articles}
     \label{table:english-error-classification}
     \centering
     \begin{tabular}{lrrrr}
@@ -228,7 +248,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 \end{table}
 
 \begin{table}[ht]
-    \caption{Error Classification by Character Type for Indonesian Articles}
+    \caption{Error classification by character type for Indonesian articles}
     \label{table:indonesian-error-classification}
     \centering
     \begin{tabular}{lrrrr}
@@ -247,7 +267,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 \end{table}
 
 \begin{table}[ht]
-    \caption{Error Classification by Character Type for Vietnamese Articles}
+    \caption{Error classification by character type for Vietnamese articles}
     \label{table:vietnamese-error-classification}
     \centering
     \begin{tabular}{lrrr}
@@ -266,7 +286,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 \end{table}
 
 \begin{table}[ht]
-    \caption{Error Classification by Character Type for Thai Articles}
+    \caption{Error classification by character type for Thai articles}
     \label{table:thai-error-classification}
     \centering
     \begin{tabular}{lrrr}
