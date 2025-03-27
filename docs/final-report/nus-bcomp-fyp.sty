@@ -14,6 +14,15 @@
 \RequirePackage{fontspec}
 \RequirePackage[style=apa, backend=biber]{biblatex}
 
+\definecolor{DarkBlue}{RGB}{0, 42, 97}
+
+\hypersetup{
+    colorlinks=true,    % Enables colored links
+    linkcolor=black,    % Color of internal links
+    citecolor=black,    % Color of citations
+    urlcolor=DarkBlue   % Color of external links
+}
+
 \newcommand{\department}[1]{\gdef\@dept{#1}}
 \newcommand{\faculty}[1]{\gdef\@faculty{#1}}
 \newcommand{\university}[1]{\gdef\@university{#1}}
