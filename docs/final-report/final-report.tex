@@ -82,20 +82,6 @@ Specifically, this project seeks to answer the following research questions (RQs
 
 \section{Overview of OCR Systems}
 
-% From CA Report:
-% To benchmark OCR performance programmatically, there are two broad categories of OCR systems: open-source and commercial.
-
-% Open-source OCR systems are characterized by their accessibility, allowing users to view, modify, and distribute the source code freely.
-% This transparency enables developers to customize the tools to meet specific needs.
-% Furthermore, open-source systems typically incur no licensing fees, making them cost-effective options for research purposes.
-% For instance, Tesseract \parencite{smith-2013} is a popular open-source OCR engine mentioned consistently in related studies \parencite{hegghammer-2022, ignat-etal-2022}.
-
-% Commercial OCR systems are typically accessed through paid services via application programming interfaces (APIs).
-% Notable examples of these systems include Amazon Textract, Google Document AI, and Google Vision API.
-% Generally, commercial off-the-shelf OCR tools tend to perform better than their open-source counterparts \parencite{hegghammer-2022, ignat-etal-2022}.
-% However, the proprietary nature of these "black box" models limits their utility for research purposes, such as fine-tuning and customization.
-% Additionally, the associated costs of these services contribute to fewer studies focused on commercial systems in comparison to the more widely researched open-source tools.
-
 Most OCR systems consist of two stages: Text detection and text transcription.
 Text detection identifies text present in an image and extracts cropped regions containing the detected text. 
 A text transcription model then converts these cropped images into text.
@@ -122,17 +108,13 @@ Unlike CNNs and RNNs, transformers process entire input sequences in parallel us
 This approach avoids image-specific inductive biases present in CNNs, such as the assumption that neighboring pixels are relevant.
 TrOCR, an end-to-end model that combines an image transformer and a separate text transformer, demonstrates another advantage of transformers: the ability to leverage self-supervised pre-training \parencite{li-etal-2021}. 
 Since transformers can be pre-trained individually to learn useful patterns from unlabeled images and text, there is less reliance on manually annotated OCR training data to achieve high accuracy.
-Going beyond traditional text recognition, General OCR Theory (GOT) extends character recognition capabilities to non-text elements, such as sheet music, charts, and geometric shapes \parencite{wei-etal-2024}.
-By extending the character recognition abilities of Large Visual-Language Models (LVLMs), GOT seeks to address the bottlenecks of traditional OCR systems, which often struggle with generalization.
+Going beyond traditional text recognition, General OCR Theory (GOT) is another transformer-based model that extends character recognition capabilities to non-text elements, such as sheet music, charts, and geometric shapes \parencite{wei-etal-2024}.
+By integrating Large Visual-Language Models (LVLMs), GOT seeks to address the bottlenecks of traditional OCR systems, which often struggle with generalization.
 As transformer-based OCR continues to evolve, these models are expected to push the boundaries of text recognition, enabling more flexible and adaptable OCR systems for diverse applications.
 
-\subsection{Benchmarking OCR}
-
+\section{Benchmarking OCR on Low-resource Languages}
 To evaluate OCR performance accurately, a collection of textual data in the form of images or PDFs paired with reliable ground truth is needed. 
 Applying OCR yields a plain text prediction, which is then compared with the ground truth data to assess the tool’s accuracy and performance.
-
-\section{OCR on Low-resource Languages}
-
 When comparing performance on different scripts, OCR tools generally achieve higher accuracy on scripts written in Latin alphabets \parencite{hegghammer-2022, ignat-etal-2022}.
 This disparity in performance partly stems from market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement for Latin-based scripts. 
 Ornate scripts, such as those with complex diacritics or unique letter shapes, present additional challenges and tend to yield lower OCR accuracy.
