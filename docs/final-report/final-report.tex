@@ -113,48 +113,29 @@ By integrating Large Visual-Language Models (LVLMs), GOT seeks to address the bo
 As transformer-based OCR continues to evolve, these models are expected to push the boundaries of text recognition, enabling more flexible and adaptable OCR systems for diverse applications.
 
 \section{Benchmarking OCR on Low-resource Languages}
-To evaluate OCR performance accurately, a collection of textual data in the form of images or PDFs paired with reliable ground truth is needed. 
-Applying OCR yields a plain text prediction, which is then compared with the ground truth data to assess the tool’s accuracy and performance.
-When comparing performance on different scripts, OCR tools generally achieve higher accuracy on scripts written in Latin alphabets \parencite{hegghammer-2022, ignat-etal-2022}.
-This disparity in performance partly stems from market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement for Latin-based scripts. 
-Ornate scripts, such as those with complex diacritics or unique letter shapes, present additional challenges and tend to yield lower OCR accuracy.
 
-In terms of benchmarking OCR on SEA languages, the most related study is the recent work by \textcite{ignat-etal-2022}.
-They grouped 60 low-resource languages by region and script, including SEA languages like Khmer, Lao, Burmese, Thai, and Vietnamese.
-Their research revealed that while OCR models perform well on artificial SEA-language data, accuracy drops significantly on real-world data.
-This discrepancy underscores the need for more real-world training data to improve OCR outcomes for SEA languages.
+To evaluate OCR performance accurately, textual data in the form of images or PDFs paired with reliable ground truth is essential. 
+Similar to most NLP tasks, data scarcity poses a major obstacle to advancing OCR technology in low-resource languages. The limited availability of annotated textual data restricts both model training and evaluation, leading to disparities in OCR accuracy across different scripts.
+OCR tools generally perform better on Latin-based scripts \parencite{hegghammer-2022, ignat-etal-2022}, partly due to market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement. Beyond data availability, the complexity of scripts with ornate diacritics or unique letter shapes often yield lower OCR accuracy \parencite{agarwal-and-anastasopoulos-2024}.
 
-In summary, there exists a gap in benchmarking OCR specifically for SEA languages, largely due to the lack of real-world training data.
-This project addresses this gap by proposing a reusable pipeline for benchmarking OCR performance on real-world SEA-language data sourced from Wikipedia.
-
-\begin{itemize}
-    \item Most of current research is focused on high-resource languages like English
-    \item Main problem for doing OCR on low-resource languages is the lack of data
-    \item what are some challenges? (Agarwal and Anastasopoulos, 2024),(Magueresse et al., 2020)
-\end{itemize}
+A recent study by \textcite{ignat-etal-2022} provides the most relevant benchmarking of OCR on SEA languages.
+Their benchmark grouped 60 low-resource languages by region and script, including SEA languages such as Khmer, Lao, Burmese, Thai, and Vietnamese.
+They found that while OCR models perform well on synthetic SEA-language data, their accuracy drops significantly on real-world data.
+This discrepancy underscores the need for more diverse and realistic training datasets to improve OCR outcomes for SEA languages.
 
 \section{Using Synthetic Data for OCR Evaluation}
 
-Similar to most NLP tasks, data scarcity poses a major obstacle to advancing OCR technology in low-resource languages, where the limited availability of annotated textual data restricts both model training and evaluation.
-Although an abundance of scanned documents in these low-resource languages exists online, they lack the ground truth required for evaluation.
-While plain text in these languages is often available separately, it typically exists in text-based formats rather than images or PDFs, limiting its direct usefulness as ground truth for OCR.
+To bridge the gap in data availability, many studies rely on artificial images and PDFs generated from plain text to create evaluation datasets.
+For instance, \textcite{ignat-etal-2022} generated synthetic PDFs from the Flores 101 dataset, which consists of text from Wikipedia in 101 languages.
+Expanding on this approach, \textcite{gupte-etal-2021} developed an open-source Python package that creates document images from plain text, incorporating several document styling templates.
+These methods enable the large-scale generation of high-quality low-resource language data with corresponding ground truth annotations.
 
-To bridge this gap, many studies rely on artificial images and PDFs generated from plain text to create usable evaluation data.
-For instance, \textcite{ignat-etal-2022} artificially created PDFs from the Flores 101 dataset, which consists of text data from Wikipedia in 101 languages.
-Generalizing this concept of a document creation pipeline further, \textcite{gupte-etal-2021} published an open-source Python package for generating document images from plain text, including several document styling templates.
-Using these methods, high-quality low-resource language data paired with ground truth can be generated from text-based formats on a large scale.
-
-A common trend in using artificial data is the augmentation of noise to simulate real-world conditions, which often contain complex layouts, stains, and scribbles \parencite{hegghammer-2022}.
-Directly using noise-free data, i.e., single-column text in a clear font, limits OCR processors' usefulness on real-life scanned documents.
-Thus, noise augmentation is often applied to artificial data.
-Some popular techniques include changing font style, size, color, letter spacing, and adding Gaussian blur, bleed-through, and salt-and-pepper noise \parencite{gupte-etal-2021, ignat-etal-2022}.
-
-(Bustamante et al., 2020)
-
-Recent studies have demonstrated that OCR systems tend to perform better on artificially generated data than on real-world data \parencite{ignat-etal-2022}.
-This observation suggests that synthetic datasets may not fully capture the complexities of authentic documents, which often feature issues like imperfect text alignment, varied fonts, and complex layouts.
-Furthermore, the addition of synthetic noise significantly raises error rates, especially for open-source systems, which appear more susceptible to noise interference than their commercial counterparts \parencite{hegghammer-2022}.
-
+However, one challenge with artificial datasets is their tendency to lack the imperfections found in real-world documents. 
+Real-world scanned documents often feature complex layouts, stains, and handwritten scribbles \parencite{hegghammer-2022}. 
+Studies have shown that OCR systems often perform better on synthetic datasets than on real-world data, highlighting a gap in generalization \parencite{ignat-etal-2022}.
+To address this, researchers frequently apply noise augmentation to synthetic documents. 
+Common techniques include changing the font style, size, color, and letter spacing, as well as adding Gaussian blur, bleed-through effects, and salt-and-pepper noise \parencite{gupte-etal-2021, ignat-etal-2022}.
+These modifications help artificial datasets better approximate the challenges of real-world OCR tasks.
 
 \section{Fine-tuning OCR Systems}
 
