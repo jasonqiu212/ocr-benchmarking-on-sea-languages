@@ -82,25 +82,56 @@ Specifically, this project seeks to answer the following research questions (RQs
 
 \section{Overview of OCR Systems}
 
-To benchmark OCR performance programmatically, there are two broad categories of OCR systems: open-source and commercial.
+% From CA Report:
+% To benchmark OCR performance programmatically, there are two broad categories of OCR systems: open-source and commercial.
 
-Open-source OCR systems are characterized by their accessibility, allowing users to view, modify, and distribute the source code freely.
-This transparency enables developers to customize the tools to meet specific needs.
-Furthermore, open-source systems typically incur no licensing fees, making them cost-effective options for research purposes.
-For instance, Tesseract \parencite{smith-2013} is a popular open-source OCR engine mentioned consistently in related studies \parencite{hegghammer-2022, ignat-etal-2022}.
+% Open-source OCR systems are characterized by their accessibility, allowing users to view, modify, and distribute the source code freely.
+% This transparency enables developers to customize the tools to meet specific needs.
+% Furthermore, open-source systems typically incur no licensing fees, making them cost-effective options for research purposes.
+% For instance, Tesseract \parencite{smith-2013} is a popular open-source OCR engine mentioned consistently in related studies \parencite{hegghammer-2022, ignat-etal-2022}.
 
-Commercial OCR systems are typically accessed through paid services via application programming interfaces (APIs).
-Notable examples of these systems include Amazon Textract, Google Document AI, and Google Vision API.
-Generally, commercial off-the-shelf OCR tools tend to perform better than their open-source counterparts \parencite{hegghammer-2022, ignat-etal-2022}.
-However, the proprietary nature of these "black box" models limits their utility for research purposes, such as fine-tuning and customization.
-Additionally, the associated costs of these services contribute to fewer studies focused on commercial systems in comparison to the more widely researched open-source tools.
+% Commercial OCR systems are typically accessed through paid services via application programming interfaces (APIs).
+% Notable examples of these systems include Amazon Textract, Google Document AI, and Google Vision API.
+% Generally, commercial off-the-shelf OCR tools tend to perform better than their open-source counterparts \parencite{hegghammer-2022, ignat-etal-2022}.
+% However, the proprietary nature of these "black box" models limits their utility for research purposes, such as fine-tuning and customization.
+% Additionally, the associated costs of these services contribute to fewer studies focused on commercial systems in comparison to the more widely researched open-source tools.
+
+Most OCR systems consist of two stages: Text detection and text transcription.
+Text detection identifies text present in an image and extracts cropped regions containing the detected text. 
+A text transcription model then converts these cropped images into text.
+Generally, separate models are used for each stage, allowing for greater training flexibility and a clearer understanding of challenges within each component \parencite{subramani-etal-2023}. 
+More recently, end-to-end models that combine both stages have shown promise in reducing errors for certain use cases \parencite{feng-etal-2019}.
+
+\subsection{Evolution of OCR Models}
+
+Early OCR models employ traditional machine learning techniques, such as K-nearest Neighbors (KNN) and Support Vector Machines (SVMs), to classify textual characters from cropped images.
+Tesseract, an established OCR engine developed since the 1990s, recognizes character patterns by extracting small fragments of character outlines as features \parencite{smith-2013}.
+These features are then classified into character clusters using an optimized KNN algorithm.
+While effective for structured text, these traditional approaches struggled with variations in handwriting, fonts, and image distortions \parencite{subramani-etal-2023}.
+
+The rise of deep learning brought significant advancements in OCR.
+Convolutional Neural Networks (CNNs) improve feature extraction by automatically detecting edges, textures, and shapes within text images.
+Unlike traditional handcrafted features, CNNs learn visual patterns by applying small filters across an image. 
+The CRAFT algorithm, for example, uses a fully convolutional network to achieve state-of-the-art character localization \parencite{baek-etal-2019}.
+For text transcription, Recurrent Neural Networks (RNNs) have been widely adopted due to their ability to model sequential dependencies over time.
+Tesseract v4 integrated a Long Short-Term Memory (LSTM) model, a specialized type of RNN, to recognize entire lines of text instead of individual characters \parencite{tesseract-2025}.
+By combining CNNs for feature extraction and RNNs for sequence modeling, \textcite{shi-etal-2015} proposed the Convolutional Recurrent Neural Network (CRNN), which significantly improved text recognition accuracy in end-to-end OCR systems.
+
+More recently, transformer-based models have emerged as a powerful alternative.
+Unlike CNNs and RNNs, transformers process entire input sequences in parallel using self-attention mechanisms, which allows them to capture long-range dependencies in text images more efficiently \parencite{vaswani-2017}.
+This approach avoids image-specific inductive biases present in CNNs, such as the assumption that neighboring pixels are relevant.
+TrOCR, an end-to-end model that combines an image transformer and a separate text transformer, demonstrates another advantage of transformers: the ability to leverage self-supervised pre-training \parencite{li-etal-2021}. 
+Since transformers can be pre-trained individually to learn useful patterns from unlabeled images and text, there is less reliance on manually annotated OCR training data to achieve high accuracy.
+Going beyond traditional text recognition, General OCR Theory (GOT) extends character recognition capabilities to non-text elements, such as sheet music, charts, and geometric shapes \parencite{wei-etal-2024}.
+By extending the character recognition abilities of Large Visual-Language Models (LVLMs), GOT seeks to address the bottlenecks of traditional OCR systems, which often struggle with generalization.
+As transformer-based OCR continues to evolve, these models are expected to push the boundaries of text recognition, enabling more flexible and adaptable OCR systems for diverse applications.
+
+\subsection{Benchmarking OCR}
+
+To evaluate OCR performance accurately, a collection of textual data in the form of images or PDFs paired with reliable ground truth is needed. 
+Applying OCR yields a plain text prediction, which is then compared with the ground truth data to assess the tool’s accuracy and performance.
 
 \section{OCR on Low-resource Languages}
-
-Applying OCR yields a plain text prediction, which is then compared with the ground truth data to assess the tool’s accuracy and performance.
-Recent studies have demonstrated that OCR systems tend to perform better on artificially generated data than on real-world data \parencite{ignat-etal-2022}.
-This observation suggests that synthetic datasets may not fully capture the complexities of authentic documents, which often feature issues like imperfect text alignment, varied fonts, and complex layouts.
-Furthermore, the addition of synthetic noise significantly raises error rates, especially for open-source systems, which appear more susceptible to noise interference than their commercial counterparts \parencite{hegghammer-2022}.
 
 When comparing performance on different scripts, OCR tools generally achieve higher accuracy on scripts written in Latin alphabets \parencite{hegghammer-2022, ignat-etal-2022}.
 This disparity in performance partly stems from market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement for Latin-based scripts. 
@@ -114,9 +145,14 @@ This discrepancy underscores the need for more real-world training data to impro
 In summary, there exists a gap in benchmarking OCR specifically for SEA languages, largely due to the lack of real-world training data.
 This project addresses this gap by proposing a reusable pipeline for benchmarking OCR performance on real-world SEA-language data sourced from Wikipedia.
 
+\begin{itemize}
+    \item Most of current research is focused on high-resource languages like English
+    \item Main problem for doing OCR on low-resource languages is the lack of data
+    \item what are some challenges? (Agarwal and Anastasopoulos, 2024),(Magueresse et al., 2020)
+\end{itemize}
+
 \section{Using Synthetic Data for OCR Evaluation}
 
-To evaluate OCR performance accurately, a collection of textual data in the form of images or PDFs paired with reliable ground truth is needed.
 Similar to most NLP tasks, data scarcity poses a major obstacle to advancing OCR technology in low-resource languages, where the limited availability of annotated textual data restricts both model training and evaluation.
 Although an abundance of scanned documents in these low-resource languages exists online, they lack the ground truth required for evaluation.
 While plain text in these languages is often available separately, it typically exists in text-based formats rather than images or PDFs, limiting its direct usefulness as ground truth for OCR.
@@ -131,7 +167,18 @@ Directly using noise-free data, i.e., single-column text in a clear font, limits
 Thus, noise augmentation is often applied to artificial data.
 Some popular techniques include changing font style, size, color, letter spacing, and adding Gaussian blur, bleed-through, and salt-and-pepper noise \parencite{gupte-etal-2021, ignat-etal-2022}.
 
+(Bustamante et al., 2020)
+
+Recent studies have demonstrated that OCR systems tend to perform better on artificially generated data than on real-world data \parencite{ignat-etal-2022}.
+This observation suggests that synthetic datasets may not fully capture the complexities of authentic documents, which often feature issues like imperfect text alignment, varied fonts, and complex layouts.
+Furthermore, the addition of synthetic noise significantly raises error rates, especially for open-source systems, which appear more susceptible to noise interference than their commercial counterparts \parencite{hegghammer-2022}.
+
+
 \section{Fine-tuning OCR Systems}
+
+\begin{itemize}
+    \item GOT: no specific fine-tuning, but crawled PDF data may contain other languages -> GOT seeming to have ability to recognize other languages
+\end{itemize}
 
 \chapter{Methodology}
 
