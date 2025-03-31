@@ -98,7 +98,7 @@ While effective for structured text, these traditional approaches struggled with
 The rise of deep learning brought significant advancements in OCR.
 Convolutional Neural Networks (CNNs) improve feature extraction by automatically detecting edges, textures, and shapes within text images.
 Unlike traditional handcrafted features, CNNs learn visual patterns by applying small filters across an image. 
-The CRAFT algorithm, for example, uses a fully convolutional network to achieve state-of-the-art character localization \parencite{baek-etal-2019}.
+The Character Region Awareness for Text Detection (CRAFT) algorithm, for example, uses a fully convolutional network to achieve state-of-the-art character localization \parencite{baek-etal-2019}.
 For text transcription, Recurrent Neural Networks (RNNs) have been widely adopted due to their ability to model sequential dependencies over time.
 Tesseract v4 integrated a Long Short-Term Memory (LSTM) model, a specialized type of RNN, to recognize entire lines of text instead of individual characters \parencite{tesseract-2025}.
 By combining CNNs for feature extraction and RNNs for sequence modeling, \textcite{shi-etal-2015} proposed the Convolutional Recurrent Neural Network (CRNN), which significantly improved text recognition accuracy in end-to-end OCR systems.
@@ -145,9 +145,18 @@ For instance, \textcite{parres-and-paredes-2023} demonstrated that transformer-b
 Similarly, \textcite{laurent-and-lauar-2024} fine-tuned the English TrOCR model for Spanish text, yielding strong results.
 Fine-tuning thus provides an effective strategy for overcoming the scarcity of labeled data in new OCR domains, particularly for low-resource languages, while maintaining high accuracy.
 
+% TODO: Add techniques for fine-tuning?
+% TODO: Add how my research addresses previous works' limitations
+
 \chapter{Methodology}
 
-To answer the research questions, this study conducts three experiments to benchmark and improve OCR performance on SEA languages.
+To answer the research questions, this study conducts the following three experiments to benchmark and improve OCR performance on SEA languages:
+
+\begin{itemize}
+    \item \textbf{Experiment 1:} Benchmarking on Real-world Data
+    \item \textbf{Experiment 2:} Benchmarking on Synthetic Data
+    \item \textbf{Experiment 3:} Fine-tuning for Vietnamese and Thai
+\end{itemize}
 
 \section{Experiment Setup}
 
@@ -185,24 +194,40 @@ While this study covers only a small fraction of the languages spoken in SEA, th
 To collect textual data, this study uses Wikipedia due to its accessibility and multilingual scope.
 Wikipedia articles can be converted into images via screenshots, simulating real-world OCR scenarios. 
 The platform also offers a convenient Application Programming Interface (API) that allows retrieval of plain text from most articles, serving as a reliable reference for evaluating OCR accuracy and generating synthetic documents.
-Moreover, the availability of large corpora in various SEA languages, including Thai, Vietnamese, Indonesian, Tamil, and Burmese, makes Wikipedia suitable for this study's language needs \parencite{list-of-wikipedias-2024}. 
+Moreover, the availability of large corpora in various SEA languages, including Thai, Vietnamese, Indonesian, Tamil, and Burmese, makes Wikipedia suitable for this study's language needs \parencite{list-of-wikipedias-2024}.
 
 \subsection{OCR Systems}
 
-In our selection of OCR systems for benchmarking, we prioritize open-source 
-solutions that support a diverse range of SEA languages, promoting accessibility and reusability for the proposed evaluation pipeline. 
+In our selection of OCR systems for benchmarking, we prioritize open-source solutions that support a diverse range of SEA languages, promoting accessibility and reusability for the proposed evaluation pipeline. 
 Additionally, we aim to include models with different underlying architectures, enabling a more comprehensive assessment of their performance across different languages.
-Consequently, we selected EasyOCR, Tesseract, and GOT, each representing distinct modeling approaches to OCR.
+Consequently, we selected EasyOCR, Tesseract, and General OCR Theory (GOT), each open-source and representing distinct modeling approaches to OCR.
 
-EasyOCR\footnote{\url{https://github.com/JaidedAI/EasyOCR}} is a modern OCR framework that integrates a text detection model 
-based on the Character Region Awareness for Text (CRAFT) algorithm with a 
-recognition model utilizing a Convolutional Recurrent Neural Network (CRNN).
+\begin{table}[ht]
+    \centering
+    \caption{Benchmarked OCR Systems}
+    \label{table:ocr-systems}
+    \begin{tabular}{llll}
+        \toprule
+        & Architecture & \# Supported Languages\\ 
+        \midrule
+        EasyOCR & CRAFT + CRNN & 83 (includes all benchmarked languages) & \\
+        Tesseract & LSTM & 116 (includes all benchmarked languages)\\
+        GOT & VED & 2 (English and Simplified Chinese)\\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Tesseract\footnote{\url{https://github.com/tesseract-ocr/tesseract}} is an established OCR engine, recognized as one of the top performers in the 1995 UNLV Test \parencite{rice-etal-1995}. It utilizes an underlying Long Short-Term Memory (LSTM) model. 
+EasyOCR is a modern OCR framework that integrates a text detection model based on the Character Region Awareness for Text Detection (CRAFT) algorithm with a recognition model utilizing a Convolutional Recurrent Neural Network (CRNN) \parencite{easy-ocr-2025}.
+Readily available as a Python package, EasyOCR supports 83 languages, including English, Indonesian, Vietnamese, and Thai.
 
-Both EasyOCR and Tesseract provide robust support for English, Indonesian, Vietnamese, and Thai, making them suitable candidates for our benchmarking study.
+Tesseract is one of the most well-known open-source OCR engines. Since releasing version 4 in 2018, Tesseract uses an underlying Long Short-Term Memory (LSTM) model for line recognition \parencite{tesseract-2025}.
+Similar to EasyOCR, Tesseract is accessible via a Python package and supports the four chosen languages in this study 
 
-% Add introduction to GOT
+GOT is a transformer-based model designed to recognize artificial characters beyond traditional text, such as sheet music, mathematical equations, and charts \parencite{wei-etal-2024}. 
+Using a Vision Encoder Decoder (VED) architecture with 580 million parameters, GOT fine-tunes ViTDeT\footnote{ViTDeT is an object detection model using the Vision Transformer (ViT) as a backbone network \parencite{li-etal-2022}.} as its vision encoder and Qwen-0.5B\footnote{Qwen-0.5B is a Large Language Model (LLM) with 500 million parameters developed by Alibaba Cloud \parencite{qwen-2025}.} as its language decoder. 
+GOT is conveniently available on Hugging Face\footnote{\url{https://huggingface.co/stepfun-ai/GOT-OCR2_0}}.
+While GOT officially supports only English and Simplified Chinese, it does not support Indonesian, Vietnamese, or Thai. 
+This study seeks to address this limitation by fine-tuning GOT on these languages in Section \ref{section:experiment-3}.
 
 \subsection{Evaluation Metrics}
 
@@ -218,7 +243,7 @@ and substitutions (S) required to transform one word into another.
 As shown in Equation \ref{equation:cer}, CER is defined as the edit distance between the OCR-predicted text and ground truth text, divided by the total number of characters in the ground truth text (N). 
 A lower CER value indicates higher accuracy, with 0 representing perfect recognition. Notably, CER can exceed 1 when there is a significant number of insertions. WER serves as the word-based counterpart to CER.
 
-\section{Experiment 1: Benchmarking on Real Data}
+\section{Experiment 1: Benchmarking on Real-world Data}
 
 \subsection{Data Collection}
 
@@ -249,7 +274,7 @@ for data collection. The detailed steps are as follows:
 
 \subsection{Synthetic Data Generation}
 
-\section{Experiment 3: Fine-tuning for Vietnamese and Thai}
+\section{Experiment 3: Fine-tuning for Vietnamese and Thai} \label{section:experiment-3}
 
 \chapter{Results and Analysis}
 
