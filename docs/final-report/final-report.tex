@@ -128,7 +128,7 @@ This discrepancy underscores the need for more diverse and realistic training da
 To bridge the gap in data availability, many studies rely on artificial images and PDFs generated from plain text to create evaluation datasets.
 For instance, \textcite{ignat-etal-2022} generated synthetic PDFs from the Flores 101 dataset, which consists of text from Wikipedia in 101 languages.
 Expanding on this approach, \textcite{gupte-etal-2021} developed an open-source Python package that creates document images from plain text, incorporating several document styling templates.
-These methods enable the large-scale generation of high-quality low-resource language data with corresponding ground truth annotations.
+These methods enable the large-scale generation of high-quality, low-resource language data with corresponding ground truth annotations.
 
 However, one challenge with artificial datasets is their tendency to lack the imperfections found in real-world documents. 
 Real-world scanned documents often feature complex layouts, stains, and handwritten scribbles \parencite{hegghammer-2022}. 
@@ -139,9 +139,11 @@ These modifications help artificial datasets better approximate the challenges o
 
 \section{Fine-tuning OCR Systems}
 
-\begin{itemize}
-    \item GOT: no specific fine-tuning, but crawled PDF data may contain other languages -> GOT seeming to have ability to recognize other languages
-\end{itemize}
+To enhance OCR performance in new domains with limited labeled data, many studies explore fine-tuning, or further training pre-trained models on a smaller, task-specific dataset. 
+Instead of training from scratch, fine-tuning updates a model's existing weights, allowing it to adapt to new datasets while retaining prior knowledge. 
+For instance, \textcite{parres-and-paredes-2023} demonstrated that transformer-based models can successfully adapt to new languages and historical documents with minimal training data, achieving competitive OCR performance. 
+Similarly, \textcite{laurent-and-lauar-2024} fine-tuned the English TrOCR model for Spanish text, yielding strong results.
+Fine-tuning thus provides an effective strategy for overcoming the scarcity of labeled data in new OCR domains, particularly for low-resource languages, while maintaining high accuracy.
 
 \chapter{Methodology}
 
