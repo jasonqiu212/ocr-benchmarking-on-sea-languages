@@ -245,7 +245,8 @@ WER serves as the word-based counterpart to CER.
 
 \section{Experiment 1: Benchmarking on Real-world Data} \label{section:experiment-1}
 
-Experiment 1 benchmarks OCR systems using screen-captured, real-world data from Wikipedia. Unlike synthetic data, these screenshots contain formatting variations and complex layouts that better reflect real-world OCR challenges. 
+To explore the performance of OCR tools on SEA scripts (RQ1), Experiment 1 benchmarks OCR systems using screen-captured, real-world data from Wikipedia.
+Unlike synthetic data, these screenshots contain formatting variations and complex layouts that better reflect real-world OCR challenges. 
 This approach ensures that the evaluation closely mirrors practical use cases, where OCR tools must handle noisy and visually complex text.
 
 \subsection{Data Collection}
@@ -273,7 +274,7 @@ for data collection. The detailed steps are as follows:
     \item Manually compile the dataset’s article names and URLs in English.
     \item Fetch the article names and URLs in Thai, Vietnamese, and Indonesian from the MediaWiki Action API.
     \item Download the article PDFs in all languages using Selenium.
-    \item Convert the article PDFs into PNG images, where each image represents one page in the PDF.
+    \item Convert the article PDFs into PNG images, with each image representing one page of the PDF.
     \item Download the ground truth article text into TXT files from the MediaWiki Action API.
 \end{enumerate}
 
@@ -322,12 +323,38 @@ of seven articles where the images and ground truth texts contained different co
 
 \section{Experiment 2: Benchmarking on Synthetic Data}
 
-
-
-% TODO: add motivation for benchmarking on synthetic data
-% - more control over the noise of data
+Unlike Experiment 1, Experiment 2 generates images from plain text for benchmarking. 
+This approach allows us to introduce controlled distortions to the dataset, enabling an analysis of OCR robustness against noise on SEA languages and offering a different perspective on RQ1.
+Additionally, using synthetic data minimizes annotation errors, allowing us to better isolate script-related errors (RQ2).
 
 \subsection{Synthetic Data Generation}
+
+Using the article text collected from Experiment 1, we generated synthetic article images with Python and WeasyPrint\footnote{\url{https://pypi.org/project/weasyprint/}}, a Python package for converting HTML pages into PDF documents.
+To introduce font noise into the dataset, we randomly applied HTML tags to a specified ratio of space-separated words.
+For instance, a \texttt{<b>} tag could be added randomly to make words appear in bold.
+The following steps summarizes the process of data generation:
+
+\begin{enumerate}
+    \item If noise is needed, randomly apply HTML tags to a specified ratio of space-separated words.
+    \item Generate synthetic article PDFs using the ground truth text collected from Experiment 1 with WeasyPrint.
+    \item Convert the article PDFs into PNG images, with each image representing one page of the PDF.
+\end{enumerate}
+
+\subsection{OCR Evaluation on Different Types of Noise}
+
+\begin{itemize}
+    \item Goal: Understand how different types of noise impact OCR performance (RQ1)
+    \item what i did: generate images with no noise as baseline, bold, italic, link and heading
+    \item why these noises?
+    \item summary of generated datasets and running the ocr tools (quite similar to what was described in experiment 1)
+\end{itemize}
+
+\subsection{Error Classification by Character Type}
+
+\begin{itemize}
+    \item Goal: 
+    \item From the results generated from running OCR tools on the baseline images with no noise, I compared the predicted text and the ground truth using the diffchecker
+\end{itemize}
 
 \section{Experiment 3: Fine-tuning for Vietnamese and Thai} \label{section:experiment-3}
 
@@ -479,6 +506,20 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 \end{table}
 
 \section{RQ3: What techniques and recommendations can enhance OCR accuracy on SEA languages?}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/fine-tuned-got-vietnamese.png}
+    \caption{Performance of fine-tuned GOT on Vietnamese}
+    \label{figure:fine-tuned-got-vietnamese}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/fine-tuned-got-thai.png}
+    \caption{Performance of fine-tuned GOT on Thai}
+    \label{figure:fine-tuned-got-thai}
+\end{figure}
 
 \chapter{Discussion}
 
