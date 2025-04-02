@@ -27,7 +27,7 @@ def prepare_dataset(source_path: str, output_file_name: str):
         json.dump(dataset, output_file, ensure_ascii=False)
 
 
-def train_test_split_from_dataset(source_path: str, dataset_file_name: str, num_of_test_samples: float):
+def train_test_split_from_dataset(source_path: str, dataset_file_name: str, num_of_test_samples: int):
     with open(f'{source_path}/{dataset_file_name}', 'r') as dataset_file:
         data = json.load(dataset_file)
 
@@ -42,7 +42,7 @@ def train_test_split_from_dataset(source_path: str, dataset_file_name: str, num_
             json.dump(test_dataset, test_dataset_file, ensure_ascii=False)
 
 
-def select_samples_from_dataset(source_path: str, dataset_file_name: str, num_of_samples: str):
+def select_samples_from_dataset(source_path: str, dataset_file_name: str, num_of_samples: int):
     with open(f'{source_path}/{dataset_file_name}', 'r') as dataset_file:
         data = json.load(dataset_file)
 
