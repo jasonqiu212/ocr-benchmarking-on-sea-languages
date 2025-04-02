@@ -7,10 +7,17 @@
 
 source sample/bin/activate
 
+# CUDA_VISIBLE_DEVICES=0 swift infer \
+#     --adapters output/GOT-OCR2_0/v0-20250319-105430/checkpoint-1212 \
+#     --infer_backend pt \
+#     --max_batch_size 1 \
+#     --load_data_args true
+
 CUDA_VISIBLE_DEVICES=0 swift infer \
-    --adapters output/GOT-OCR2_0/v0-20250319-105430/checkpoint-1212 \
+    --adapters output/GOT-OCR2_0/v6-20250402-172039/checkpoint-150 \
     --infer_backend pt \
     --max_batch_size 1 \
-    --load_data_args true
+    --load_data_args true \
+    --val_dataset ../finetuning/datasets/vietnamese/vietnamese-test-dataset.json
 
 deactivate
