@@ -112,16 +112,23 @@ Going beyond traditional text recognition, General OCR Theory (GOT) is another t
 By integrating Large Visual-Language Models (LVLMs), GOT seeks to address the bottlenecks of traditional OCR systems, which often struggle with generalization.
 As transformer-based OCR continues to evolve, these models are expected to push the boundaries of text recognition, enabling more flexible and adaptable OCR systems for diverse applications.
 
+While deep learning techniques for OCR have been widely studied, there is still limited research focused on the performance of transformer-based OCR models, particularly for SEA languages.
+Our research compares the performance of various OCR tools, including those using transformer-based architectures, on SEA languages. 
+In doing so, we aim to explore how these models handle text recognition in more complex and diverse linguistic contexts.
+
 \section{Benchmarking OCR on Low-resource Languages}
 
 To evaluate OCR performance accurately, textual data in the form of images or PDFs paired with reliable ground truth is essential. 
 Similar to most NLP tasks, data scarcity poses a major obstacle to advancing OCR technology in low-resource languages. The limited availability of annotated textual data restricts both model training and evaluation, leading to disparities in OCR accuracy across different scripts.
-OCR tools generally perform better on Latin-based scripts \parencite{hegghammer-2022, ignat-etal-2022}, partly due to market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement. Beyond data availability, the complexity of scripts with ornate diacritics or unique letter shapes often yield lower OCR accuracy \parencite{agarwal-and-anastasopoulos-2024}.
+OCR tools generally perform better on Latin-based scripts \parencite{hegghammer-2022}, partly due to market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement.
+Beyond data availability, the complexity of scripts with ornate diacritics or unique letter shapes often yield lower OCR accuracy \parencite{agarwal-and-anastasopoulos-2024}.
 
 A recent study by \textcite{ignat-etal-2022} provides the most relevant benchmarking of OCR on SEA languages.
 Their benchmark grouped 60 low-resource languages by region and script, including SEA languages such as Khmer, Lao, Burmese, Thai, and Vietnamese.
-They found that while OCR models perform well on synthetic SEA-language data, their accuracy drops significantly on real-world data.
+They found that OCR tools perform best on Latin and Cyrillic scripts, with only average performance on SEA languages, supporting \textcite{hegghammer-2022}'s findings.
+Additionally, \textcite{ignat-etal-2022} showed that while OCR models perform well on synthetic SEA-language data, their accuracy drops significantly on real-world data.
 This discrepancy underscores the need for more diverse and realistic training datasets to improve OCR outcomes for SEA languages.
+Our research aims to address this gap by developing a reusable pipeline for both collecting real-world data and generating synthetic data.
 
 \section{Using Synthetic Data for OCR Evaluation}
 
@@ -136,17 +143,15 @@ Studies have shown that OCR systems often perform better on synthetic datasets t
 To address this, researchers frequently apply noise augmentation to synthetic documents. 
 Common techniques include changing the font style, size, color, and letter spacing, as well as adding Gaussian blur, bleed-through effects, and salt-and-pepper noise \parencite{gupte-etal-2021, ignat-etal-2022}.
 These modifications help artificial datasets better approximate the challenges of real-world OCR tasks.
+Our study adopts similar techniques by generating and benchmarking on synthetic data with noise, aiming to better simulate the imperfections found in real-world documents.
 
 \section{Fine-tuning OCR Systems}
 
 To enhance OCR performance in new domains with limited labeled data, many studies explore fine-tuning, or further training pre-trained models on a smaller, task-specific dataset. 
 Instead of training from scratch, fine-tuning updates a model's existing weights, allowing it to adapt to new datasets while retaining prior knowledge. 
-For instance, \textcite{parres-and-paredes-2023} demonstrated that transformer-based models can successfully adapt to new languages and historical documents with minimal training data, achieving competitive OCR performance. 
+For instance, \textcite{parres-and-paredes-2023} demonstrated that transformer-based models can successfully adapt to new languages and historical documents with minimal training data, achieving competitive OCR performance.
 Similarly, \textcite{laurent-and-lauar-2024} fine-tuned the English TrOCR model for Spanish text, yielding strong results.
-Fine-tuning thus provides an effective strategy for overcoming the scarcity of labeled data in new OCR domains, particularly for low-resource languages, while maintaining high accuracy.
-
-% TODO: Add techniques for fine-tuning?
-% TODO: Add how my research addresses previous works' limitations
+Fine-tuning thus offers a promising strategy for our research to overcome the scarcity of labeled data in low-resource languages while achieving high accuracy.
 
 \chapter{Methodology}
 
@@ -450,7 +455,7 @@ This approach allows for efficient fine-tuning with reduced memory and computati
 
 \subsection{OCR Evaluation on Fine-tuned GOT}
 
-We ran each fine-tuned GOT model on the test dataset and evaluated their performance, following the approach described in section \ref{section:ocr-evaluation}.
+We ran each fine-tuned GOT model on the test dataset and evaluated their performance, following the approach described in Section \ref{section:ocr-evaluation}.
 We also ran EasyOCR and Tesseract on the test dataset for comparison.
 
 \chapter{Results and Analysis}
