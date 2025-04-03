@@ -468,14 +468,13 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 
 \begin{table}[ht]
     \centering
-    \caption{Average CER and WER on real-world data}
+    \caption{Average Character and Word Error Rate on real-world data}
     \label{table:ocr-accuracy-on-real-world-data}
     \begin{tabular}{lcccccc}
         \toprule
-        & \multicolumn{3}{c}{\textbf{CER}} & \multicolumn{3}{c}{\textbf{WER}}\\
+        & \multicolumn{3}{c}{Character Error Rate} & \multicolumn{3}{c}{Word Error Rate}\\
         \cmidrule(lr){2-4}\cmidrule(lr){5-7}
         & EasyOCR & Tesseract & GOT & EasyOCR & Tesseract & GOT\\
-        \midrule
         English & \\
         \midrule
         Indonesian & \\
@@ -485,23 +484,81 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
     \end{tabular}
 \end{table}
 
+\begin{itemize}
+    \item from experiment 1
+\end{itemize}
+
 \subsection{OCR Accuracy on Synthetic Data}
 
 \begin{table}[ht]
     \centering
-    \caption{Average CER and WER on synthetic data}
+    \caption{Average Character and Word Error Rate on synthetic data}
     \label{table:ocr-accuracy-on-synthetic-data}
     \begin{tabular}{lcccccc}
         \toprule
-        & \multicolumn{3}{c}{\textbf{CER}} & \multicolumn{3}{c}{\textbf{WER}}\\
+        & \multicolumn{3}{c}{Character Error Rate} & \multicolumn{3}{c}{Word Error Rate}\\
         \cmidrule(lr){2-4}\cmidrule(lr){5-7}
         & EasyOCR & Tesseract & GOT & EasyOCR & Tesseract & GOT\\
         \midrule
-        English & 0.03 & 0.09 & 0.02 & 0.04 & 0.01 & 0.04\\
+        English & 0.03 & 0.02 & \textbf{0.01} & 0.09 & \textbf{0.04} & \textbf{0.04}\\
+        Indonesian & 0.02 & 0.02 & \textbf{0.01} & 0.09 & 0.06 & \textbf{0.05}\\
+        Vietnamese & 0.10 & \textbf{0.03} & - & 0.17 & \textbf{0.04} & -\\
+        Thai & \textbf{0.07} & 0.09 & - & 0.68 & \textbf{0.64} & -\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{itemize}
+    \item from experiment 2
+\end{itemize}
+
+\subsection{Impact of Noise on OCR Accuracy}
+
+\begin{table}[ht]
+    \centering
+    \caption{EasyOCR}
+    \label{table:noise-easy-ocr}
+    \begin{tabular}{lrrrrr}
+        \toprule
+        & No Noise & Bold & Italic & Link & Heading\\
+        & CER & \% Change & \% Change & \% Change & \% Change\\
         \midrule
-        Indonesian & 0.03 & 0.09 & 0.02 & 0.06 & 0.01 & 0.05\\
-        Vietnamese & 0.10 & 0.17 & 0.03 & 0.04 & - & -\\
-        Thai & 0.07 & 0.68 & 0.09 & 0.64 & - & -\\
+        English & 0.03 & \greentc{-7.1\%} & 0.0\% & \redtc{3.6\%} & \greentc{-7.1\%}\\
+        Indonesian & 0.02 & \greentc{-5.6\%} & 0.0\% & \redtc{22.2\%} & \greentc{-5.6\%}\\
+        Vietnamese & 0.10 & \greentc{-1.0\%} & \greentc{-1.9\%} & \greentc{-6.7\%} & \greentc{-11.5\%}\\
+        Thai & 0.07 & 0.0\% & 0.0\% & \redtc{7.2\%} & 0.0\%\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \caption{Tesseract}
+    \label{table:noise-tesseract}
+    \begin{tabular}{lrrrrr}
+        \toprule
+        & No Noise & Bold & Italic & Link & Heading\\
+        & CER & \% Change & \% Change & \% Change & \% Change\\
+        \midrule
+        English & 0.02 & \greentc{-4.2\%} & 0.0\% & 0.0\% & \redtc{8.3\%}\\
+        Indonesian & 0.02 & 0.0\% & 0.0\% & 0.0\% & \redtc{21.7\%}\\
+        Vietnamese & 0.03 & 0.0\% & \redtc{3.8\%} & \redtc{3.8\%} & \redtc{26.9\%}\\
+        Thai & 0.09 & \redtc{3.2\%} & 0.0\% & \redtc{5.4\%} & \redtc{4.3\%}\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \caption{GOT}
+    \label{table:noise-got}
+    \begin{tabular}{lrrrrr}
+        \toprule
+        & No Noise & Bold & Italic & Link & Heading\\
+        & CER & \% Change & \% Change & \% Change & \% Change\\
+        \midrule
+        English & 0.01 & \redtc{27.3\%} & \redtc{36.4\%} & \greentc{-18.2\%} & \redtc{218.2\%}\\
+        Indonesian & 0.01 & \redtc{9.1\%} & \redtc{18.2\%} & \redtc{36.4\%} & \redtc{63.6\%}\\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -516,10 +573,10 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
         \toprule
         & EasyOCR & Tesseract & GOT\\ 
         \midrule
-        English & 3.23 & 11.68 & 24.35\\
-        Indonesian & 2.92 & 13.19 & 31.44\\
-        Vietnamese & 3.91 & 11.80 & -\\
-        Thai & 2.32 & 16.76 & -\\
+        English & \textbf{3.2} & 11.7 & 24.3\\
+        Indonesian & \textbf{2.9} & 13.2 & 31.4\\
+        Vietnamese & \textbf{3.9} & 11.8 & -\\
+        Thai & \textbf{2.3} & 16.8 & -\\
         \bottomrule
     \end{tabular}
 \end{table}

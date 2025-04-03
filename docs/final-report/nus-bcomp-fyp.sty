@@ -15,6 +15,8 @@
 \RequirePackage[style=apa, backend=biber]{biblatex}
 
 \definecolor{DarkBlue}{RGB}{0, 42, 97}
+\definecolor{Green}{RGB}{57, 126, 73}
+\definecolor{Red}{RGB}{182, 68, 51}
 
 \hypersetup{
     colorlinks=true,    % Enables colored links
@@ -92,3 +94,6 @@
 % Table of contents styling
 \renewcommand{\contentsname}{Table of Contents}
 \settocdepth{subsection}
+
+\newcommand{\greentc}[1]{\textbf{\textcolor{Green}{#1}}}  % Green for positive values
+\newcommand{\redtc}[1]{\textcolor{Red}{#1}}  % Red for negative values
