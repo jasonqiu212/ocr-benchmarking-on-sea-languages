@@ -75,7 +75,7 @@ Specifically, this project seeks to answer the following research questions (RQs
 \begin{itemize}
     \item \textbf{RQ1:} How do popular OCR tools perform on SEA scripts?
     \item \textbf{RQ2:} What script-related challenges affect OCR accuracy on SEA languages?
-    \item \textbf{RQ3:} What techniques and recommendations can enhance OCR accuracy on SEA languages?
+    \item \textbf{RQ3:} What fine-tuning techniques can enhance OCR accuracy on SEA languages?
 \end{itemize}
 
 \chapter{Related Work}
@@ -279,6 +279,14 @@ for data collection. The detailed steps are as follows:
 \end{enumerate}
 
 The end result is a real-world Wikipedia dataset with 3,590 English images, 1,450 Indonesian images, 1,925 Vietnamese images, and 1,011 Thai images.
+Figure \ref{figure:real-world-data} presents sample collected images.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.65\textwidth]{images/real-world-data.png}
+    \caption{Sample English and Thai images collected from Wikipedia}
+    \label{figure:real-world-data}
+\end{figure}
 
 \subsection{OCR Evaluation} \label{section:ocr-evaluation}
 
@@ -345,8 +353,6 @@ The following steps summarizes the process of data generation:
 To investigate how different types of noise impact OCR performance (RQ1), we generated separate datasets, each containing a specific type of noise: bold, italic, link, or heading. 
 The noise was randomly applied to a specified percentage of words in each dataset. 
 Additionally, a control dataset without noise was created for comparison.
-Table \ref{table:noises} summarizes the noise types, their corresponding HTML tags, and the percentage of words affected.
-Figure \ref{figure:noises} presents a sample synthetic image with different types of noise.
 
 \begin{table}[ht]
     \centering
@@ -365,9 +371,14 @@ Figure \ref{figure:noises} presents a sample synthetic image with different type
     \end{tabular}
 \end{table}
 
+Table \ref{table:noises} summarizes the noise types, their corresponding HTML tags, and the percentage of words affected.
+A smaller ratio was applied for headings because headings typically appear less frequently in natural text compared to other formatting elements like bold or italics.
+Limiting the number of headings also helped reduce the number of pages generated, ensuring a more manageable dataset size.
+Figure \ref{figure:noises} presents a sample synthetic image with different types of noise.
+
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/noises.png}
+    \includegraphics[width=0.7\textwidth]{images/noises.png}
     \caption{Sample synthetic image with different types of noise}
     \label{figure:noises}
 \end{figure}
@@ -408,10 +419,39 @@ Using OCR results from the control dataset without noise, we categorized misclas
     \end{tabular}
 \end{table}
 
-We used the Levenshtein\footnote{\url{https://pypi.org/project/Levenshtein/}}Python package to identify edit operations (insertions, deletion, and substitutions) and classified misrecognized characters using RegEx\footnote{\url{https://docs.python.org/3/library/re.html}}. 
+We used the Levenshtein\footnote{\url{https://pypi.org/project/Levenshtein/}} Python package to identify edit operations (insertions, deletion, and substitutions) and classified misrecognized characters using RegEx\footnote{\url{https://docs.python.org/3/library/re.html}}. 
 Table \ref{table:character-types} lists the character types we analyzed, with all uncategorized characters grouped under "Other".
 
 \section{Experiment 3: Fine-tuning for Vietnamese and Thai} \label{section:experiment-3}
+
+To explore how fine-tuning can enhance OCR accuracy on SEA languages (RQ3), Experiment 3 fine-tunes GOT for Vietnamese and Thai and compares the fine-tuned model with EasyOCR and Tesseract. 
+We chose to fine-tune for Vietnamese and Thai because GOT does not natively support these languages. 
+Although GOT does not support Indonesian, we did not fine-tune for it, since the model already achieves state-of-the-art results for Indonesian, as demonstrated in Experiment 1 (See Section ). 
+
+\subsection{Fine-tuning GOT}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/fine-tuning.png}
+    \caption{Pipeline for fine-tuning GOT}
+    \label{figure:fine-tuning}
+\end{figure}
+
+Fine-tuning our model effectively required a large volume of high-quality data. 
+To ensure the reliability of our training data, we generated additional synthetic data without noise. 
+After collecting more plain text from Wikipedia, we created 960 images for training and 50 images for testing, for both Vietnamese and Thai.
+To investigate how much training data is needed for effective fine-tuning, we randomly selected samples from the training dataset to create datasets with 50, 100, 200, 400, and 960 images. 
+These sample sizes were chosen to follow an increasing scale, approximating diminishing returns as data size increases.
+For each dataset, the same base model (GOT) was fine-tuned for three epochs, resulting in different fine-tuned models based on the varying dataset sizes.
+
+For fine-tuning, we used SWIFT\footnote{\url{https://github.com/modelscope/ms-swift}}, a user-friendly framework that supports fine-tuning GOT\footnote{\url{https://github.com/modelscope/ms-swift/issues/2122}}. 
+Using a single NVIDIA Titan V GPU on the SoC Compute Cluster, we fine-tuned our model using Low-Rank Adaptation (LoRA), which optimizes only small adapter layers while keeping the pre-trained model weights frozen \parencite{hu-etal-2021}.
+This approach allows for efficient fine-tuning with reduced memory and computational costs.
+
+\subsection{OCR Evaluation on Fine-tuned GOT}
+
+We ran each fine-tuned GOT model on the test dataset and evaluated their performance, following the approach described in section \ref{section:ocr-evaluation}.
+We also ran EasyOCR and Tesseract on the test dataset for comparison.
 
 \chapter{Results and Analysis}
 
@@ -509,7 +549,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
     \label{figure:error-classification-thai}
 \end{figure}
 
-\section{RQ3: What techniques and recommendations can enhance OCR accuracy on SEA languages?}
+\section{RQ3: What fine-tuning techniques can enhance OCR accuracy on SEA languages?}
 
 \begin{figure}[ht]
     \centering
