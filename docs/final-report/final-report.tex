@@ -280,7 +280,7 @@ for data collection. The detailed steps are as follows:
 
 The end result is a real-world Wikipedia dataset with 3,590 English images, 1,450 Indonesian images, 1,925 Vietnamese images, and 1,011 Thai images.
 
-\subsection{OCR Evaluation}
+\subsection{OCR Evaluation} \label{section:ocr-evaluation}
 
 \begin{figure}[ht]
     \centering
@@ -342,12 +342,43 @@ The following steps summarizes the process of data generation:
 
 \subsection{OCR Evaluation on Different Types of Noise}
 
-\begin{itemize}
-    \item Goal: Understand how different types of noise impact OCR performance (RQ1)
-    \item what i did: generate images with no noise as baseline, bold, italic, link and heading
-    \item why these noises?
-    \item summary of generated datasets and running the ocr tools (quite similar to what was described in experiment 1)
-\end{itemize}
+To investigate how different types of noise impact OCR performance (RQ1), we generated separate datasets, each containing a specific type of noise: bold, italic, link, or heading. 
+The noise was randomly applied to a specified percentage of words in each dataset. 
+Additionally, a control dataset with no noise was created for comparison.
+Table \ref{table:noises} summarizes the noise types, their corresponding HTML tags, and the percentage of words affected.
+Figure \ref{figure:noises} presents a sample synthetic image with different types of noise.
+
+\begin{table}[ht]
+    \centering
+    \caption{Types of noise applied}
+    \label{table:noises}
+    \begin{tabular}{lcc}
+        \toprule
+        & HTML Tag & Ratio\\
+        \midrule
+        Bold & \texttt{<b>} & 0.3\\
+        Italic & \texttt{<i>} & 0.3\\
+        Link & \texttt{<a>} & 0.3\\
+        Heading & \texttt{<h1>} & 0.03\\
+        No noise & - & -\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/noises.png}
+    \caption{Sample synthetic image with different types of noise}
+    \label{figure:noises}
+\end{figure}
+
+The selected noise types introduce formatting-based distortions commonly found in digital text and web-based content, posing unique challenges for OCR systems.
+Bold and italic formatting, frequently used for emphasis in scanned documents and articles, may alter character shapes and affect recognition accuracy.
+Links introduce underlining and color changes, which can interfere with OCR systems.
+Headings, often bold and larger in size, may also impact recognition.
+Evaluating these effects thus help assess OCR robustness in processing real-world digital text.
+
+After generating the five separate datasets, we ran the OCR tools and evaluated their performance on each dataset, following the approach described in Section \ref{section:ocr-evaluation}.
 
 \subsection{Error Classification by Character Type}
 
