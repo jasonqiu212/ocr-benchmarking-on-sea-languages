@@ -383,12 +383,7 @@ After generating the five separate datasets, we ran the OCR tools and evaluated 
 \subsection{Error Classification by Character Type}
 
 Another area of interest in Experiment 2 was the effect of unique script characteristics, such as diacritics and punctuation, on OCR accuracy (RQ2).
-Using OCR results from the control dataset without noise, we categorized misclassifications by character types. Table \ref{table:character-types} lists the character types we checked for.
-
-\begin{itemize}
-    \item Algorithm: Edit distance
-    \item character types chosen and why these character types that were present in English, Indonesian, Vietnamese, and Thai.
-\end{itemize}
+Using OCR results from the control dataset without noise, we categorized misclassifications by 11 character types commonly found in English, Indonesian, Vietnamese, and Thai.
 
 \begin{table}[ht]
     \centering
@@ -396,22 +391,25 @@ Using OCR results from the control dataset without noise, we categorized misclas
     \label{table:character-types}
     \begin{tabular}{ll}
         \toprule
-        & Examples\\
+        & Included Characters\\
         \midrule
-        Arabic digit & 0, 1, 2\\
-        Thai digit & {\fontspec{Tahoma} ๐, ๙}\\
-        Latin letter & a, b, c, A, B, C\\
-        Latin letter with diacritic& à, á, ả\\
-        Thai letter& {\fontspec{Tahoma} ก, ฮ}\\
-        Thai diacritic& {\fontspec{Tahoma}  ้, ๊๋, ็, ์}\\
-        Punctuation& ., !, ?\\
-        Thai punctuation& {\fontspec{Tahoma} ๆ, ฯ}\\
-        Vietnamese punctuation& «, »\\
+        Arabic digit & 0-9\\
+        Thai digit & {\fontspec{Tahoma} ๐-๙}\\
+        Latin letter & a-zA-Z\\
+        Latin letter with diacritic& à-ỹ\\
+        Thai letter& {\fontspec{Tahoma} ก-ฮ}\\
+        Thai diacritic& {\fontspec{Tahoma}  ้ ๊๋ ็ ์}\\
+        Punctuation& .,!?;:()-"'\\
+        Thai punctuation& {\fontspec{Tahoma} ๆฯ}\\
+        Vietnamese punctuation& «»\\
         Whitespace& \textvisiblespace\\
         Other& \\
         \bottomrule
     \end{tabular}
 \end{table}
+
+We used the Levenshtein\footnote{\url{https://pypi.org/project/Levenshtein/}}Python package to identify edit operations (insertions, deletion, and substitutions) and classified misrecognized characters using RegEx\footnote{\url{https://docs.python.org/3/library/re.html}}. 
+Table \ref{table:character-types} lists the character types we analyzed, with all uncategorized characters grouped under "Other".
 
 \section{Experiment 3: Fine-tuning for Vietnamese and Thai} \label{section:experiment-3}
 
