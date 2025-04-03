@@ -344,7 +344,7 @@ The following steps summarizes the process of data generation:
 
 To investigate how different types of noise impact OCR performance (RQ1), we generated separate datasets, each containing a specific type of noise: bold, italic, link, or heading. 
 The noise was randomly applied to a specified percentage of words in each dataset. 
-Additionally, a control dataset with no noise was created for comparison.
+Additionally, a control dataset without noise was created for comparison.
 Table \ref{table:noises} summarizes the noise types, their corresponding HTML tags, and the percentage of words affected.
 Figure \ref{figure:noises} presents a sample synthetic image with different types of noise.
 
@@ -382,10 +382,36 @@ After generating the five separate datasets, we ran the OCR tools and evaluated 
 
 \subsection{Error Classification by Character Type}
 
+Another area of interest in Experiment 2 was the effect of unique script characteristics, such as diacritics and punctuation, on OCR accuracy (RQ2).
+Using OCR results from the control dataset without noise, we categorized misclassifications by character types. Table \ref{table:character-types} lists the character types we checked for.
+
 \begin{itemize}
-    \item Goal: 
-    \item From the results generated from running OCR tools on the baseline images with no noise, I compared the predicted text and the ground truth using the diffchecker
+    \item Algorithm: Edit distance
+    \item character types chosen and why these character types that were present in English, Indonesian, Vietnamese, and Thai.
 \end{itemize}
+
+\begin{table}[ht]
+    \centering
+    \caption{Character types used for error classification}
+    \label{table:character-types}
+    \begin{tabular}{ll}
+        \toprule
+        & Examples\\
+        \midrule
+        Arabic digit & 0, 1, 2\\
+        Thai digit & {\fontspec{Tahoma} ๐, ๙}\\
+        Latin letter & a, b, c, A, B, C\\
+        Latin letter with diacritic& à, á, ả\\
+        Thai letter& {\fontspec{Tahoma} ก, ฮ}\\
+        Thai diacritic& {\fontspec{Tahoma}  ้, ๊๋, ็, ์}\\
+        Punctuation& ., !, ?\\
+        Thai punctuation& {\fontspec{Tahoma} ๆ, ฯ}\\
+        Vietnamese punctuation& «, »\\
+        Whitespace& \textvisiblespace\\
+        Other& \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \section{Experiment 3: Fine-tuning for Vietnamese and Thai} \label{section:experiment-3}
 
@@ -457,84 +483,33 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 
 \section{RQ2: What script-related challenges affect OCR accuracy on SEA languages?}
 
-\begin{table}[ht]
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/error-classification-english.png}
     \caption{Error classification by character type for English articles}
-    \label{table:english-error-classification}
-    \centering
-    \begin{tabular}{lrrrr}
-        \toprule
-        & \multirow{2}{*}{Count} & EasyOCR & Tesseract & GOT\\
-        & & \% Missed & \% Missed & \% Missed\\
-        \midrule
-        Arabic digit & 38,324 & 0.7\% & 1.9\% & 0.3\%\\
-        Latin letter & 1,546,964 & 1.3\% & 1.8\% & 0.4\%\\
-        Latin letter w/ diacritic & 424 & 100.0\% & 53.1\% & 14.6\%\\
-        Punctuation & 53,403 & 28.4\% & 2.3\% & 3.4\%\\
-        Whitespace & 317,587 & 4.9\% & 4.3\% & 3.6\%\\
-        Other & 3,298 & 82.8\% & 68.5\% & 76.9\%\\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \label{figure:error-classification-english}
+\end{figure}
 
-\begin{table}[ht]
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/error-classification-indonesian.png}
     \caption{Error classification by character type for Indonesian articles}
-    \label{table:indonesian-error-classification}
-    \centering
-    \begin{tabular}{lrrrr}
-        \toprule
-        & \multirow{2}{*}{Count} & EasyOCR & Tesseract & GOT\\
-        & & \% Missed & \% Missed & \% Missed\\
-        \midrule
-        Arabic digit & 24,947 & 0.4\% & 1.8\% & 0.2\%\\
-        Latin letter & 1,208,707 & 0.5\% & 1.8\% & 0.4\%\\
-        Latin letter w/ diacritic & 262 & 5.3\% & 100.0\% & 15.3\%\\
-        Punctuation & 37,788 & 22.1\% & 3.1\% & 0.8\%\\
-        Whitespace & 207,556 & 4.8\% & 5.1\% & 4.1\%\\
-        Other & 2,468 & 72.2\% & 80.5\% & 43.2\%\\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \label{figure:error-classification-indonesian}
+\end{figure}
 
-\begin{table}[ht]
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/error-classification-vietnamese.png}
     \caption{Error classification by character type for Vietnamese articles}
-    \label{table:vietnamese-error-classification}
-    \centering
-    \begin{tabular}{lrrr}
-        \toprule
-        & \multirow{2}{*}{Count} & EasyOCR & Tesseract\\
-        & & \% Missed & \% Missed\\
-        \midrule
-        Arabic digit & 31,473 & 1.1\% & 2.2\%\\
-        Latin letter & 916,667 & 8.5\% & 1.8\%\\
-        Latin letter w/ diacritic & 292,686 & 14.8\% & 1.8\%\\
-        Punctuation & 40,420 & 24.6\% & 2.2\%\\
-        Whitespace & 367,936 & 10.9\% & 5.3\%\\
-        Other & 35,767 & 12.5\% & 7.7\%\\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \label{figure:error-classification-vietnamese}
+\end{figure}
 
-\begin{table}[ht]
-    \caption{Error classification by character type for Thai articles}
-    \label{table:thai-error-classification}
+\begin{figure}[ht]
     \centering
-    \begin{tabular}{lrrr}
-        \toprule
-        & \multirow{2}{*}{Count} & EasyOCR & Tesseract\\
-        & & \% Missed & \% Missed\\
-        \midrule
-        Arabic digit & 22,580 & 0.9\% & 6.7\%\\
-        Latin letter & 36,174 & 100.0\% & 100.0\%\\
-        Latin letter w/ diacritic & 96 & 100.0\% & 100.0\%\\
-        Thai letter & 617,699 & 0.4\% & 3.1\%\\
-        Thai diacritic & 90,620 & 3.7\% & 3.6\%\\
-        Punctuation & 13,669 & 6.4\% & 8.4\%\\
-        Thai punctuation & 901 & 78.8\% & 3.9\%\\
-        Whitespace & 58,164 & 37.5\% & 37.2\%\\
-        Other & 306,647 & 2.2\% & 7.1\%\\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \includegraphics[width=0.7\textwidth]{images/error-classification-thai.png}
+    \caption{Error classification by character type for Thai articles}
+    \label{figure:error-classification-thai}
+\end{figure}
 
 \section{RQ3: What techniques and recommendations can enhance OCR accuracy on SEA languages?}
 
