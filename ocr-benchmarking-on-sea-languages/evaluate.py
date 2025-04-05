@@ -61,8 +61,8 @@ def evaluate_finetuned(results_file_path: str, output_file_name: str):
 
 
 def evaluate_error_by_character_class(source_path: str, correct_file_name: str, predicted_file_name: str, output_file_name: str):
-    data = [['Article Name', 'arabic_digit', 'thai_digit', 'latin_letter', 'latin_letter_with_diacritic', 'thai_letter',
-            'thai_diacritic', 'punctuation', 'thai_punctuation', 'vietnamese_punctuation', 'whitespace', 'other']]
+    data = [['Article Name', 'arabic_digit', 'latin_letter', 'latin_letter_with_diacritic', 'thai_letter',
+            'thai_diacritic', 'special_symbol', 'thai_punctuation', 'whitespace', 'other']]
     sorted_articles = sorted(os.listdir(source_path))
 
     for article in tqdm(sorted_articles):
@@ -93,10 +93,10 @@ def evaluate_error_by_character_class(source_path: str, correct_file_name: str, 
                 char_class = _classify_char(correct[i])
                 error_counts[char_class] += 1
 
-        data.append([article, error_counts['arabic_digit'], error_counts['thai_digit'],
+        data.append([article, error_counts['arabic_digit'],
                      error_counts['latin_letter'], error_counts['latin_letter_with_diacritic'],
-                     error_counts['thai_letter'], error_counts['thai_diacritic'], error_counts['punctuation'],
-                    error_counts['thai_punctuation'], error_counts['vietnamese_punctuation'],
+                     error_counts['thai_letter'], error_counts['thai_diacritic'], error_counts['special_symbol'],
+                    error_counts['thai_punctuation'],
                     error_counts['whitespace'], error_counts['other']])
 
     with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
@@ -105,8 +105,8 @@ def evaluate_error_by_character_class(source_path: str, correct_file_name: str, 
 
 
 def classify_by_character_class(source_path: str, input_file_name: str, output_file_name: str):
-    data = [['Article Name', 'arabic_digit', 'thai_digit', 'latin_letter', 'latin_letter_with_diacritic', 'thai_letter',
-            'thai_diacritic', 'punctuation', 'thai_punctuation', 'vietnamese_punctuation', 'whitespace', 'other']]
+    data = [['Article Name', 'arabic_digit', 'latin_letter', 'latin_letter_with_diacritic', 'thai_letter',
+            'thai_diacritic', 'special_symbol', 'thai_punctuation', 'whitespace', 'other']]
     sorted_articles = sorted(os.listdir(source_path))
     h = {}
 
@@ -126,10 +126,10 @@ def classify_by_character_class(source_path: str, input_file_name: str, output_f
                 h[c] = h.get(c, 0) + 1
             counts[char_class] += 1
 
-        data.append([article, counts['arabic_digit'], counts['thai_digit'],
+        data.append([article, counts['arabic_digit'],
                      counts['latin_letter'], counts['latin_letter_with_diacritic'],
-                     counts['thai_letter'], counts['thai_diacritic'], counts['punctuation'],
-                    counts['thai_punctuation'], counts['vietnamese_punctuation'],
+                     counts['thai_letter'], counts['thai_diacritic'], counts['special_symbol'],
+                    counts['thai_punctuation'],
                     counts['whitespace'], counts['other']])
     # print(dict(sorted(h.items(), key=lambda item: item[1], reverse=True)))
 
@@ -141,8 +141,6 @@ def classify_by_character_class(source_path: str, input_file_name: str, output_f
 def _classify_char(char: str):
     if char.isdigit():
         return "arabic_digit"
-    if '๐' <= char <= '๙':
-        return "thai_digit"
 
     elif 'A' <= char <= 'Z' or 'a' <= char <= 'z':
         return "latin_letter"
@@ -153,12 +151,10 @@ def _classify_char(char: str):
     elif re.match(r"[่้๊๋็์]", char):
         return "thai_diacritic"
 
-    elif re.match(r"[.,!?;:()\-\"']", char):
-        return "punctuation"
+    elif re.match(r"[.,!?;:()\-\–\—\"'$%/&+-=\[\]]", char):
+        return "special_symbol"
     elif re.match(r"[ๆฯ]", char):
         return "thai_punctuation"
-    elif re.match(r"[«»]", char):
-        return "vietnamese_punctuation"
 
     elif char.isspace():  # Whitespace
         return "whitespace"
