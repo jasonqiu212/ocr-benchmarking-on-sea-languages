@@ -61,8 +61,8 @@ def evaluate_finetuned(results_file_path: str, output_file_name: str):
 
 
 def evaluate_error_by_character_class(source_path: str, correct_file_name: str, predicted_file_name: str, output_file_name: str):
-    data = [['Article Name', 'arabic_digit', 'latin_letter', 'latin_letter_with_diacritic', 'thai_letter',
-            'thai_diacritic', 'special_symbol', 'thai_punctuation', 'whitespace', 'other']]
+    data = [['Article Name', 'arabic_digit', 'latin_letter', 'latin_letter_with_diacritic', 'vietnamese_special_letter', 'thai_letter',
+             'special_symbol', 'whitespace', 'other']]
     sorted_articles = sorted(os.listdir(source_path))
 
     for article in tqdm(sorted_articles):
@@ -95,8 +95,8 @@ def evaluate_error_by_character_class(source_path: str, correct_file_name: str, 
 
         data.append([article, error_counts['arabic_digit'],
                      error_counts['latin_letter'], error_counts['latin_letter_with_diacritic'],
-                     error_counts['thai_letter'], error_counts['thai_diacritic'], error_counts['special_symbol'],
-                    error_counts['thai_punctuation'],
+                     error_counts['vietnamese_special_letter'],
+                     error_counts['thai_letter'], error_counts['special_symbol'],
                     error_counts['whitespace'], error_counts['other']])
 
     with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
@@ -105,8 +105,8 @@ def evaluate_error_by_character_class(source_path: str, correct_file_name: str, 
 
 
 def classify_by_character_class(source_path: str, input_file_name: str, output_file_name: str):
-    data = [['Article Name', 'arabic_digit', 'latin_letter', 'latin_letter_with_diacritic', 'thai_letter',
-            'thai_diacritic', 'special_symbol', 'thai_punctuation', 'whitespace', 'other']]
+    data = [['Article Name', 'arabic_digit', 'latin_letter', 'latin_letter_with_diacritic', 'vietnamese_special_letter', 'thai_letter',
+            'special_symbol', 'whitespace', 'other']]
     sorted_articles = sorted(os.listdir(source_path))
     h = {}
 
@@ -127,9 +127,8 @@ def classify_by_character_class(source_path: str, input_file_name: str, output_f
             counts[char_class] += 1
 
         data.append([article, counts['arabic_digit'],
-                     counts['latin_letter'], counts['latin_letter_with_diacritic'],
-                     counts['thai_letter'], counts['thai_diacritic'], counts['special_symbol'],
-                    counts['thai_punctuation'],
+                     counts['latin_letter'], counts['latin_letter_with_diacritic'], counts['vietnamese_special_letter'],
+                     counts['thai_letter'], counts['special_symbol'],
                     counts['whitespace'], counts['other']])
     # print(dict(sorted(h.items(), key=lambda item: item[1], reverse=True)))
 
@@ -144,17 +143,15 @@ def _classify_char(char: str):
 
     elif 'A' <= char <= 'Z' or 'a' <= char <= 'z':
         return "latin_letter"
-    elif re.match(r"[àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ]", char):
+    elif re.match(r"[àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ]", char.lower()):
         return "latin_letter_with_diacritic"
+    elif char in ['đ', 'Đ']:
+        return "vietnamese_special_letter"
     elif _is_thai_character(char):
         return "thai_letter"
-    elif re.match(r"[่้๊๋็์]", char):
-        return "thai_diacritic"
 
     elif re.match(r"[.,!?;:()\-\–\—\"'$%/&+-=\[\]]", char):
         return "special_symbol"
-    elif re.match(r"[ๆฯ]", char):
-        return "thai_punctuation"
 
     elif char.isspace():  # Whitespace
         return "whitespace"
