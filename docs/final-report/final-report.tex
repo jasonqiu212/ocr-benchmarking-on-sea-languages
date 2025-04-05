@@ -404,7 +404,7 @@ After generating the five separate datasets, we ran the OCR tools and evaluated 
 \subsection{Error Classification by Character Type}
 
 Another area of interest in Experiment 2 was the effect of unique script characteristics, such as diacritics and punctuation, on OCR accuracy (RQ2).
-Using OCR results from the control dataset without noise, we categorized misclassifications by 11 character types commonly found in English, Indonesian, Vietnamese, and Thai.
+Using OCR results from the control dataset without noise, we categorized misclassifications by 7 character types commonly found in English, Indonesian, Vietnamese, and Thai.
 
 \begin{table}[ht]
     \centering
@@ -415,14 +415,10 @@ Using OCR results from the control dataset without noise, we categorized misclas
         & Included Characters\\
         \midrule
         Arabic digit & 0-9\\
-        Thai digit & {\fontspec{Tahoma} ๐-๙}\\
         Latin letter & a-zA-Z\\
         Latin letter with diacritic& à-ỹ\\
         Thai letter& {\fontspec{Tahoma} ก-ฮ}\\
-        Thai diacritic& {\fontspec{Tahoma}  ้ ๊๋ ็ ์}\\
-        Punctuation& .,!?;:()-"'\\
-        Thai punctuation& {\fontspec{Tahoma} ๆฯ}\\
-        Vietnamese punctuation& «»\\
+        Special symbol& .,!?;:()-"'\\
         Whitespace& \textvisiblespace\\
         Other& \\
         \bottomrule
@@ -628,37 +624,93 @@ Our observations from these results are as follows:
 
 Table \ref{table:runtime} presents the average OCR runtime per page, with the bolded numbers highlighting the fastest tool for each language. 
 The runtimes were recorded when running the OCR tools on noise-free synthetic data (Experiment 2) on the SoC Compute Cluster. 
-We observe that \textbf{EasyOCR is the fastest OCR tool,} with an average runtime of 3.1 seconds, followed by Tesseract at 13.4 seconds and GOT at 27.9 seconds.
+We observed that \textbf{EasyOCR is the fastest OCR tool,} with an average runtime of 3.1 seconds, followed by Tesseract at 13.4 seconds and GOT at 27.9 seconds.
 
 \section{RQ2: What script-related challenges affect OCR accuracy on SEA languages?}
+
+\subsection{Latin Scripts}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/error-classification-english.png}
-    \caption{Error classification by character type for English articles}
+    \caption{Error classification by character type in English articles}
     \label{figure:error-classification-english}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/error-classification-indonesian.png}
-    \caption{Error classification by character type for Indonesian articles}
+    \caption{Error classification by character type in Indonesian articles}
     \label{figure:error-classification-indonesian}
 \end{figure}
+
+Figure \ref{figure:error-classification-english} presents the results of classifying errors by character type in the benchmark on English synthetic data without noise (Experiment 2). 
+Results on Indonesian articles are shown in Figure \ref{figure:error-classification-indonesian}.
+The "Count" column lists the number of characters belonging to each character type in the ground truth text.
+The remaining columns show the percentage of characters misclassified by each OCR tool.
+
+Notably, these percentages can exceed 100\%, as demonstrated in Figure \ref{figure:error-classification-english} under the "Other" character type.
+This is similar to how CERs can exceed 1.
+The reason for this is that the misclassifications are identified using edit operations, which include substitutions, deletions, and insertions. 
+If the OCR tool incorrectly inserts additional characters, the number of misclassified characters can surpass the ground truth.
+
+Our observations from the results on benchmarked Latin scripts are as follows:
+
+\begin{itemize}
+    \item \textbf{Latin letters, Arabic digits, and whitespaces achieved high accuracies.} These three character types accounted for 97\% of all characters in both English and Indonesian texts.
+    \item \textbf{OCR tools for English and Indonesian struggled more with Latin letters containing diacritics than those without diacritics,} as evidenced by the higher error rates for diacritical characters.
+    One possible explanation is that the OCR models were not trained on enough diacritical marks, which reflected in their low frequency in the English and Indonesian datasets.
+
+    In particular, EasyOCR and Tesseract misclassified all Latin characters with diacritics for English and Indonesian respectively, suggesting that their language-specific models were not trained to recognize diacritics.
+\end{itemize}
+
+\subsection{Latin Scripts with Diacritics}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\textwidth]{images/error-classification-vietnamese.png}
-    \caption{Error classification by character type for Vietnamese articles}
+    \caption{Error classification by character type in Vietnamese articles}
     \label{figure:error-classification-vietnamese}
 \end{figure}
+
+Figure \ref{figure:error-classification-vietnamese} presents the results of classifying errors in the benchmark on Vietnamese data without noise (Experiment 2). 
+We observed that \textbf{Tesseract achieved high accuracies in recognizing Vietnamese characters.} 
+Vietnamese characters, which make up 74\% of the dataset, consist of Latin letters with and without diacritics, as well as a special character (đ, Đ) categorized under "Vietnamese special letter".
+Only 2\% of these Vietnamese characters were misclassified by Tesseract, which is similar to the performance of English models in recognizing Latin letters.
+In contrast, EasyOCR struggled more with diacritical characters.
+
+\subsection{Brahmic Scripts}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\textwidth]{images/error-classification-thai.png}
-    \caption{Error classification by character type for Thai articles}
+    \caption{Error classification by character type in Thai articles}
     \label{figure:error-classification-thai}
 \end{figure}
+
+Figure \ref{figure:error-classification-thai} presents the results of classifying errors in the benchmark on Thai data without noise (Experiment 2). Our observations from the Thai results are as follows:
+
+\begin{itemize}
+    \item \textbf{Thai letters were well-recognized by OCR tools.} 
+    Both EasyOCR and Tesseract achieved state-of-the-art results on Thai letters, which make up 88\% of the Thai dataset, comparable to the accuracy of English models recognizing Latin letters.
+    \item \textbf{Thai OCR models did not recognize Latin letters with or without diacritics,} as evidenced by the 100\% misclassification rate for both EasyOCR and Tesseract.
+    \item \textbf{Thai OCR models performed worse in recognizing whitespaces compared to other languages.} 37\% of whitespaces were misclassified in Thai, which is significantly higher than the misclassification rates for English (4\%), Indonesian (5\%), and Vietnamese (8\%).
+\end{itemize}
+
+We also observed some patterns common across all benchmarked languages:
+
+\begin{itemize}
+    \item \textbf{OCR tools misclassified almost all uncategorized characters.} These include non-Latin characters, such as Greek, Cyrillic, Arabic, Chinese, and Japanese characters, as well as mathematical symbols and phonetic symbols.
+    \item \textbf{EasyOCR struggled more with special symbols.} EasyOCR achieved misclassified 21\% of all special symbols, which is 16\% more than Tesseract.
+\end{itemize}
+
+\subsection{Implications}
+
+\begin{itemize}
+    \item OCR tools are actually pretty good at recognizing more complex Vietnamese and Thai scripts, contrary to what the overall CER rate implies
+    \item contrary to what recent studies say too
+    \item Importance of code switching in OCR
+\end{itemize}
 
 \section{RQ3: What fine-tuning techniques can enhance OCR accuracy on SEA languages?}
 
