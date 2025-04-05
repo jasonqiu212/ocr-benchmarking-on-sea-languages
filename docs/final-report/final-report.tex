@@ -248,11 +248,16 @@ A lower CER value indicates higher accuracy, with 0 representing perfect recogni
 Notably, CER can exceed 1 when there is a significant number of insertions. 
 WER serves as the word-based counterpart to CER.
 
-\section{Experiment 1: Benchmarking on Real-world Data} \label{section:experiment-1}
+\section{Experiment 1: Benchmarking on Real-world Wikipedia Screenshots} \label{section:experiment-1}
 
 To explore the performance of OCR tools on SEA scripts (RQ1), Experiment 1 benchmarks OCR systems using screen-captured, real-world data from Wikipedia.
 Unlike synthetic data, these screenshots contain formatting variations and complex layouts that better reflect real-world OCR challenges. 
 This approach ensures that the evaluation closely mirrors practical use cases, where OCR tools must handle noisy and visually complex text.
+
+While Wikipedia articles do not fully capture the characteristics of physical documents, the screenshots serve as digitally simulated document images that preserve real-world layout characteristics of online encyclopedic content.
+
+% clarify places where I just mention "real-world data"
+% how can i justify this though? use case and availability
 
 \subsection{Data Collection}
 
@@ -458,37 +463,51 @@ This approach allows for efficient fine-tuning with reduced memory and computati
 We ran each fine-tuned GOT model on the test dataset and evaluated their performance, following the approach described in Section \ref{section:ocr-evaluation}.
 We also ran EasyOCR and Tesseract on the test dataset for comparison.
 
-\chapter{Results and Analysis}
+\chapter{Results and Discussion}
 
-In this chapter, we analyze and evaluate the results of the experiments to provide answers to the research questions.
+In this chapter, we present and analyze the results of the experiments, evaluating their significance and discussing the insights gained in relation to the research questions.
 
 \section{RQ1: How do popular OCR tools perform on SEA scripts?}
 
-\subsection{OCR Accuracy on Real-world Data}
+\subsection{OCR Accuracy on Wikipedia Screenshots}
 
 \begin{table}[ht]
     \centering
-    \caption{Average Character and Word Error Rate on real-world data}
+    \caption{Average Character and Word Error Rate on Wikipedia screenshots}
     \label{table:ocr-accuracy-on-real-world-data}
     \begin{tabular}{lcccccc}
         \toprule
         & \multicolumn{3}{c}{Character Error Rate} & \multicolumn{3}{c}{Word Error Rate}\\
         \cmidrule(lr){2-4}\cmidrule(lr){5-7}
         & EasyOCR & Tesseract & GOT & EasyOCR & Tesseract & GOT\\
-        English & \\
         \midrule
-        Indonesian & \\
-        Vietnamese & \\
-        Thai & \\
+        English & \textbf{0.21} & \textbf{0.21} & 0.67 & \textbf{0.27} & 0.29 & 0.67\\
+        Indonesian & \textbf{0.28} & \textbf{0.28} & 0.61 & \textbf{0.36} & 0.42 & 0.71\\
+        Vietnamese & 0.47 & \textbf{0.38} & - & 0.45 & \textbf{0.39} & -\\
+        Thai & \textbf{0.35} & 0.55 & - & \textbf{1.45} & \textbf{1.45} & -\\
         \bottomrule
     \end{tabular}
 \end{table}
 
+Table \ref{table:ocr-accuracy-on-real-world-data} lists the results from benchmarking the OCR tools on real-world Wikipedia screenshots (Experiment 1).
+A lower Character Error Rate (CER) and Word Error Rate (WER) implies better OCR accuracy.
+Bolded numbers highlight the best-performing tool for each metric and language. Our observations are as follows:
+
 \begin{itemize}
-    \item from experiment 1
+    \item \textbf{EasyOCR achieved the best overall performance on the Wikipedia screenshots among the OCR tools,} with an average CER of 0.33 across all languages. This was followed by Tesseract with an average CER of 0.35, and GOT with 0.64. 
+    \item \textbf{Latin scripts achieved the best performance.} When comparing performance across script types, Latin scripts (English and Indonesian) had the lowest average CER of 0.38, followed by Latin scripts with diacritics (Vietnamese) with an average CER of 0.42 and Brahmic scripts (Thai) with 0.45. These results align with findings from previous studies, which have shown that OCR tools tend to perform best on Latin-based scripts \parencite{hegghammer-2022,ignat-etal-2022}.
+    \item \textbf{WER may not be a reliable metric for non-segmented scripts.} Thai had a particularly high average WER of 1.45, as Thai is a non-segmented script that lacks explicit word boundaries. This characteristic makes word-level evaluation more challenging for OCR systems.
 \end{itemize}
 
-\subsection{OCR Accuracy on Synthetic Data}
+\subsubsection{Limitations on Data Source}
+
+\begin{itemize}
+    \item limitations: API does not always give us the same text
+    \item limitations: formatting issues -> CER does not capture that
+    \item implications: more can be done to 
+\end{itemize}
+
+\subsection{OCR Accuracy on Synthetic Data} \label{section:ocr-accuracy-on-synthetic-data}
 
 \begin{table}[ht]
     \centering
@@ -508,15 +527,22 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
     \end{tabular}
 \end{table}
 
+Table \ref{table:ocr-accuracy-on-synthetic-data} presents the results from benchmarking the OCR tools on synthetic documents without noise (Experiment 2). Our observations are as follows:
+
 \begin{itemize}
-    \item from experiment 2
+    \item \textbf{The OCR tools performed better on synthetic data than on Wikipedia screenshots.} All metrics showed an average decrease in error rate by 0.34. This observation aligns with the findings from \textcite{ignat-etal-2022} and \textcite{hegghammer-2022}.
+    \item \textbf{GOT and Tesseract performed well on synthetic data.} 
+    On synthetic data, GOT achieved the best results with an average CER of 0.01, followed by Tesseract with 0.04 and EasyOCR with 0.05.
+    This contrasts with the results from the real-world data.
+    This findings suggest that GOT and Tesseract may not be robust to noise, but can achieve high accuracy in noise-free environments, as further discussed in Section \ref{section:impact-of-noise}.
+    \item \textbf{Latin scripts achieved the best results on synthetic data,} followed by Latin scripts with diacritics and Brahmic scripts. This finding is consistent with the trend observed in the benchmarking of real-world Wikipedia data.
 \end{itemize}
 
-\subsection{Impact of Noise on OCR Accuracy}
+\subsection{Impact of Noise on OCR Accuracy} \label{section:impact-of-noise}
 
 \begin{table}[ht]
     \centering
-    \caption{EasyOCR}
+    \caption{Impact of noise on EasyOCR's accuracy}
     \label{table:noise-easy-ocr}
     \begin{tabular}{lrrrrr}
         \toprule
@@ -533,7 +559,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 
 \begin{table}[ht]
     \centering
-    \caption{Tesseract}
+    \caption{Impact of noise on Tesseract's accuracy}
     \label{table:noise-tesseract}
     \begin{tabular}{lrrrrr}
         \toprule
@@ -550,7 +576,7 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
 
 \begin{table}[ht]
     \centering
-    \caption{GOT}
+    \caption{Impact of noise on GOT's accuracy}
     \label{table:noise-got}
     \begin{tabular}{lrrrrr}
         \toprule
@@ -562,6 +588,25 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
         \bottomrule
     \end{tabular}
 \end{table}
+
+Table \ref{table:noise-easy-ocr} presents the results from benchmarking EasyOCR on synthetic documents with noise (Experiment 2).
+Using the noise-free dataset as the baseline, we calculated the percent change for each noise type and language. 
+A negative percent change indicates that the error rate decreased with the added noise, while a positive percent change indicates that the error rate increased. To visually distinguish these changes, positive values are highlighted in red and negative values in green. 
+Similar results for Tesseract and GOT are shown in Table \ref{table:noise-tesseract} and Table \ref{table:noise-got} respectively. 
+Our observations from these results are as follows:
+
+\begin{itemize}
+    \item \textbf{EasyOCR was the most robust to noise among the OCR tools.}
+    EasyOCR had the lowest average percent change of -0.8\%, followed by Tesseract with an average percent change of 4.6\% and GOT with 48.9\%. Notably, adding noise improved the performance of EasyOCR, suggesting that it may be particularly well-suited to handle noisy data.
+    \item \textbf{Tesseract and GOT were sensitive to noise.} This finding aligns with the results from Section \ref{section:ocr-accuracy-on-synthetic-data}, where Tesseract and GOT performed well on synthetic data but struggled with real-world Wikipedia screenshots, which contain noise and complex layouts.
+    \item \textbf{Heading noise impacted the OCR tools the most,} with an average percent change of 31.9\%, followed by italic noise (5.6\%), link noise (5.4\%), and bold noise (2.2\%). This result indicates that larger font sizes with bold formatting, as seen in the heading noise, pose the greatest challenge to OCR systems.
+\end{itemize}
+
+\subsubsection{Limitations of Noise Types}
+
+\begin{itemize}
+    \item limitations on the type of noise
+\end{itemize}
 
 \subsection{Runtime}
 
@@ -580,6 +625,10 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
         \bottomrule
     \end{tabular}
 \end{table}
+
+Table \ref{table:runtime} presents the average OCR runtime per page, with the bolded numbers highlighting the fastest tool for each language. 
+The runtimes were recorded when running the OCR tools on noise-free synthetic data (Experiment 2) on the SoC Compute Cluster. 
+We observe that \textbf{EasyOCR is the fastest OCR tool,} with an average runtime of 3.1 seconds, followed by Tesseract at 13.4 seconds and GOT at 27.9 seconds.
 
 \section{RQ2: What script-related challenges affect OCR accuracy on SEA languages?}
 
@@ -626,8 +675,6 @@ In this chapter, we analyze and evaluate the results of the experiments to provi
     \caption{Performance of fine-tuned GOT on Thai}
     \label{figure:fine-tuned-got-thai}
 \end{figure}
-
-\chapter{Discussion}
 
 \chapter{Conclusion}
 
