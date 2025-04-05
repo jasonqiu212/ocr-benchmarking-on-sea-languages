@@ -5,6 +5,7 @@ from collections import Counter
 import json
 import os
 import re
+import unicodedata
 
 import jiwer
 from Levenshtein import editops
@@ -107,6 +108,7 @@ def classify_by_character_class(source_path: str, input_file_name: str, output_f
     data = [['Article Name', 'arabic_digit', 'thai_digit', 'latin_letter', 'latin_letter_with_diacritic', 'thai_letter',
             'thai_diacritic', 'punctuation', 'thai_punctuation', 'vietnamese_punctuation', 'whitespace', 'other']]
     sorted_articles = sorted(os.listdir(source_path))
+    h = {}
 
     for article in tqdm(sorted_articles):
         input_file_path = f'{source_path}/{article}/{input_file_name}'
@@ -120,6 +122,8 @@ def classify_by_character_class(source_path: str, input_file_name: str, output_f
 
         for c in input:
             char_class = _classify_char(c)
+            if char_class == 'other':
+                h[c] = h.get(c, 0) + 1
             counts[char_class] += 1
 
         data.append([article, counts['arabic_digit'], counts['thai_digit'],
@@ -127,10 +131,11 @@ def classify_by_character_class(source_path: str, input_file_name: str, output_f
                      counts['thai_letter'], counts['thai_diacritic'], counts['punctuation'],
                     counts['thai_punctuation'], counts['vietnamese_punctuation'],
                     counts['whitespace'], counts['other']])
+    print(h)
 
-    with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
-        writer = csv.writer(output_file)
-        writer.writerows(data)
+    # with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
+    #     writer = csv.writer(output_file)
+    #     writer.writerows(data)
 
 
 def _classify_char(char: str):
@@ -143,7 +148,7 @@ def _classify_char(char: str):
         return "latin_letter"
     elif re.match(r"[àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ]", char):
         return "latin_letter_with_diacritic"
-    elif 'ก' <= char <= 'ฮ':
+    elif _is_thai_character(char):
         return "thai_letter"
     elif re.match(r"[่้๊๋็์]", char):
         return "thai_diacritic"
@@ -160,3 +165,11 @@ def _classify_char(char: str):
 
     else:
         return "other"
+
+
+def _is_thai_character(char):
+    try:
+        name = unicodedata.name(char, '')
+        return 'THAI CHARACTER' in name and not any(x in name for x in ['DIGIT', 'SIGN', 'MARK'])
+    except ValueError:
+        return False
