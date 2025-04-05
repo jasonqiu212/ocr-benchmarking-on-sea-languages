@@ -131,7 +131,7 @@ def classify_by_character_class(source_path: str, input_file_name: str, output_f
                      counts['thai_letter'], counts['thai_diacritic'], counts['punctuation'],
                     counts['thai_punctuation'], counts['vietnamese_punctuation'],
                     counts['whitespace'], counts['other']])
-    print(h)
+    print(dict(sorted(h.items(), key=lambda item: item[1], reverse=True)))
 
     # with open(f'{source_path}/{output_file_name}.csv', 'w', newline='') as output_file:
     #     writer = csv.writer(output_file)
