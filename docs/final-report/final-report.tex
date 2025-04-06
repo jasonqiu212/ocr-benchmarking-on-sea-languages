@@ -714,6 +714,8 @@ We also observed some patterns common across all benchmarked languages:
 
 \section{RQ3: What fine-tuning techniques can enhance OCR accuracy on SEA languages?}
 
+\subsection{Performance of Fine-tuned GOT}
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{images/fine-tuned-got-vietnamese.png}
@@ -721,12 +723,41 @@ We also observed some patterns common across all benchmarked languages:
     \label{figure:fine-tuned-got-vietnamese}
 \end{figure}
 
+Figure \ref{figure:fine-tuned-got-vietnamese} presents the performance of the fine-tuned GOT models on Vietnamese (Experiment 3). 
+Each GOT model was fine-tuned on different numbers of training images, and their CERs on the test dataset are plotted.
+For comparison, the performance of EasyOCR and Tesseract is also included.
+From the Vietnamese model results, we observed the following:
+
+\begin{itemize}
+    \item \textbf{Our best fine-tuned Vietnamese GOT model achieved a CER of 0.10.}
+    Compared to the base GOT model without fine-tuning, which achieved a CER of 0.15, using 200 training images resulted in a 33\% reduction in error rate.
+    \item \textbf{The fine-tuned Vietnamese model underperformed relative to EasyOCR and Tesseract.} EasyOCR achieved a CER of 0.07, and Tesseract achieved a CER of 0.04.
+    \item \textbf{Model performance did not consistently improve with more training data.} 
+    Instead, we observed a non-monotonic trend, peaking at 200 training samples and plateauing thereafter.
+
+    This behavior may be due to the strong pre-training of the base GOT model on English.
+    Since Vietnamese uses Latin scripts with diacritics, many characters and visual patterns are shared with English.
+    The base model likely already encodes strong representations for Latin characters, enabling it to adapt to Vietnamese with relatively little fine-tuning data.
+    As a result, most of the learning occurs early on, and additional training data provides diminishing returns once the model has sufficiently generalized to the task.
+\end{itemize}
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{images/fine-tuned-got-thai.png}
     \caption{Performance of fine-tuned GOT on Thai}
     \label{figure:fine-tuned-got-thai}
 \end{figure}
+
+Figure \ref{figure:fine-tuned-got-thai} presents the performance of the fine-tuned GOT models on Thai (Experiment 3). From the Thai model results, we observed the following:
+
+\begin{itemize}
+    \item \textbf{Our best fine-tuned Thai GOT model achieved a CER of 0.15.}
+    In comparison, the base GOT model failed to recognize Thai characters, producing mostly Greek characters and yielding a CER of 0.90 on a sample image.
+    \item \textbf{The fine-tuned Thai model also underperformed compared to EasyOCR and Tesseract,} which achieved CERs of 0.08 and 0.12 respectively.
+    \item \textbf{Unlike the Vietnamese model, the Thai model improved with more training data,} achieving its best performance when trained on all 960 training samples. While the CER improved with additional data, the reduction in CER diminished as the sample size increased: from 0.08 with 100 samples, to 0.06 with 200 samples, to 0.06 with 400 samples, and finally to 0.05 with 960 samples.
+\end{itemize}
+
+\subsection{Implications}
 
 \chapter{Conclusion}
 
