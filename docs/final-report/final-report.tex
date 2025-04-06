@@ -75,7 +75,7 @@ Specifically, this project seeks to answer the following research questions (RQs
 \begin{itemize}
     \item \textbf{RQ1:} How do popular OCR tools perform on SEA scripts?
     \item \textbf{RQ2:} What script-related challenges affect OCR accuracy on SEA languages?
-    \item \textbf{RQ3:} What fine-tuning techniques can enhance OCR accuracy on SEA languages?
+    \item \textbf{RQ3:} How can fine-tuning enhance OCR accuracy on SEA languages?
 \end{itemize}
 
 \chapter{Related Work}
@@ -256,7 +256,7 @@ This approach ensures that the evaluation closely mirrors practical use cases, w
 
 While Wikipedia articles do not fully capture the characteristics of physical documents, the screenshots serve as digitally simulated document images that preserve real-world layout characteristics of online encyclopedic content.
 
-% clarify places where I just mention "real-world data"
+% TODO: expand on this and clarify places where I just mention "real-world data"
 % how can i justify this though? use case and availability
 
 \subsection{Data Collection}
@@ -334,10 +334,7 @@ To address these issues, we performed data cleaning to align the output text mor
 
 To prevent erroneous results, we implemented a data validation step that automatically checked the CERs for each article.
 Articles were flagged as outliers if their CER exceeded two standard deviations from the mean \parencite{cousineau-and-chartier-2010}. 
-We manually reviewed these outlier articles for anomalies, resulting in the removal 
-of seven articles where the images and ground truth texts contained different content.
-
-% TODO: update anomaly review
+We manually reviewed these outlier articles for anomalies, resulting in the removal of around five articles per language, where the images and ground truth texts contained different content.
 
 \section{Experiment 2: Benchmarking on Synthetic Data}
 
@@ -465,7 +462,7 @@ In this chapter, we present and analyze the results of the experiments, evaluati
 
 \section{RQ1: How do popular OCR tools perform on SEA scripts?}
 
-\subsection{OCR Accuracy on Wikipedia Screenshots}
+\subsection{OCR Accuracy on Wikipedia Screenshots} \label{section:ocr-accuracy-on-wikipedia-screenshots}
 
 \begin{table}[ht]
     \centering
@@ -490,15 +487,15 @@ A lower Character Error Rate (CER) and Word Error Rate (WER) implies better OCR 
 Bolded numbers highlight the best-performing tool for each metric and language. Our observations are as follows:
 
 \begin{itemize}
-    \item \textbf{EasyOCR achieved the best overall performance on the Wikipedia screenshots among the OCR tools,} with an average CER of 0.33 across all languages. This was followed by Tesseract with an average CER of 0.35, and GOT with 0.64. 
     \item \textbf{Latin scripts achieved the best performance.} When comparing performance across script types, Latin scripts (English and Indonesian) had the lowest average CER of 0.38, followed by Latin scripts with diacritics (Vietnamese) with an average CER of 0.42 and Brahmic scripts (Thai) with 0.45. These results align with findings from previous studies, which have shown that OCR tools tend to perform best on Latin-based scripts \parencite{hegghammer-2022,ignat-etal-2022}.
+    \item \textbf{EasyOCR achieved the best overall performance on the Wikipedia screenshots among the OCR tools,} with an average CER of 0.33 across all languages. This was followed by Tesseract with an average CER of 0.35, and GOT with 0.64. 
     \item \textbf{WER may not be a reliable metric for non-segmented scripts.} Thai had a particularly high average WER of 1.45, as Thai is a non-segmented script that lacks explicit word boundaries. This characteristic makes word-level evaluation more challenging for OCR systems.
 \end{itemize}
 
-\subsubsection{Limitations on Data Source}
+\subsubsection{Limitations of Wikipedia Screenshots}
 
 \begin{itemize}
-    \item limitations: API does not always give us the same text
+    \item limitation: API does not always give us the same text
     \item limitations: formatting issues -> CER does not capture that
     \item implications: more can be done to 
 \end{itemize}
@@ -526,12 +523,12 @@ Bolded numbers highlight the best-performing tool for each metric and language. 
 Table \ref{table:ocr-accuracy-on-synthetic-data} presents the results from benchmarking the OCR tools on synthetic documents without noise (Experiment 2). Our observations are as follows:
 
 \begin{itemize}
+    \item \textbf{Latin scripts achieved the best results on synthetic data,} followed by Latin scripts with diacritics and Brahmic scripts. This finding is consistent with the trend observed in the benchmarking of real-world Wikipedia data.
     \item \textbf{The OCR tools performed better on synthetic data than on Wikipedia screenshots.} All metrics showed an average decrease in error rate by 0.34. This observation aligns with the findings from \textcite{ignat-etal-2022} and \textcite{hegghammer-2022}.
     \item \textbf{GOT and Tesseract performed well on synthetic data.} 
     On synthetic data, GOT achieved the best results with an average CER of 0.01, followed by Tesseract with 0.04 and EasyOCR with 0.05.
     This contrasts with the results from the real-world data.
     This findings suggest that GOT and Tesseract may not be robust to noise, but can achieve high accuracy in noise-free environments, as further discussed in Section \ref{section:impact-of-noise}.
-    \item \textbf{Latin scripts achieved the best results on synthetic data,} followed by Latin scripts with diacritics and Brahmic scripts. This finding is consistent with the trend observed in the benchmarking of real-world Wikipedia data.
 \end{itemize}
 
 \subsection{Impact of Noise on OCR Accuracy} \label{section:impact-of-noise}
@@ -601,7 +598,7 @@ Our observations from these results are as follows:
 \subsubsection{Limitations of Noise Types}
 
 \begin{itemize}
-    \item limitations on the type of noise
+    \item limitations: These are noise types commonly present in digital text/articles. depending on the task at hand, OCR systems may face other types of noise, e.g. rotation, salt and pepper, lighting problems for real documents
 \end{itemize}
 
 \subsection{Runtime}
@@ -704,15 +701,22 @@ We also observed some patterns common across all benchmarked languages:
     \item \textbf{EasyOCR struggled more with special symbols.} EasyOCR achieved misclassified 21\% of all special symbols, which is 16\% more than Tesseract.
 \end{itemize}
 
-\subsection{Implications}
+\subsection{Implications for OCR Development on SEA Languages}
 
-\begin{itemize}
-    \item OCR tools are actually pretty good at recognizing more complex Vietnamese and Thai scripts, contrary to what the overall CER rate implies
-    \item contrary to what recent studies say too
-    \item Importance of code switching in OCR
-\end{itemize}
+A common preconception is that OCR systems are less accurate on SEA scripts.
+Prior studies have consistently reported that SEA scripts tend to yield lower accuracy than Latin scripts \parencite{ignat-etal-2022}.
+This view appears to be supported by the language-level trends observed in Sections \ref{section:ocr-accuracy-on-wikipedia-screenshots} and \ref{section:ocr-accuracy-on-synthetic-data}, where Latin-script languages outperformed Vietnamese and Thai in both CER and WER.
+However, after classifying OCR errors by character type, we found that OCR tools are actually effective at recognizing the more complex Vietnamese and Thai scripts. In fact, the error rates for these scripts are comparable to those for Latin characters by English models.
+These findings challenge the claim by \textcite{agarwal-and-anastasopoulos-2024} that OCR tools perform poorly on scripts with ornate diacritics or unique character shapes.
 
-\section{RQ3: What fine-tuning techniques can enhance OCR accuracy on SEA languages?}
+One major contributor to the lower overall accuracy of Vietnamese and Thai lies in the misclassification of characters that are irrelevant to the target language. 
+For example, Latin letters that appear in the Thai dataset were consistently misclassified, as they are not part of the Thai script.
+These irrelevant characters often occur in metadata, URLs, or borrowed text segments within documents, and their misclassification inflates the CER. 
+This suggests that the lower performance of OCR on Vietnamese and Thai is not necessarily due to the inherent complexity of the scripts themselves, but rather the OCR tools’ limitations in handling mixed-script or multilingual content effectively.
+
+This highlights the need for OCR systems to better handle mixed-script content, especially in real-world documents where such mixing is common. Future work could focus on developing models that are script-aware or capable of dynamically switching recognition modes based on the detected script. Incorporating script identification as a pre-processing step or training models with more diverse multilingual datasets could also improve robustness in mixed-script contexts.
+
+\section{RQ3: How can fine-tuning enhance OCR accuracy on SEA languages?}
 
 \subsection{Performance of Fine-tuned GOT}
 
@@ -757,7 +761,18 @@ Figure \ref{figure:fine-tuned-got-thai} presents the performance of the fine-tun
     \item \textbf{Unlike the Vietnamese model, the Thai model improved with more training data,} achieving its best performance when trained on all 960 training samples. While the CER improved with additional data, the reduction in CER diminished as the sample size increased: from 0.08 with 100 samples, to 0.06 with 200 samples, to 0.06 with 400 samples, and finally to 0.05 with 960 samples.
 \end{itemize}
 
-\subsection{Implications}
+\subsection{Implications on Adapting OCR Systems to New Languages}
+
+Our results demonstrate that fine-tuning is an effective strategy for adapting OCR systems to new languages.
+Even with relatively small amounts of training data, it can significantly improve OCR performance.
+This makes fine-tuning especially promising for low-resource languages, where large annotated datasets are often costly and time-consuming to obtain.
+Our findings show that reasonable accuracy can be achieved with modest datasets, highlighting the practicality of this method in resource-constrained settings.
+
+While fine-tuning was successful, our experiments were limited to fine-tuning GOT on noise-free synthetic data in Vietnamese and Thai. 
+Future work could incorporate noisy data to improve model robustness in real-world scenarios.
+Additionally, surpassing state-of-the-art tools like EasyOCR and Tesseract may require more sophisticated fine-tuning techniques. 
+Although increasing the amount of training data improved performance for Thai, our Vietnamese results suggest that more data does not always lead to better accuracy. 
+As such, further gains may come from exploring alternative models and optimizing fine-tuning strategies, including hyperparameter tuning.
 
 \chapter{Conclusion}
 
