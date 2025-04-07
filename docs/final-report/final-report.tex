@@ -128,7 +128,7 @@ Their benchmark grouped 60 low-resource languages by region and script, includin
 They found that OCR tools perform best on Latin and Cyrillic scripts, with only average performance on SEA languages, supporting \textcite{hegghammer-2022}'s findings.
 Additionally, \textcite{ignat-etal-2022} showed that while OCR models perform well on synthetic SEA-language data, their accuracy drops significantly on real-world data.
 This discrepancy underscores the need for more diverse and realistic training datasets to improve OCR outcomes for SEA languages.
-Our research aims to address this gap by developing a reusable pipeline for both collecting real-world data and generating synthetic data.
+Our research aims to address this gap by developing a reusable pipeline for both collecting real-world digital data and generating synthetic data.
 
 \section{Using Synthetic Data for OCR Evaluation}
 
@@ -158,7 +158,7 @@ Fine-tuning thus offers a promising strategy for our research to overcome the sc
 To answer the research questions, this study conducted the following three experiments to benchmark and improve OCR performance on SEA languages:
 
 \begin{itemize}
-    \item \textbf{Experiment 1:} Benchmarking on Real-world Data
+    \item \textbf{Experiment 1:} Benchmarking on Real-world Wikipedia Screenshots
     \item \textbf{Experiment 2:} Benchmarking on Synthetic Data
     \item \textbf{Experiment 3:} Fine-tuning for Vietnamese and Thai
 \end{itemize}
@@ -254,10 +254,7 @@ To explore the performance of OCR tools on SEA scripts (RQ1), Experiment 1 bench
 Unlike synthetic data, these screenshots contain formatting variations and complex layouts that better reflect real-world OCR challenges. 
 This approach ensures that the evaluation closely mirrors practical use cases, where OCR tools must handle noisy and visually complex text.
 
-While Wikipedia articles do not fully capture the characteristics of physical documents, the screenshots serve as digitally simulated document images that preserve real-world layout characteristics of online encyclopedic content.
-
-% TODO: expand on this and clarify places where I just mention "real-world data"
-% how can i justify this though? use case and availability
+While Wikipedia articles do not fully capture the diversity of real-world physical documents, they offer a valuable source for benchmarking OCR tools due to their linguistic richness, accessibility, and relevance to emerging digital use cases. Wikipedia text features varied sentence structures, diacritics, and real-world entities, making it a useful substitute for evaluating OCR performance. Additionally, Wikipedia articles are readily available in many languages, facilitating large-scale testing in SEA languages where real-world documents may be scarce. Furthermore, with the growing use of digital screenshots in applications like ChatGPT, where OCR is used on images or screenshots, the digital nature of Wikipedia screenshots reflects a practical OCR use case.
 
 \subsection{Data Collection}
 
@@ -494,11 +491,25 @@ Bolded numbers highlight the best-performing tool for each metric and language. 
 
 \subsubsection{Limitations of Wikipedia Screenshots}
 
-\begin{itemize}
-    \item limitation: API does not always give us the same text
-    \item limitations: formatting issues -> CER does not capture that
-    \item implications: more can be done to 
-\end{itemize}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/wikipedia-limitations.png}
+    \caption{Table in Wikipedia articles that interferes with OCR results}
+    \label{figure:wikipedia-limitations}
+\end{figure}
+
+Wikipedia articles often have complex layouts and multi-modal elements, such as tables and embedded text in images, that interfere with OCR results.
+For example, in Figure \ref{figure:wikipedia-limitations}, the OCR tool mistakenly recognized the text inside a table as part of the main article text, interweaving it with the surrounding content.
+Since the ground truth article text collected from the MediaWiki Action API does not include table content, this discrepancy contributed to higher CERs and WERs in the Wikipedia screenshot results.
+
+Accurately recognizing such complex layouts in practical settings requires document layout analysis.
+Although layout analysis is beyond the scope of this study, this limitation highlights its importance in processing modern digital documents.
+Future work on document recognition can explore layout-aware approaches.
+
+One possible workaround is to use Selenium to generate bounding boxes around the main article text, restricting OCR to only those regions.
+However, we felt this would not accurately reflect the challenges in real-world digital documents, which often contain complex layouts and multi-modal elements.
+To preserve the realism of the task, we chose to retain the raw OCR results from Wikipedia screenshots. 
+A separate Experiment 2 using noise-free synthetic data was also conducted to better isolate errors specifically related to character recognition.
 
 \subsection{OCR Accuracy on Synthetic Data} \label{section:ocr-accuracy-on-synthetic-data}
 
@@ -527,7 +538,7 @@ Table \ref{table:ocr-accuracy-on-synthetic-data} presents the results from bench
     \item \textbf{The OCR tools performed better on synthetic data than on Wikipedia screenshots.} All metrics showed an average decrease in error rate by 0.34. This observation aligns with the findings from \textcite{ignat-etal-2022} and \textcite{hegghammer-2022}.
     \item \textbf{GOT and Tesseract performed well on synthetic data.} 
     On synthetic data, GOT achieved the best results with an average CER of 0.01, followed by Tesseract with 0.04 and EasyOCR with 0.05.
-    This contrasts with the results from the real-world data.
+    This contrasts with the results from the Wikipedia screenshots.
     This findings suggest that GOT and Tesseract may not be robust to noise, but can achieve high accuracy in noise-free environments, as further discussed in Section \ref{section:impact-of-noise}.
 \end{itemize}
 
@@ -597,9 +608,9 @@ Our observations from these results are as follows:
 
 \subsubsection{Limitations of Noise Types}
 
-\begin{itemize}
-    \item limitations: These are noise types commonly present in digital text/articles. depending on the task at hand, OCR systems may face other types of noise, e.g. rotation, salt and pepper, lighting problems for real documents
-\end{itemize}
+The selected noise types in our experiment are commonly found in digital text and web-based content but may not fully represent the range of noise found in other document types.
+For instance, scanned physical documents can contain noise from poor lighting, rotations, and blurry scans \parencite{hegghammer-2022}. 
+Additional artificial noise types could be incorporated in future studies, depending on the specific goals of the research.
 
 \subsection{Runtime}
 
@@ -786,7 +797,7 @@ As such, further gains may come from exploring alternative models and optimizing
 
 \begin{table}[ht]
     \centering
-    \caption{Dataset of 100 Wikipedia articles used for benchmarking real-world data in Experiment 1 (See Section \ref{section:experiment-1})}
+    \caption{Dataset of 100 Wikipedia articles used for benchmarking real-world Wikipedia screenshots in Experiment 1 (See Section \ref{section:experiment-1})}
     \label{table:real-world-wikipedia-dataset}
     \begin{tabular}{p{1in}p{4.8in}}
         \toprule
