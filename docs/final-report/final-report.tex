@@ -76,8 +76,7 @@ OCR, the process of converting textual images into machine-readable formats, off
 Therefore, studying OCR performance on SEA languages is crucial to accelerating NLP research and technology development in the region.
 
 While OCR has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on SEA languages remain largely unexplored.
-To address this gap, this study presents a pipeline to collect textual data from Wikipedia and benchmark several open-source OCR tools on the collected data. Additionally, we explore the potential of fine-tuning existing models to improve OCR performance on SEA languages. The primary objective is to evaluate and enhance the performance of OCR technologies on SEA languages, thereby advancing NLP applications in this linguistically diverse region.
-
+To address this gap, this study aims to evaluate and enhance the performance of OCR technologies on SEA languages, thereby advancing NLP applications in this linguistically diverse region.
 Specifically, this project seeks to answer the following research questions (RQs):
 
 \begin{itemize}
@@ -85,6 +84,18 @@ Specifically, this project seeks to answer the following research questions (RQs
     \item \textbf{RQ2:} What script-related challenges affect OCR accuracy on SEA languages?
     \item \textbf{RQ3:} How can fine-tuning enhance OCR accuracy on SEA languages?
 \end{itemize}
+
+To investigate these questions, we present a reusable pipeline for collecting textual data from Wikipedia and benchmarking three open-source OCR tools on English, Indonesian, Vietnamese, and Thai.
+The source code of the pipeline is publicly available at \url{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}.
+
+Our benchmark results reveal that OCR tools generally perform worse on Vietnamese and Thai texts.
+However, contrary to common assumptions, they perform well on the native characters of these languages. 
+This challenges the prevalent notion that Latin-based scripts inherently yield better OCR performance than more complex scripts such as Vietnamese and Thai.
+Instead, we find that the main source of errors stems from the misclassification of characters outside the target language, highlighting the need for OCR systems to better handle mixed-script content for higher accuracy.
+
+Furthermore, we demonstrate the potential of fine-tuning a transformer-based model to improve OCR performance on Vietnamese and Thai. 
+The fine-tuned model achieved error rates of 0.10 for Vietnamese and 0.15 for for Thai, representing a significant improvement over the base model.
+These results underscore fine-tuning as an effective strategy for adapting OCR systems to new languages.
 
 \chapter{Related Work}
 
