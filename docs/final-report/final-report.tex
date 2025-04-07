@@ -738,9 +738,9 @@ This view appears to be supported by the language-level trends observed in Secti
 However, after classifying OCR errors by character type, we found that OCR tools are actually effective at recognizing the more complex Vietnamese and Thai scripts. In fact, the error rates for these scripts are comparable to those for Latin characters by English models.
 These findings challenge the claim by \textcite{agarwal-and-anastasopoulos-2024} that OCR tools perform poorly on scripts with ornate diacritics or unique character shapes.
 
-One major contributor to the lower overall accuracy of Vietnamese and Thai lies in the misclassification of characters that are irrelevant to the target language. 
+One major contributor to the lower overall accuracy of Vietnamese and Thai lies in the misclassification of characters that are outside of the target language. 
 For example, Latin letters that appear in the Thai dataset were consistently misclassified, as they are not part of the Thai script.
-These irrelevant characters often occur in metadata, URLs, or borrowed text segments within documents, and their misclassification inflates the CER. 
+These non-native characters often occur in metadata, URLs, or borrowed text segments within documents, and their misclassification inflates the CER. 
 This suggests that the lower performance of OCR on Vietnamese and Thai is not necessarily due to the inherent complexity of the scripts themselves, but rather the OCR tools’ limitations in handling mixed-script or multilingual content effectively.
 
 This highlights the need for OCR systems to better handle mixed-script content, especially in real-world documents where such mixing is common. Future work could focus on developing models that are script-aware or capable of dynamically switching recognition modes based on the detected script. Incorporating script identification as a pre-processing step or training models with more diverse multilingual datasets could also improve robustness in mixed-script contexts.
@@ -804,6 +804,25 @@ Although increasing the amount of training data improved performance for Thai, o
 As such, further gains may come from exploring alternative models and optimizing fine-tuning strategies, including hyperparameter tuning.
 
 \chapter{Conclusion}
+
+In this study, we evaluated the performance of three OCR tools (EasyOCR, Tesseract, and GOT) on English, Indonesian, Vietnamese, and Thai.
+We implemented a reusable pipeline for collecting textual data from Wikipedia and benchmarking OCR tools.
+The source code is available on \href{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}{GitHub}.
+
+Using this pipeline, we first examined OCR performance on real-world Wikipedia screenshots.
+Our benchmark results reveal that OCR tools generally perform worse on Vietnamese and Thai texts than on Latin-script languages, supporting findings from previous work \parencite{ignat-etal-2022}.
+
+We then investigated performance on synthetic documents with added noise.
+Our findings show that EasyOCR was the most robust to noise, whereas Tesseract and GOT were more sensitive.
+To better isolate script-related recognition errors, we classified errors by eight character types commonly found in the benchmarked languages.
+Interestingly, the OCR tools performed well on native characters in languages with complex scripts like Vietnamese and Thai, challenging past studies that suggested Latin-based scripts yield better OCR performance in SEA.
+The main source of errors came from the misclassification of characters outside the target language. 
+Therefore, future work aiming to improve OCR accuracy can consider developing models that are better equipped to handle mixed-script content.
+
+Lastly, we explored the effectiveness of fine-tuning GOT on Vietnamese and Thai.
+We found that even with relatively little training data, fine-tuning significantly improved the base model, achieving CERs of 0.10 for Vietnamese and 0.15 for Thai.
+These results demonstrate the potential and practicality of fine-tuning for adapting OCR systems to low-resource SEA languages.
+To achieve state-of-the-art results, future research can explore alternative base models and optimized fine-tuning strategies.
 
 \printbibliography[title={References}]
 
