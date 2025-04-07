@@ -42,11 +42,11 @@ Subject Descriptors:
 
 Keywords:
 
-\hspace*{0.3in} Optical Character Recognition, Southeast Asian Languages
+\hspace*{0.3in} Optical Character Recognition, Southeast Asian Languages, Fine-tuning
 
 Implementation Software and Hardware:
 
-\hspace*{0.3in} Python, Tesseract, EasyOCR
+\hspace*{0.3in} Python, Tesseract, EasyOCR, General OCR Theory
 
 \chapter*{\centering\large Acknowledgements}
 \addcontentsline{toc}{chapter}{Acknowledgements}
@@ -82,7 +82,7 @@ Specifically, this project seeks to answer the following research questions (RQs
 
 \section{Overview of OCR Systems}
 
-Most OCR systems consist of two stages: Text detection and text transcription.
+Most OCR systems consist of two stages: text detection and text transcription.
 Text detection identifies text present in an image and extracts cropped regions containing the detected text. 
 A text transcription model then converts these cropped images into text.
 Generally, separate models are used for each stage, allowing for greater training flexibility and a clearer understanding of challenges within each component \parencite{subramani-etal-2023}. 
@@ -142,7 +142,7 @@ Real-world scanned documents often feature complex layouts, stains, and handwrit
 Studies have shown that OCR systems often perform better on synthetic datasets than on real-world data, highlighting a gap in generalization \parencite{ignat-etal-2022}.
 To address this, researchers frequently apply noise augmentation to synthetic documents. 
 Common techniques include changing the font style, size, color, and letter spacing, as well as adding Gaussian blur, bleed-through effects, and salt-and-pepper noise \parencite{gupte-etal-2021, ignat-etal-2022}.
-These modifications help artificial datasets better approximate the challenges of real-world OCR tasks.
+These modifications help artificial datasets to better approximate the challenges of real-world OCR tasks.
 Our study adopts similar techniques by generating and benchmarking on synthetic data with noise, aiming to better simulate the imperfections found in real-world documents.
 
 \section{Fine-tuning OCR Systems}
@@ -170,7 +170,7 @@ To answer the research questions, this study conducted the following three exper
 In this study, we chose to benchmark on English, Indonesian, Vietnamese, and Thai. English serves as a baseline comparison due to its extensive OCR research and established tool support. Meanwhile, Indonesian, Vietnamese, and Thai were selected as a representative subset of SEA languages for several reasons.
 
 Firstly, these three languages encompass a range of script types: Latin scripts for Indonesian, Latin scripts with diacritics for Vietnamese, and Brahmic scripts for Thai. 
-By covering these scripts, we capture a broad spectrum of orthographic features, from diacritics to tone marks and from Latin-based scripts to complex character shapes. This allows us to examine how these unique linguistic features impact OCR performance. 
+By covering these scripts, we capture a broad spectrum of orthographic features, such as diacritics, tone marks, and complex character shapes. This allows us to examine how these unique linguistic features impact OCR performance. 
 Furthermore, many other SEA languages, including Malay, Filipino, and Cebuano, use modified Latin scripts, while languages like Khmer, Burmese, and Javanese use Brahmic scripts. Thus, findings from this study can be applied to other languages with similar script types, accelerating OCR research in the region.
 
 \begin{table}[ht]
@@ -231,7 +231,7 @@ Similar to EasyOCR, Tesseract is accessible via a Python package and supports th
 GOT is a transformer-based model designed to recognize artificial characters beyond traditional text, such as sheet music, mathematical equations, and charts \parencite{wei-etal-2024}. 
 Using a Vision Encoder Decoder (VED) architecture with 580 million parameters, GOT fine-tunes ViTDeT\footnote{ViTDeT is an object detection model using the Vision Transformer (ViT) as a backbone network \parencite{li-etal-2022}.} as its vision encoder and Qwen-0.5B\footnote{Qwen-0.5B is a Large Language Model (LLM) with 500 million parameters developed by Alibaba Cloud \parencite{qwen-2025}.} as its language decoder. 
 GOT is conveniently available on Hugging Face\footnote{\url{https://huggingface.co/stepfun-ai/GOT-OCR2_0}}.
-While GOT officially supports only English and Simplified Chinese, it does not support Indonesian, Vietnamese, or Thai. 
+One limitation of GOT is that it only officially supports English and Simplified Chinese, and does not support Indonesian, Vietnamese, or Thai. 
 This study seeks to address this limitation by fine-tuning GOT on these languages in Section \ref{section:experiment-3}.
 
 \subsection{Evaluation Metrics}
@@ -241,7 +241,7 @@ This study seeks to address this limitation by fine-tuning GOT on these language
     \label{equation:cer}
 \end{equation}
 
-Similar to most similar studies, we utilize Character Error Rate (CER) and Word Error Rate (WER) as our evaluation metrics to measure OCR accuracy \parencite{hegghammer-2022, ignat-etal-2022}. 
+Similar to most studies, we utilize Character Error Rate (CER) and Word Error Rate (WER) as our evaluation metrics to measure OCR accuracy \parencite{hegghammer-2022, ignat-etal-2022}. 
 CER measures the accuracy of character recognition and is calculated using the Levenshtein or edit distance, which represents the minimum number of single-character insertions (I), deletions (D), and substitutions (S) required to transform one word into another. 
 As shown in Equation \ref{equation:cer}, CER is defined as the edit distance between the OCR-predicted text and ground truth text, divided by the total number of characters in the ground truth text (N). 
 A lower CER value indicates higher accuracy, with 0 representing perfect recognition. 
@@ -282,7 +282,7 @@ for data collection. The detailed steps are as follows:
     \item Fetch the article names and URLs in Thai, Vietnamese, and Indonesian from the MediaWiki Action API.
     \item Download the article PDFs in all languages using Selenium.
     \item Convert the article PDFs into PNG images, with each image representing one page of the PDF.
-    \item Download the ground truth article text into TXT files from the MediaWiki Action API.
+    \item Download the article text into TXT files from the MediaWiki Action API.
 \end{enumerate}
 
 The end result is a real-world Wikipedia dataset with 3,590 English images, 1,450 Indonesian images, 1,925 Vietnamese images, and 1,011 Thai images.
@@ -347,16 +347,12 @@ For instance, a \texttt{<b>} tag could be added randomly to make words appear in
 The following steps summarizes the process of data generation:
 
 \begin{enumerate}
-    \item If noise is needed, randomly apply HTML tags to a specified ratio of space-separated words.
+    \item To add noise, randomly apply HTML tags to a specified ratio of space-separated words.
     \item Generate synthetic article PDFs using the ground truth text collected from Experiment 1 with WeasyPrint.
     \item Convert the article PDFs into PNG images, with each image representing one page of the PDF.
 \end{enumerate}
 
 \subsection{OCR Evaluation on Different Types of Noise}
-
-To investigate how different types of noise impact OCR performance (RQ1), we generated separate datasets, each containing a specific type of noise: bold, italic, link, or heading. 
-The noise was randomly applied to a specified percentage of words in each dataset. 
-Additionally, a control dataset without noise was created for comparison.
 
 \begin{table}[ht]
     \centering
@@ -370,10 +366,13 @@ Additionally, a control dataset without noise was created for comparison.
         Italic & \texttt{<i>} & 0.3\\
         Link & \texttt{<a>} & 0.3\\
         Heading & \texttt{<h1>} & 0.03\\
-        No noise & - & -\\
         \bottomrule
     \end{tabular}
 \end{table}
+
+To investigate how different types of noise impact OCR performance (RQ1), we generated separate datasets, each containing a specific type of noise: bold, italic, link, or heading. 
+The noise was randomly applied to a specified percentage of words in each dataset. 
+Additionally, a control dataset without noise was created for comparison.
 
 Table \ref{table:noises} summarizes the noise types, their corresponding HTML tags, and the percentage of words affected.
 A smaller ratio was applied for headings because headings typically appear less frequently in natural text compared to other formatting elements like bold or italics.
@@ -382,7 +381,7 @@ Figure \ref{figure:noises} presents a sample synthetic image with different type
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/noises.png}
+    \includegraphics[width=0.8\textwidth]{images/noises.png}
     \caption{Sample synthetic image with different types of noise}
     \label{figure:noises}
 \end{figure}
@@ -391,14 +390,14 @@ The selected noise types introduce formatting-based distortions commonly found i
 Bold and italic formatting, frequently used for emphasis in scanned documents and articles, may alter character shapes and affect recognition accuracy.
 Links introduce underlining and color changes, which can interfere with OCR systems.
 Headings, often bold and larger in size, may also impact recognition.
-Evaluating these effects thus help assess OCR robustness in processing real-world digital text.
+Evaluating these effects helps to assess OCR robustness in processing real-world digital text.
 
 After generating the five separate datasets, we ran the OCR tools and evaluated their performance on each dataset, following the approach described in Section \ref{section:ocr-evaluation}.
 
 \subsection{Error Classification by Character Type}
 
 Another area of interest in Experiment 2 was the effect of unique script characteristics, such as diacritics and punctuation, on OCR accuracy (RQ2).
-Using OCR results from the control dataset without noise, we categorized misclassifications by 7 character types commonly found in English, Indonesian, Vietnamese, and Thai.
+Using OCR results from the control dataset without noise, we categorized misclassifications by eight character types commonly found in English, Indonesian, Vietnamese, and Thai.
 
 \begin{table}[ht]
     \centering
@@ -409,10 +408,11 @@ Using OCR results from the control dataset without noise, we categorized misclas
         & Included Characters\\
         \midrule
         Arabic digit & 0-9\\
-        Latin letter & a-zA-Z\\
-        Latin letter with diacritic& à-ỹ\\
+        Latin letter & a-z, A-Z\\
+        Latin letter with diacritic& à-ỹ, À-Ỹ\\
+        Vietnamese special letter & đ, Đ\\
         Thai letter& {\fontspec{Tahoma} ก-ฮ}\\
-        Special symbol& .,!?;:()-"'\\
+        Special symbol& .,!?;:()-"–'—\$\%/\&+-=[]\\
         Whitespace& \textvisiblespace\\
         Other& \\
         \bottomrule
@@ -426,7 +426,7 @@ Table \ref{table:character-types} lists the character types we analyzed, with al
 
 To explore how fine-tuning can enhance OCR accuracy on SEA languages (RQ3), Experiment 3 fine-tunes GOT for Vietnamese and Thai and compares the fine-tuned model with EasyOCR and Tesseract. 
 We chose to fine-tune for Vietnamese and Thai because GOT does not natively support these languages. 
-Although GOT does not support Indonesian, we did not fine-tune for it, since the model already achieves state-of-the-art results for Indonesian, as demonstrated in Experiment 1 (See Section ). 
+Although GOT does not support Indonesian, we did not fine-tune for it, since the model already achieves state-of-the-art results for Indonesian, as demonstrated in the results from Experiment 1 (See Section \ref{section:ocr-accuracy-on-synthetic-data}). 
 
 \subsection{Fine-tuning GOT}
 
@@ -507,7 +507,7 @@ Although layout analysis is beyond the scope of this study, this limitation high
 Future work on document recognition can explore layout-aware approaches.
 
 One possible workaround is to use Selenium to generate bounding boxes around the main article text, restricting OCR to only those regions.
-However, we felt this would not accurately reflect the challenges in real-world digital documents, which often contain complex layouts and multi-modal elements.
+However, we felt this would not accurately reflect the challenges in recognizing real-world digital documents, which often contain complex layouts and multi-modal elements.
 To preserve the realism of the task, we chose to retain the raw OCR results from Wikipedia screenshots. 
 A separate Experiment 2 using noise-free synthetic data was also conducted to better isolate errors specifically related to character recognition.
 
@@ -667,7 +667,7 @@ Our observations from the results on benchmarked Latin scripts are as follows:
 \begin{itemize}
     \item \textbf{Latin letters, Arabic digits, and whitespaces achieved high accuracies.} These three character types accounted for 97\% of all characters in both English and Indonesian texts.
     \item \textbf{OCR tools for English and Indonesian struggled more with Latin letters containing diacritics than those without diacritics,} as evidenced by the higher error rates for diacritical characters.
-    One possible explanation is that the OCR models were not trained on enough diacritical marks, which reflected in their low frequency in the English and Indonesian datasets.
+    One possible explanation is that the OCR models were not trained on enough diacritical marks, which is reflected in their low frequency in the English and Indonesian datasets.
 
     In particular, EasyOCR and Tesseract misclassified all Latin characters with diacritics for English and Indonesian respectively, suggesting that their language-specific models were not trained to recognize diacritics.
 \end{itemize}
@@ -709,7 +709,7 @@ We also observed some patterns common across all benchmarked languages:
 
 \begin{itemize}
     \item \textbf{OCR tools misclassified almost all uncategorized characters.} These include non-Latin characters, such as Greek, Cyrillic, Arabic, Chinese, and Japanese characters, as well as mathematical symbols and phonetic symbols.
-    \item \textbf{EasyOCR struggled more with special symbols.} EasyOCR achieved misclassified 21\% of all special symbols, which is 16\% more than Tesseract.
+    \item \textbf{EasyOCR struggled more with special symbols.} EasyOCR misclassified 21\% of all special symbols, which is 16\% more than Tesseract.
 \end{itemize}
 
 \subsection{Implications for OCR Development on SEA Languages}
@@ -745,7 +745,7 @@ From the Vietnamese model results, we observed the following:
 
 \begin{itemize}
     \item \textbf{Our best fine-tuned Vietnamese GOT model achieved a CER of 0.10.}
-    Compared to the base GOT model without fine-tuning, which achieved a CER of 0.15, using 200 training images resulted in a 33\% reduction in error rate.
+    Using 200 training images resulted in a 33\% reduction in error rate compared to the base GOT model without fine-tuning, which achieved a CER of 0.15.
     \item \textbf{The fine-tuned Vietnamese model underperformed relative to EasyOCR and Tesseract.} EasyOCR achieved a CER of 0.07, and Tesseract achieved a CER of 0.04.
     \item \textbf{Model performance did not consistently improve with more training data.} 
     Instead, we observed a non-monotonic trend, peaking at 200 training samples and plateauing thereafter.
@@ -769,7 +769,7 @@ Figure \ref{figure:fine-tuned-got-thai} presents the performance of the fine-tun
     \item \textbf{Our best fine-tuned Thai GOT model achieved a CER of 0.15.}
     In comparison, the base GOT model failed to recognize Thai characters, producing mostly Greek characters and yielding a CER of 0.90 on a sample image.
     \item \textbf{The fine-tuned Thai model also underperformed compared to EasyOCR and Tesseract,} which achieved CERs of 0.08 and 0.12 respectively.
-    \item \textbf{Unlike the Vietnamese model, the Thai model improved with more training data,} achieving its best performance when trained on all 960 training samples. While the CER improved with additional data, the reduction in CER diminished as the sample size increased: from 0.08 with 100 samples, to 0.06 with 200 samples, to 0.06 with 400 samples, and finally to 0.05 with 960 samples.
+    \item \textbf{Unlike the Vietnamese model, the Thai model consistently improved with more training data,} achieving its best performance when trained on all 960 training samples. While the CER improved with additional data, the reduction in CER diminished as the sample size increased: from 0.08 with 100 samples, to 0.06 with 200 samples, to 0.06 with 400 samples, and finally to 0.05 with 960 samples.
 \end{itemize}
 
 \subsection{Implications on Adapting OCR Systems to New Languages}
