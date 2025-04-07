@@ -98,17 +98,16 @@ More recently, end-to-end models that combine both stages have shown promise in 
 
 \subsection{Evolution of OCR Models}
 
-Early OCR models employ traditional machine learning techniques, such as K-nearest Neighbors (KNN) and Support Vector Machines (SVMs), to classify textual characters from cropped images.
+Early OCR models employ traditional machine learning techniques, such as K-nearest Neighbors (KNN) and Support Vector Machines (SVMs), to classify textual characters from cropped images \parencite{ghadekar-etal-2018}.
 Tesseract, an established OCR engine developed since the 1990s, recognizes character patterns by extracting small fragments of character outlines as features \parencite{smith-2013}.
 These features are then classified into character clusters using an optimized KNN algorithm.
-While effective for structured text, these traditional approaches struggled with variations in handwriting, fonts, and image distortions \parencite{subramani-etal-2023}.
 
 The rise of deep learning brought significant advancements in OCR.
 Convolutional Neural Networks (CNNs) improve feature extraction by automatically detecting edges, textures, and shapes within text images.
 Unlike traditional handcrafted features, CNNs learn visual patterns by applying small filters across an image. 
 The Character Region Awareness for Text Detection (CRAFT) algorithm, for example, uses a fully convolutional network to achieve state-of-the-art character localization \parencite{baek-etal-2019}.
 For text transcription, Recurrent Neural Networks (RNNs) have been widely adopted due to their ability to model sequential dependencies over time.
-Tesseract v4 integrated a Long Short-Term Memory (LSTM) model, a specialized type of RNN, to recognize entire lines of text instead of individual characters \parencite{tesseract-2025}.
+Tesseract 4.0 integrated a Long Short-Term Memory (LSTM) model, a specialized type of RNN, to recognize entire lines of text instead of individual characters \parencite{tesseract-2025}.
 By combining CNNs for feature extraction and RNNs for sequence modeling, \textcite{shi-etal-2015} proposed the Convolutional Recurrent Neural Network (CRNN), which significantly improved text recognition accuracy in end-to-end OCR systems.
 
 More recently, transformer-based models have emerged as a powerful alternative.
@@ -233,7 +232,7 @@ Consequently, we selected EasyOCR, Tesseract, and General OCR Theory (GOT), each
 EasyOCR is a modern OCR framework that integrates a text detection model based on the Character Region Awareness for Text Detection (CRAFT) algorithm with a recognition model utilizing a Convolutional Recurrent Neural Network (CRNN) \parencite{easy-ocr-2025}.
 Readily available as a Python package, EasyOCR supports 83 languages, including English, Indonesian, Vietnamese, and Thai.
 
-Tesseract is one of the most well-known open-source OCR engines. Since releasing version 4 in 2018, Tesseract uses an underlying Long Short-Term Memory (LSTM) model for line recognition \parencite{tesseract-2025}.
+Tesseract is one of the most well-known open-source OCR engines. Since releasing version 4.0 in 2018, Tesseract uses an underlying Long Short-Term Memory (LSTM) model for line recognition \parencite{tesseract-2025}.
 Similar to EasyOCR, Tesseract is accessible via a Python package and supports the four chosen languages in this study 
 
 GOT is a transformer-based model designed to recognize artificial characters beyond traditional text, such as sheet music, mathematical equations, and charts \parencite{wei-etal-2024}. 
