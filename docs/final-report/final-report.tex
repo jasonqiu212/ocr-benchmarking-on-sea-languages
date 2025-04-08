@@ -29,7 +29,11 @@
 \chapter*{\centering\large Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-While Optical Character Recognition (OCR) has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on Southeast Asian (SEA) languages remain largely unexplored. This study aims to bridge this gap by evaluating OCR technologies for SEA languages and exploring script-specific challenges. We propose a pipeline to collect textual data from Wikipedia and benchmark open-source OCR tools. Additionally, we demonstrate the potential of fine-tuning existing models on SEA languages, aiming to expand OCR capabilities for these languages.
+While Optical Character Recognition (OCR) has been widely studied for high-resource languages such as English and Chinese, its performance on Southeast Asian (SEA) languages remains largely unexplored. 
+This study addresses this gap by evaluating three OCR tools --- EasyOCR, Tesseract, and the transformer-based General OCR Theory (GOT) --- on English, Indonesian, Vietnamese, and Thai.
+We introduce a reusable pipeline for collecting textual data from Wikipedia and benchmarking OCR tools. 
+Contrary to popular belief, our results show that OCR tools perform well on complex scripts like Vietnamese and Thai, with most errors arising from misclassifying characters outside the target language.
+Additionally, we demonstrate the effectiveness of fine-tuning GOT with limited training data, yielding notable improvements on Vietnamese and Thai.
 
 \vspace{20pt}
 Subject Descriptors:
@@ -46,7 +50,7 @@ Keywords:
 
 Implementation Software and Hardware:
 
-\hspace*{0.3in} Python, Tesseract, EasyOCR, General OCR Theory
+\hspace*{0.3in} Python, EasyOCR, Tesseract, General OCR Theory
 
 \chapter*{\centering\large Acknowledgements}
 \addcontentsline{toc}{chapter}{Acknowledgements}
@@ -75,7 +79,7 @@ A similar trend can be observed in Optical Character Recognition (OCR) research,
 OCR, the process of converting textual images into machine-readable formats, offers significant potential for languages with limited datasets. While many scanned documents and books in these low-resource languages are available online, the text within them often remains inaccessible due to formats like images and PDFs. By extracting the text from these documents, OCR can generate valuable datasets for low-resource languages, which can then be used for downstream NLP tasks, such as machine translation and named entity recognition \parencite{agarwal-and-anastasopoulos-2024, ignat-etal-2022}.
 Therefore, studying OCR performance on SEA languages is crucial to accelerating NLP research and technology development in the region.
 
-While OCR has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on SEA languages remain largely unexplored.
+While OCR has been widely studied for high-resource languages such as English and Chinese, the effectiveness and limitations of OCR models on SEA languages remain largely unexplored.
 To address this gap, this study aims to evaluate and enhance the performance of OCR technologies on SEA languages, thereby advancing NLP applications in this linguistically diverse region.
 Specifically, this project seeks to answer the following research questions (RQs):
 
@@ -89,12 +93,14 @@ To investigate these questions, we present a reusable pipeline for collecting te
 The source code of the pipeline is publicly available on \href{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}{GitHub}.
 
 Our benchmark results reveal that OCR tools generally perform worse on Vietnamese and Thai texts.
-However, contrary to common assumptions, they perform well on the native characters of these languages. 
-This challenges the prevalent notion that Latin-based scripts inherently yield better OCR performance than more complex scripts such as Vietnamese and Thai.
-Instead, we find that the main source of errors stems from the misclassification of characters outside the target language, highlighting the need for OCR systems to better handle mixed-script content for higher accuracy.
+However, this underperformance is not due to difficulty in recognizing their native characters.
+In fact, the tools recognized native Vietnamese and Thai characters well, contrary to common belief.
+We find that the main source of errors stemmed from the misclassification of characters outside the target language. 
+This highlights the need for OCR systems to better handle mixed-script content for higher accuracy.
 
 Furthermore, we demonstrate the potential of fine-tuning a transformer-based model to improve OCR performance on Vietnamese and Thai. 
-The fine-tuned model achieved error rates of 0.10 for Vietnamese and 0.15 for Thai, representing a significant improvement over the base model.
+For Vietnamese, the fine-tuned model achieved an error rate of 0.10, representing a 33\% improvement over the base model's 0.15. 
+For Thai, the fine-tuned model achieved an error rate of 0.15, while the base model was unable to recognize Thai characters. 
 These results underscore fine-tuning as an effective strategy for adapting OCR systems to new languages.
 
 \chapter{Related Work}
@@ -151,7 +157,7 @@ Our research aims to address this gap by developing a reusable pipeline for both
 \section{Using Synthetic Data for OCR Evaluation}
 
 To bridge the gap in data availability, many studies rely on artificial images and PDFs generated from plain text to create evaluation datasets.
-For instance, \textcite{ignat-etal-2022} generated synthetic PDFs from the Flores 101 dataset, which consists of text from Wikipedia in 101 languages.
+For instance, \textcite{ignat-etal-2022} generated synthetic PDFs from the Flores 101 dataset, which consists of text from Wikipedia in 101 languages \parencite{goyal-etal-2021}.
 Expanding on this approach, \textcite{gupte-etal-2021} developed an open-source Python package that creates document images from plain text, incorporating several document styling templates.
 These methods enable the large-scale generation of high-quality, low-resource language data with corresponding ground truth annotations.
 
@@ -165,7 +171,7 @@ Our study adopts similar techniques by generating and benchmarking on synthetic 
 
 \section{Fine-tuning OCR Systems}
 
-To enhance OCR performance in new domains with limited labeled data, many studies explore fine-tuning, or further training pre-trained models on a smaller, task-specific dataset. 
+To enhance OCR performance in new domains with limited labeled data, many studies explore fine-tuning, or further training pre-trained models on smaller, task-specific datasets. 
 Instead of training from scratch, fine-tuning updates a model's existing weights, allowing it to adapt to new datasets while retaining prior knowledge. 
 For instance, \textcite{parres-and-paredes-2023} demonstrated that transformer-based models can successfully adapt to new languages and historical documents with minimal training data, achieving competitive OCR performance.
 Similarly, \textcite{laurent-and-lauar-2024} fine-tuned the English TrOCR model for Spanish text, yielding strong results.
@@ -244,7 +250,7 @@ EasyOCR is a modern OCR framework that integrates a text detection model based o
 Readily available as a Python package, EasyOCR supports 83 languages, including English, Indonesian, Vietnamese, and Thai.
 
 Tesseract is one of the most well-known open-source OCR engines. Since releasing version 4.0 in 2018, Tesseract uses an underlying Long Short-Term Memory (LSTM) model for line recognition \parencite{tesseract-2025}.
-Similar to EasyOCR, Tesseract is accessible via a Python package and supports the four chosen languages in this study 
+Similar to EasyOCR, Tesseract is accessible via a Python package and supports the four chosen languages in this study.
 
 GOT is a transformer-based model designed to recognize artificial characters beyond traditional text, such as sheet music, mathematical equations, and charts \parencite{wei-etal-2024}. 
 Using a Vision Encoder Decoder (VED) architecture with 580 million parameters, GOT fine-tunes ViTDeT\footnote{ViTDeT is an object detection model using the Vision Transformer (ViT) as a backbone network \parencite{li-etal-2022}.} as its vision encoder and Qwen-0.5B\footnote{Qwen-0.5B is a Large Language Model (LLM) with 500 million parameters developed by Alibaba Cloud \parencite{qwen-2025}.} as its language decoder. 
@@ -263,7 +269,7 @@ Similar to most studies, we utilize Character Error Rate (CER) and Word Error Ra
 CER measures the accuracy of character recognition and is calculated using the Levenshtein or edit distance, which represents the minimum number of single-character insertions (I), deletions (D), and substitutions (S) required to transform one word into another. 
 As shown in Equation \ref{equation:cer}, CER is defined as the edit distance between the OCR-predicted text and ground truth text, divided by the total number of characters in the ground truth text (N). 
 A lower CER value indicates higher accuracy, with 0 representing perfect recognition. 
-Notably, CER can exceed 1 when there is a significant number of insertions. 
+Notably, CER can exceed 1 when the predicted text is significantly different from the ground truth.
 WER serves as the word-based counterpart to CER.
 
 \section{Experiment 1: Benchmarking on Real-world Wikipedia Screenshots} \label{section:experiment-1}
@@ -272,7 +278,10 @@ To explore the performance of OCR tools on SEA scripts (RQ1), Experiment 1 bench
 Unlike synthetic data, these screenshots contain formatting variations and complex layouts that better reflect real-world OCR challenges. 
 This approach ensures that the evaluation closely mirrors practical use cases, where OCR tools must handle noisy and visually complex text.
 
-While Wikipedia articles do not fully capture the diversity of real-world physical documents, they offer a valuable source for benchmarking OCR tools due to their linguistic richness, accessibility, and relevance to emerging digital use cases. Wikipedia text features varied sentence structures, diacritics, and real-world entities, making it a useful substitute for evaluating OCR performance. Additionally, Wikipedia articles are readily available in many languages, facilitating large-scale testing in SEA languages where real-world documents may be scarce. Furthermore, with the growing use of digital screenshots in applications like ChatGPT, where OCR is used on images or screenshots, the digital nature of Wikipedia screenshots reflects a practical OCR use case.
+While Wikipedia articles do not fully capture the diversity of scanned physical documents, they offer a valuable source for benchmarking OCR tools due to their linguistic richness, accessibility, and relevance to emerging digital use cases. 
+Wikipedia text features varied sentence structures, diacritics, and real-world entities, making it a useful substitute for scanned documents in OCR evaluation. 
+Additionally, Wikipedia articles are readily available in many languages, facilitating large-scale testing in SEA languages where real-world documents may be scarce. 
+Furthermore, with the growing use of digital screenshots in applications like ChatGPT, where OCR is used on images or screenshots, the digital nature of Wikipedia screenshots reflects a practical OCR use case.
 
 \subsection{Data Collection}
 
@@ -288,7 +297,7 @@ Table \ref{table:real-world-wikipedia-dataset} lists the articles included in ou
 \end{figure}
 
 From the dataset of 100 Wikipedia articles, we collected article images and ground 
-truth article text in our selected languages using Python, 
+truth article texts in our selected languages using Python, 
 Selenium\footnote{\href{https://selenium-python.readthedocs.io}{Selenium} is a 
 framework for automating web browsers, commonly used for web scraping by programmatically 
 interacting with websites.}, and the MediaWiki Action API\footnote{The \href{https://www.mediawiki.org/wiki/API:Main_page}{MediaWiki Action API} allows 
@@ -296,11 +305,11 @@ access to wiki page operation features such as search and retrieval.}. Figure \r
 for data collection. The detailed steps are as follows:
 
 \begin{enumerate}
-    \item Manually compile the dataset’s article names and URLs in English.
-    \item Fetch the article names and URLs in Thai, Vietnamese, and Indonesian from the MediaWiki Action API.
+    \item Manually compile the 100 article names and URLs in English.
+    \item Fetch the article names and URLs in Indonesian, Vietnamese, and Thai from the MediaWiki Action API.
     \item Download the article PDFs in all languages using Selenium.
     \item Convert the article PDFs into PNG images, with each image representing one page of the PDF.
-    \item Download the article text into TXT files from the MediaWiki Action API.
+    \item Download the article texts into TXT files from the MediaWiki Action API.
 \end{enumerate}
 
 The end result is a real-world Wikipedia dataset with 3,590 English images, 1,450 Indonesian images, 1,925 Vietnamese images, and 1,011 Thai images.
@@ -322,7 +331,7 @@ Figure \ref{figure:real-world-data} presents sample collected images.
     \label{figure:ocr-evaluation}
 \end{figure}
 
-After collecting the images and corresponding ground truth text, we ran the OCR tools and evaluated the CER and WER for each article.
+After collecting the images and corresponding ground truth texts, we ran the OCR tools and evaluated the CER and WER for each article.
 Figure \ref{figure:ocr-evaluation} summarizes the overall pipeline for OCR evaluation. The detailed steps are as follows:
 
 \begin{enumerate}
@@ -362,7 +371,7 @@ Additionally, using synthetic data minimizes annotation errors, allowing us to b
 Using the article text collected from Experiment 1, we generated synthetic article images with Python and WeasyPrint\footnote{\url{https://pypi.org/project/weasyprint/}}, a Python package for converting HTML pages into PDF documents.
 To introduce font noise into the dataset, we randomly applied HTML tags to a specified ratio of space-separated words.
 For instance, a \texttt{<b>} tag could be added randomly to make words appear in bold.
-The following steps summarizes the process of data generation:
+The following steps summarize the process of data generation:
 
 \begin{enumerate}
     \item To add noise, randomly apply HTML tags to a specified ratio of space-separated words.
@@ -437,12 +446,12 @@ Using OCR results from the control dataset without noise, we categorized misclas
     \end{tabular}
 \end{table}
 
-We used the Levenshtein\footnote{\url{https://pypi.org/project/Levenshtein/}} Python package to identify edit operations (insertions, deletion, and substitutions) and classified misrecognized characters using RegEx\footnote{\url{https://docs.python.org/3/library/re.html}}. 
+We used the Levenshtein\footnote{\url{https://pypi.org/project/Levenshtein/}} Python package to identify edit operations (insertions, deletions, and substitutions) and classified misrecognized characters using RegEx\footnote{\url{https://docs.python.org/3/library/re.html}}. 
 Table \ref{table:character-types} lists the character types we analyzed, with all uncategorized characters grouped under ``Other".
 
 \section{Experiment 3: Fine-tuning for Vietnamese and Thai} \label{section:experiment-3}
 
-To explore how fine-tuning can enhance OCR accuracy on SEA languages (RQ3), Experiment 3 fine-tunes GOT for Vietnamese and Thai and compares the fine-tuned model with EasyOCR and Tesseract. 
+To explore how fine-tuning can enhance OCR accuracy on SEA languages (RQ3), Experiment 3 fine-tunes GOT for Vietnamese and Thai and compares the fine-tuned models with EasyOCR and Tesseract. 
 We chose to fine-tune for Vietnamese and Thai because GOT does not natively support these languages. 
 Although GOT does not support Indonesian, we did not fine-tune for it, since the model already achieves state-of-the-art results for Indonesian, as demonstrated in the results from Experiment 1 (See Section \ref{section:ocr-accuracy-on-synthetic-data}). 
 
@@ -494,6 +503,7 @@ In this chapter, we present and analyze the results of the experiments, evaluati
         Vietnamese & 0.47 & \textbf{0.38} & - & 0.45 & \textbf{0.39} & -\\
         Thai & \textbf{0.35} & 0.55 & - & \textbf{1.45} & \textbf{1.45} & -\\
         \bottomrule
+        \multicolumn{7}{c}{\footnotesize Note: GOT was not run on Vietnamese and Thai because they are not officially supported.}
     \end{tabular}
 \end{table}
 
@@ -557,7 +567,7 @@ Table \ref{table:ocr-accuracy-on-synthetic-data} presents the results from bench
     \item \textbf{GOT and Tesseract performed well on synthetic data.} 
     On synthetic data, GOT achieved the best results with an average CER of 0.01, followed by Tesseract with 0.04 and EasyOCR with 0.05.
     This contrasts with the results from the Wikipedia screenshots.
-    This findings suggest that GOT and Tesseract may not be robust to noise, but can achieve high accuracy in noise-free environments, as further discussed in Section \ref{section:impact-of-noise}.
+    This finding suggests that GOT and Tesseract may not be robust to noise, but can achieve high accuracy in noise-free environments, as further discussed in Section \ref{section:impact-of-noise}.
 \end{itemize}
 
 \subsection{Impact of Noise on OCR Accuracy} \label{section:impact-of-noise}
@@ -621,7 +631,7 @@ Our observations from these results are as follows:
     \item \textbf{EasyOCR was the most robust to noise among the OCR tools.}
     EasyOCR had the lowest average percent change of -0.8\%, followed by Tesseract with an average percent change of 4.6\% and GOT with 48.9\%. Notably, adding noise improved the performance of EasyOCR, suggesting that it may be particularly well-suited to handle noisy data.
     \item \textbf{Tesseract and GOT were sensitive to noise.} This finding aligns with the results from Section \ref{section:ocr-accuracy-on-synthetic-data}, where Tesseract and GOT performed well on synthetic data but struggled with real-world Wikipedia screenshots, which contain noise and complex layouts.
-    \item \textbf{Heading noise impacted the OCR tools the most,} with an average percent change of 31.9\%, followed by italic noise (5.6\%), link noise (5.4\%), and bold noise (2.2\%). This result indicates that larger font sizes with bold formatting, as seen in the heading noise, pose the greatest challenge to OCR systems.
+    \item \textbf{Heading noise impacted the OCR tools the most,} with an average percent change of 31.9\%, followed by italic noise (5.6\%), link noise (5.4\%), and bold noise (2.2\%). This result indicates that larger font sizes with bold formatting, as seen in the heading noise, pose a challenge to OCR systems.
 \end{itemize}
 
 \subsubsection{Limitations of Noise Types}
@@ -707,7 +717,7 @@ If the OCR tool incorrectly inserts additional characters, the number of misclas
 Our observations from the results on benchmarked Latin scripts are as follows:
 
 \begin{itemize}
-    \item \textbf{Latin letters, Arabic digits, and whitespaces achieved high accuracies.} These three character types accounted for 97\% of all characters in both English and Indonesian texts.
+    \item \textbf{OCR tools achieved high accuracies on Latin letters, Arabic digits, and whitespaces.} These three character types accounted for 97\% of all characters in both English and Indonesian texts.
     \item \textbf{OCR tools for English and Indonesian struggled more with Latin letters containing diacritics than those without diacritics,} as evidenced by the higher error rates for diacritical characters.
     One possible explanation is that the OCR models were not trained on enough diacritical marks, which is reflected in their low frequency in the English and Indonesian datasets.
 
@@ -793,7 +803,7 @@ For example, Latin letters that appear in the Thai dataset were consistently mis
 These non-native characters often occur in metadata, URLs, or borrowed text segments within documents, and their misclassification inflates the CER. 
 This suggests that the lower performance of OCR on Vietnamese and Thai is not necessarily due to the inherent complexity of the scripts themselves, but rather the OCR tools’ limitations in handling mixed-script or multilingual content effectively.
 
-This highlights the need for OCR systems to better handle mixed-script content, especially in real-world documents where such mixing is common. Future work could focus on developing models that are script-aware or capable of dynamically switching recognition modes based on the detected script. Incorporating script identification as a pre-processing step or training models with more diverse multilingual datasets could also improve robustness in mixed-script contexts.
+This highlights the need for OCR systems to better handle mixed-script content, especially in real-world documents where such mixing is common. Future work could focus on developing models that are script-aware or capable of dynamically switching recognition modes based on the detected script. Incorporating script identification as a pre-processing step for training models with more diverse multilingual datasets could also improve robustness in mixed-script contexts.
 
 \section{RQ3: How can fine-tuning enhance OCR accuracy on SEA languages?}
 
@@ -847,7 +857,7 @@ Even with relatively small amounts of training data, it can significantly improv
 This makes fine-tuning especially promising for low-resource languages, where large annotated datasets are often costly and time-consuming to obtain.
 Our findings show that reasonable accuracy can be achieved with modest datasets, highlighting the practicality of this method in resource-constrained settings.
 
-While fine-tuning was successful, our experiments were limited to fine-tuning GOT on noise-free synthetic data in Vietnamese and Thai. 
+While fine-tuning was successful, our experiment was limited to fine-tuning GOT on noise-free synthetic data in Vietnamese and Thai. 
 Future work could incorporate noisy data to improve model robustness in real-world scenarios.
 Additionally, surpassing state-of-the-art tools like EasyOCR and Tesseract may require more sophisticated fine-tuning techniques. 
 Although increasing the amount of training data improved performance for Thai, our Vietnamese results suggest that more data does not always lead to better accuracy. 
@@ -855,7 +865,7 @@ As such, further gains may come from exploring alternative models and optimizing
 
 \chapter{Conclusion}
 
-In this study, we evaluated the performance of three OCR tools (EasyOCR, Tesseract, and GOT) on English, Indonesian, Vietnamese, and Thai.
+In this study, we evaluated the performance of three OCR tools --- EasyOCR, Tesseract, and GOT --- on English, Indonesian, Vietnamese, and Thai.
 We implemented a reusable pipeline for collecting textual data from Wikipedia and benchmarking OCR tools.
 The source code of the pipeline is available on \href{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}{GitHub}.
 
