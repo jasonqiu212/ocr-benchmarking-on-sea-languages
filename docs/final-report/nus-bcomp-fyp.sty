@@ -11,12 +11,14 @@
 \RequirePackage{booktabs}
 \RequirePackage{hyperref}
 \RequirePackage{xcolor}
+\RequirePackage{colortbl}
 \RequirePackage{fontspec}
 \RequirePackage[style=apa, backend=biber]{biblatex}
 
 \definecolor{DarkBlue}{RGB}{0, 42, 97}
 \definecolor{Green}{RGB}{57, 126, 73}
 \definecolor{Red}{RGB}{182, 68, 51}
+\definecolor{LightRed}{RGB}{216, 129, 119}
 
 \hypersetup{
     colorlinks=true,    % Enables colored links
@@ -96,5 +98,5 @@
 \renewcommand{\contentsname}{Table of Contents}
 \settocdepth{subsection}
 
-\newcommand{\greentc}[1]{\textbf{\textcolor{Green}{#1}}}  % Green for positive values
-\newcommand{\redtc}[1]{\textcolor{Red}{#1}}  % Red for negative values
+\newcommand{\greentc}[1]{\textcolor{Green}{#1}}  % Green text color
+\newcommand{\redtc}[1]{\textcolor{Red}{#1}}  % Red text color

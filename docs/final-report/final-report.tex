@@ -51,15 +51,15 @@ Implementation Software and Hardware:
 \chapter*{\centering\large Acknowledgements}
 \addcontentsline{toc}{chapter}{Acknowledgements}
 
-I would like to express the deepest appreciation to my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zhu, for their invaluable guidance and suggestions in every step of my research. 
+I would like to express my deepest appreciation to my supervisor, A/P Kan Min-Yen, and my advisor, Tongyao Zhu, for their invaluable guidance and suggestions in every step of my research. 
 Their encouragement and constructive feedback have been a significant source of inspiration throughout the past year.
 I am grateful for their constant patience and support in guiding me to complete the project.
 
 I would also like to thank the members of the Web, Information Retrieval / Natural Language Processing Group (WING) for listening to my practice presentations and offering valuable feedback. 
-I am thankful for the opportunity to attend the group meetings and hear about the group's amazing works in the academic field.
+I am thankful for the opportunity to attend the group meetings and hear about the group's amazing work in the academic field.
 
 Finally, I would like to thank my family and friends for their unwavering support and confidence in me.
-Even though they did not understand the technical aspects of my project (The number of times I had to explain OCR in the past year is insane.), their constant care for my progress and well-being deeply encouraged me.
+Even though they did not understand the technical aspects of my project (the number of times I had to explain OCR in the past year is insane), their constant care for my progress and well-being deeply encouraged me.
 
 \listoffigures
 \listoftables
@@ -72,7 +72,7 @@ Current research in Natural Language Processing (NLP) is heavily concentrated on
 In particular, Southeast Asia (SEA) is home to over 1,000 languages but remains a relatively under-researched region in NLP \parencite{aji-etal-2023}.
 A similar trend can be observed in Optical Character Recognition (OCR) research, where the focus is predominantly on high-resource languages \parencite{salehudin-etal-2023, smith-2007}, leaving many SEA languages underserved.
 
-OCR, the process of converting textual images into machine-readable formats, offers significant potential for languages with limited datasets. While many scanned documents and books in these low-resource languages are available online, the text within them often remains inaccessible due to formats like images and PDFs. By extracting the text from these documents, OCR can generate valuable datasets for low-resource languages, which can then be used for downstream NLP tasks, such as machine translation and named-entity recognition \parencite{agarwal-and-anastasopoulos-2024, ignat-etal-2022}.
+OCR, the process of converting textual images into machine-readable formats, offers significant potential for languages with limited datasets. While many scanned documents and books in these low-resource languages are available online, the text within them often remains inaccessible due to formats like images and PDFs. By extracting the text from these documents, OCR can generate valuable datasets for low-resource languages, which can then be used for downstream NLP tasks, such as machine translation and named entity recognition \parencite{agarwal-and-anastasopoulos-2024, ignat-etal-2022}.
 Therefore, studying OCR performance on SEA languages is crucial to accelerating NLP research and technology development in the region.
 
 While OCR has been widely studied for high-resource languages such as English and Chinese, the efficacy and limitations of OCR models on SEA languages remain largely unexplored.
@@ -86,7 +86,7 @@ Specifically, this project seeks to answer the following research questions (RQs
 \end{itemize}
 
 To investigate these questions, we present a reusable pipeline for collecting textual data from Wikipedia and benchmarking three open-source OCR tools on English, Indonesian, Vietnamese, and Thai.
-The source code of the pipeline is publicly available at \url{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}.
+The source code of the pipeline is publicly available on \href{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}{GitHub}.
 
 Our benchmark results reveal that OCR tools generally perform worse on Vietnamese and Thai texts.
 However, contrary to common assumptions, they perform well on the native characters of these languages. 
@@ -94,7 +94,7 @@ This challenges the prevalent notion that Latin-based scripts inherently yield b
 Instead, we find that the main source of errors stems from the misclassification of characters outside the target language, highlighting the need for OCR systems to better handle mixed-script content for higher accuracy.
 
 Furthermore, we demonstrate the potential of fine-tuning a transformer-based model to improve OCR performance on Vietnamese and Thai. 
-The fine-tuned model achieved error rates of 0.10 for Vietnamese and 0.15 for for Thai, representing a significant improvement over the base model.
+The fine-tuned model achieved error rates of 0.10 for Vietnamese and 0.15 for Thai, representing a significant improvement over the base model.
 These results underscore fine-tuning as an effective strategy for adapting OCR systems to new languages.
 
 \chapter{Related Work}
@@ -139,12 +139,12 @@ In doing so, we aim to explore how these models handle text recognition in more 
 To evaluate OCR performance accurately, textual data in the form of images or PDFs paired with reliable ground truth is essential. 
 Similar to most NLP tasks, data scarcity poses a major obstacle to advancing OCR technology in low-resource languages. The limited availability of annotated textual data restricts both model training and evaluation, leading to disparities in OCR accuracy across different scripts.
 OCR tools generally perform better on Latin-based scripts \parencite{hegghammer-2022}, partly due to market incentives that prioritize the development of English-language OCR systems, resulting in more extensive training data and refinement.
-Beyond data availability, the complexity of scripts with ornate diacritics or unique letter shapes often yield lower OCR accuracy \parencite{agarwal-and-anastasopoulos-2024}.
+Beyond data availability, the complexity of scripts with ornate diacritics or unique letter shapes often yields lower OCR accuracy \parencite{agarwal-and-anastasopoulos-2024}.
 
 A recent study by \textcite{ignat-etal-2022} provides the most relevant benchmarking of OCR on SEA languages.
 Their benchmark grouped 60 low-resource languages by region and script, including SEA languages such as Khmer, Lao, Burmese, Thai, and Vietnamese.
 They found that OCR tools perform best on Latin and Cyrillic scripts, with only average performance on SEA languages, supporting \textcite{hegghammer-2022}'s findings.
-Additionally, \textcite{ignat-etal-2022} showed that while OCR models perform well on synthetic SEA-language data, their accuracy drops significantly on real-world data.
+Additionally, \textcite{ignat-etal-2022} showed that while OCR models perform well on synthetic SEA language data, their accuracy drops significantly on real-world data.
 This discrepancy underscores the need for more diverse and realistic training datasets to improve OCR outcomes for SEA languages.
 Our research aims to address this gap by developing a reusable pipeline for both collecting real-world digital data and generating synthetic data.
 
@@ -438,7 +438,7 @@ Using OCR results from the control dataset without noise, we categorized misclas
 \end{table}
 
 We used the Levenshtein\footnote{\url{https://pypi.org/project/Levenshtein/}} Python package to identify edit operations (insertions, deletion, and substitutions) and classified misrecognized characters using RegEx\footnote{\url{https://docs.python.org/3/library/re.html}}. 
-Table \ref{table:character-types} lists the character types we analyzed, with all uncategorized characters grouped under "Other".
+Table \ref{table:character-types} lists the character types we analyzed, with all uncategorized characters grouped under ``Other".
 
 \section{Experiment 3: Fine-tuning for Vietnamese and Thai} \label{section:experiment-3}
 
@@ -656,26 +656,50 @@ We observed that \textbf{EasyOCR is the fastest OCR tool,} with an average runti
 
 \subsection{Latin Scripts}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/error-classification-english.png}
+\begin{table}[ht]
     \caption{Error classification by character type in English articles}
-    \label{figure:error-classification-english}
-\end{figure}
-
-\begin{figure}[ht]
+    \label{table:error-classification-english}
     \centering
-    \includegraphics[width=0.8\textwidth]{images/error-classification-indonesian.png}
-    \caption{Error classification by character type in Indonesian articles}
-    \label{figure:error-classification-indonesian}
-\end{figure}
+    \begin{tabular}{lrrrr}
+        \toprule
+        & \multirow{2}{*}{Count} & EasyOCR & Tesseract & GOT\\
+        & & \% Missed & \% Missed & \% Missed\\
+        \midrule
+        Arabic digit & 38,324 & \cellcolor{LightRed!1}0.7\% & \cellcolor{LightRed!2}1.9\% & 0.3\%\\
+        Latin letter & 1,546,964 & \cellcolor{LightRed!1}1.3\% & \cellcolor{LightRed!2}1.8\% & 0.4\%\\
+        Latin letter with diacritic & 452 & \cellcolor{LightRed!100}100.0\% & \cellcolor{LightRed!56}56.0\% & \cellcolor{LightRed!16}15.9\%\\
+        Special symbol & 55,110 & \cellcolor{LightRed!30}29.5\% & \cellcolor{LightRed!4}3.7\% & \cellcolor{LightRed!4}4.3\%\\
+        Whitespace & 317,587 & \cellcolor{LightRed!5}4.9\% & \cellcolor{LightRed!4}4.3\% & \cellcolor{LightRed!4}3.6\%\\
+        Other & 1,562 & \cellcolor{LightRed!104}103.6\% & \cellcolor{LightRed!93}92.6\% & \cellcolor{LightRed!128}127.9\%\\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Figure \ref{figure:error-classification-english} presents the results of classifying errors by character type in the benchmark on English synthetic data without noise (Experiment 2). 
-Results on Indonesian articles are shown in Figure \ref{figure:error-classification-indonesian}.
-The "Count" column lists the number of characters belonging to each character type in the ground truth text.
+\begin{table}[ht]
+    \caption{Error classification by character type in Indonesian articles}
+    \label{table:error-classification-indonesian}
+    \centering
+    \begin{tabular}{lrrrr}
+        \toprule
+        & \multirow{2}{*}{Count} & EasyOCR & Tesseract & GOT\\
+        & & \% Missed & \% Missed & \% Missed\\
+        \midrule
+        Arabic digit & 24,947 & 0.4\% & \cellcolor{LightRed!2}1.8\% & 0.2\%\\
+        Latin letter & 1,208,707 & \cellcolor{LightRed!1}0.5\% & \cellcolor{LightRed!2}1.8\% & 0.4\%\\
+        Latin letter with diacritic & 276 & \cellcolor{LightRed!7}7.2\% & \cellcolor{LightRed!100}100.0\% & \cellcolor{LightRed!17}16.7\%\\
+        Special symbol & 38,980 & \cellcolor{LightRed!23}22.9\% & \cellcolor{LightRed!5}4.9\% & \cellcolor{LightRed!1}1.4\%\\
+        Whitespace & 207,556 & \cellcolor{LightRed!5}4.8\% & \cellcolor{LightRed!5}5.1\% & \cellcolor{LightRed!4}4.1\%\\
+        Other & 1,262 & \cellcolor{LightRed!94}94.4\% & \cellcolor{LightRed!100}99.6\% & \cellcolor{LightRed!65}64.8\%\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Table \ref{table:error-classification-english} presents the results of classifying errors by character type in the benchmark on English synthetic data without noise (Experiment 2). 
+Results on Indonesian articles are shown in Table \ref{table:error-classification-indonesian}.
+The ``Count" column lists the number of characters belonging to each character type in the ground truth text.
 The remaining columns show the percentage of characters misclassified by each OCR tool.
 
-Notably, these percentages can exceed 100\%, as demonstrated in Figure \ref{figure:error-classification-english} under the "Other" character type.
+Notably, these percentages can exceed 100\%, as demonstrated in Table \ref{table:error-classification-english} under the ``Other" character type.
 This is similar to how CERs can exceed 1.
 The reason for this is that the misclassifications are identified using edit operations, which include substitutions, deletions, and insertions. 
 If the OCR tool incorrectly inserts additional characters, the number of misclassified characters can surpass the ground truth.
@@ -692,29 +716,55 @@ Our observations from the results on benchmarked Latin scripts are as follows:
 
 \subsection{Latin Scripts with Diacritics}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{images/error-classification-vietnamese.png}
+\begin{table}[ht]
     \caption{Error classification by character type in Vietnamese articles}
-    \label{figure:error-classification-vietnamese}
-\end{figure}
+    \label{table:error-classification-vietnamese}
+    \centering
+    \begin{tabular}{lrrr}
+        \toprule
+        & \multirow{2}{*}{Count} & EasyOCR & Tesseract\\
+        & & \% Missed & \% Missed\\
+        \midrule
+        Arabic digit & 31,473 & \cellcolor{LightRed!1}1.1\% & \cellcolor{LightRed!2}2.2\% \\
+        Latin letter & 916,667 & \cellcolor{LightRed!8}8.5\% & \cellcolor{LightRed!2}1.8\% \\
+        Latin letter with diacritic & 294,406 & \cellcolor{LightRed!15}14.9\% & \cellcolor{LightRed!2}1.9\% \\
+        Vietnamese special letter & 30,903 & \cellcolor{LightRed!4}4.2\% & \cellcolor{LightRed!2}1.8\% \\
+        Special symbol & 41,655 & \cellcolor{LightRed!25}25.4\% & \cellcolor{LightRed!3}3.1\% \\
+        Whitespace & 367,936 & \cellcolor{LightRed!11}10.9\% & \cellcolor{LightRed!5}5.3\% \\
+        Other & 1,909 & \cellcolor{LightRed!105}105.4\% & \cellcolor{LightRed!89}88.6\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Figure \ref{figure:error-classification-vietnamese} presents the results of classifying errors in the benchmark on Vietnamese data without noise (Experiment 2). 
+Table \ref{table:error-classification-vietnamese} presents the results of classifying errors in the benchmark on Vietnamese data without noise (Experiment 2). 
 We observed that \textbf{Tesseract achieved high accuracies in recognizing Vietnamese characters.} 
-Vietnamese characters, which make up 74\% of the dataset, consist of Latin letters with and without diacritics, as well as a special character (đ, Đ) categorized under "Vietnamese special letter".
+Vietnamese characters, which make up 74\% of the dataset, consist of Latin letters with and without diacritics, as well as a special character (đ, Đ) categorized under ``Vietnamese special letter".
 Only 2\% of these Vietnamese characters were misclassified by Tesseract, which is similar to the performance of English models in recognizing Latin letters.
 In contrast, EasyOCR struggled more with diacritical characters.
 
 \subsection{Brahmic Scripts}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{images/error-classification-thai.png}
+\begin{table}[ht]
     \caption{Error classification by character type in Thai articles}
-    \label{figure:error-classification-thai}
-\end{figure}
+    \label{table:error-classification-thai}
+    \centering
+    \begin{tabular}{lrrr}
+        \toprule
+        & \multirow{2}{*}{Count} & EasyOCR & Tesseract\\
+        & & \% Missed & \% Missed\\
+        \midrule
+        Arabic digit & 22,580 & \cellcolor{LightRed!1}0.9\% & \cellcolor{LightRed!7}6.7\% \\
+        Latin letter & 36,174 & \cellcolor{LightRed!100}100.0\% & \cellcolor{LightRed!100}100.0\% \\
+        Latin letter with diacritic & 101 & \cellcolor{LightRed!100}100.0\% & \cellcolor{LightRed!100}100.0\% \\
+        Thai letter & 1,014,395 & \cellcolor{LightRed!1}1.2\% & \cellcolor{LightRed!4}4.2\% \\
+        Special symbol & 14,246 & \cellcolor{LightRed!8}8.0\% & \cellcolor{LightRed!11}10.6\% \\
+        Whitespace & 58,164 & \cellcolor{LightRed!37}37.5\% & \cellcolor{LightRed!37}37.2\% \\
+        Other & 890 & \cellcolor{LightRed!105}105.2\% & \cellcolor{LightRed!110}110.4\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Figure \ref{figure:error-classification-thai} presents the results of classifying errors in the benchmark on Thai data without noise (Experiment 2). Our observations from the Thai results are as follows:
+Table \ref{table:error-classification-thai} presents the results of classifying errors in the benchmark on Thai data without noise (Experiment 2). Our observations from the Thai results are as follows:
 
 \begin{itemize}
     \item \textbf{Thai letters were well-recognized by OCR tools.} 
@@ -751,7 +801,7 @@ This highlights the need for OCR systems to better handle mixed-script content, 
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{images/fine-tuned-got-vietnamese.png}
+    \includegraphics[width=0.8\textwidth]{images/fine-tuned-got-vietnamese.pdf}
     \caption{Performance of fine-tuned GOT on Vietnamese}
     \label{figure:fine-tuned-got-vietnamese}
 \end{figure}
@@ -776,7 +826,7 @@ From the Vietnamese model results, we observed the following:
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{images/fine-tuned-got-thai.png}
+    \includegraphics[width=0.8\textwidth]{images/fine-tuned-got-thai.pdf}
     \caption{Performance of fine-tuned GOT on Thai}
     \label{figure:fine-tuned-got-thai}
 \end{figure}
@@ -807,7 +857,7 @@ As such, further gains may come from exploring alternative models and optimizing
 
 In this study, we evaluated the performance of three OCR tools (EasyOCR, Tesseract, and GOT) on English, Indonesian, Vietnamese, and Thai.
 We implemented a reusable pipeline for collecting textual data from Wikipedia and benchmarking OCR tools.
-The source code is available on \href{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}{GitHub}.
+The source code of the pipeline is available on \href{https://github.com/jasonqiu212/ocr-benchmarking-on-sea-languages}{GitHub}.
 
 Using this pipeline, we first examined OCR performance on real-world Wikipedia screenshots.
 Our benchmark results reveal that OCR tools generally perform worse on Vietnamese and Thai texts than on Latin-script languages, supporting findings from previous work \parencite{ignat-etal-2022}.
