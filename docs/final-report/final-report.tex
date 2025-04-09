@@ -508,7 +508,7 @@ In this chapter, we present and analyze the results of the experiments, evaluati
 \end{table}
 
 Table \ref{table:ocr-accuracy-on-real-world-data} lists the results from benchmarking the OCR tools on real-world Wikipedia screenshots (Experiment 1).
-A lower Character Error Rate (CER) and Word Error Rate (WER) implies better OCR accuracy.
+A lower Character Error Rate (CER) and Word Error Rate (WER) imply better OCR accuracy.
 Bolded numbers highlight the best-performing tool for each metric and language. Our observations are as follows:
 
 \begin{itemize}
@@ -795,8 +795,9 @@ We also observed some patterns common across all benchmarked languages:
 A common preconception is that OCR systems are less accurate on SEA scripts.
 Prior studies have consistently reported that SEA scripts tend to yield lower accuracy than Latin scripts \parencite{ignat-etal-2022}.
 This view appears to be supported by the language-level trends observed in Sections \ref{section:ocr-accuracy-on-wikipedia-screenshots} and \ref{section:ocr-accuracy-on-synthetic-data}, where Latin-script languages outperformed Vietnamese and Thai in both CER and WER.
-However, after classifying OCR errors by character type, we found that OCR tools are actually effective at recognizing the more complex Vietnamese and Thai scripts. In fact, the error rates for these scripts are comparable to those for Latin characters by English models.
-These findings challenge the claim by \textcite{agarwal-and-anastasopoulos-2024} that OCR tools perform poorly on scripts with ornate diacritics or unique character shapes.
+However, after classifying OCR errors by character type, we found that OCR tools are actually effective at recognizing the more complex Vietnamese and Thai scripts.
+In fact, the error rates for these scripts are comparable to those for Latin characters by English models.
+This finding challenges the claim by \textcite{agarwal-and-anastasopoulos-2024} that OCR tools perform poorly on scripts with ornate diacritics or unique character shapes.
 
 One major contributor to the lower overall accuracy of Vietnamese and Thai lies in the misclassification of characters that are outside of the target language. 
 For example, Latin letters that appear in the Thai dataset were consistently misclassified, as they are not part of the Thai script.
@@ -825,7 +826,7 @@ From the Vietnamese model results, we observed the following:
     \item \textbf{Our best fine-tuned Vietnamese GOT model achieved a CER of 0.10.}
     Using 200 training images resulted in a 33\% reduction in error rate compared to the base GOT model without fine-tuning, which achieved a CER of 0.15.
     \item \textbf{The fine-tuned Vietnamese model underperformed relative to EasyOCR and Tesseract.} EasyOCR achieved a CER of 0.07, and Tesseract achieved a CER of 0.04.
-    \item \textbf{Model performance did not consistently improve with more training data.} 
+    \item \textbf{Model performance did not improve consistently with more training data.} 
     Instead, we observed a non-monotonic trend, peaking at 200 training samples and plateauing thereafter.
 
     This behavior may be due to the strong pre-training of the base GOT model on English.
@@ -875,7 +876,7 @@ Our benchmark results reveal that OCR tools generally perform worse on Vietnames
 We then investigated performance on synthetic documents with added noise.
 Our findings show that EasyOCR was the most robust to noise, whereas Tesseract and GOT were more sensitive.
 To better isolate script-related recognition errors, we classified errors by eight character types commonly found in the benchmarked languages.
-Interestingly, the OCR tools performed well on native characters in languages with complex scripts like Vietnamese and Thai, challenging past studies that suggested Latin-based scripts yield better OCR performance in SEA.
+Interestingly, the OCR tools performed well on native characters in languages with complex scripts like Vietnamese and Thai, challenging past studies that suggested OCR models underperform on SEA scripts \parencite{agarwal-and-anastasopoulos-2024,ignat-etal-2022}.
 The main source of errors came from the misclassification of characters outside the target language. 
 Therefore, future work aiming to improve OCR accuracy can consider developing models that are better equipped to handle mixed-script content.
 
